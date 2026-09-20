@@ -15,10 +15,10 @@
 body{margin:0; background:var(--bg); color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
   font-size:15px; line-height:1.6; padding-bottom:96px}
-header{position:sticky; top:0; z-index:10; background:var(--ink); color:#fff; padding:14px 16px 12px}
+header{background:var(--ink); color:#fff; padding:14px 16px 12px}
 header h1{margin:0; font-size:17px}
 header p{margin:4px 0 0; font-size:12.5px; opacity:.85}
-.daynav{position:sticky; top:69px; z-index:9; display:flex; gap:8px; overflow-x:auto;
+.daynav{position:sticky; top:0; z-index:10; display:flex; gap:8px; overflow-x:auto;
   background:var(--bg); padding:10px 12px; border-bottom:1px solid var(--line)}
 .daynav a{flex:0 0 auto; min-width:64px; min-height:44px; display:flex; flex-direction:column;
   align-items:center; justify-content:center; background:var(--card); border:1px solid var(--line);
@@ -26,6 +26,7 @@ header p{margin:4px 0 0; font-size:12.5px; opacity:.85}
 .daynav a b{font-size:14px}
 .daynav a.on{background:var(--ink); color:#fff; border-color:var(--ink)}
 main{padding:14px 12px; max-width:640px; margin:0 auto}
+main section{scroll-margin-top:85px} /* 상단 고정 탭(≈77px)+여유 8px — 앵커 착지 시 제목이 탭에 안 가리게 */
 .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
   padding:14px; margin:0 0 12px}
 .card h2{margin:0 0 4px; font-size:16.5px}
@@ -272,10 +273,11 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
 <footer><p>오프라인용: 출국 전 이 페이지를 저장해두세요. 티켓 QR·바우처는 별도 보관.</p></footer>
 <script>
 const nav=document.querySelectorAll('#daynav a');
-const secs=[...document.querySelectorAll('main section')];
+const secs=[...document.querySelectorAll('main section')].filter(s=>document.querySelector('#daynav a[href="#'+s.id+'"]'));
+const off=document.getElementById('daynav').offsetHeight+25; // 활성 탭 판정선 — 섹션 상단이 탭 하단+25px을 지나면 전환
 const onScroll=()=>{
-  let cur=secs[0].id;
-  secs.forEach(s=>{ if(scrollY+s.getBoundingClientRect().top<160) cur=s.id; });
+  let cur=null;
+  secs.forEach(s=>{ if(s.getBoundingClientRect().top<off) cur=s.id; });
   nav.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
 };
 addEventListener('scroll',onScroll,{passive:true}); onScroll();
