@@ -48,9 +48,17 @@ main section{scroll-margin-top:85px} /* 상단 고정 탭(≈77px)+여유 8px �
 .tip{background:#fffbeF; border:1px solid #ead9ae; border-radius:12px; padding:10px 12px;
   font-size:13.5px; margin:8px 0}
 ul.chk{list-style:none; padding:0; margin:8px 0}
-ul.chk li{padding:8px 0 8px 30px; position:relative; border-top:1px dashed var(--line); font-size:14px}
+ul.chk li{padding:8px 0 8px 30px; position:relative; border-top:1px dashed var(--line); font-size:14px; cursor:pointer; -webkit-user-select:none; user-select:none}
 ul.chk li:first-child{border-top:0}
 ul.chk li:before{content:"☐"; position:absolute; left:4px; color:var(--accent); font-weight:700}
+ul.chk li.done{color:#93a3ab}
+ul.chk li.done:before{content:"✓"; color:#5fa88f}
+.resetwrap{margin:14px 0 0; text-align:right}
+.resetbtn{min-height:40px; padding:8px 14px; border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:10px; font-size:13px; cursor:pointer}
+.shop{margin-top:10px; border:1px dashed var(--line); border-radius:12px; padding:10px 12px; background:#fff}
+.shop summary{cursor:pointer; font-weight:700; font-size:14px}
+.shop ul{margin:8px 0 0; padding-left:18px; font-size:13.5px; color:#33414b}
+.shop li{padding:3px 0}
 ul.plain{list-style:none; padding:0; margin:8px 0}
 ul.plain li{padding:6px 0; border-top:1px dashed var(--line); font-size:13.5px}
 ul.plain li:first-child{border-top:0}
@@ -64,6 +72,7 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   <p>10/19~10/25 · 성인 2 + 40개월 · 북부 크라운플라자 3박 → 남부 뉴월드 풀빌라 3박</p>
 </header>
 <nav class="daynav" id="daynav">
+  <a href="#prep"><b>✅</b>출국 전</a>
   <a href="#d1"><b>10/19</b>도착</a>
   <a href="#d2"><b>10/20</b>사파리</a>
   <a href="#d3"><b>10/21</b>빈원더스</a>
@@ -71,133 +80,9 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   <a href="#d5"><b>10/23</b>케이블</a>
   <a href="#d6"><b>10/24</b>휴식</a>
   <a href="#d7"><b>10/25</b>귀국</a>
-  <a href="#prep"><b>✅</b>출국 전</a>
   <a href="#info"><b>ℹ️</b>정보</a>
 </nav>
 <main>
-
-<section class="card" id="rule">
-  <h2>이번 여행 원칙</h2>
-  <p class="sub">인천 17:00 출발 → 10/19 21시 전후 도착 · 10/25 23:15 출발(21:15까지 공항). 베트남은 한국보다 2시간 느림.</p>
-  <ul class="chk">
-    <li>낮잠 12~15시 사수 — 이 시간에 이동·관광 넣지 않기</li>
-    <li>휴대용 유모차 지참 — 아이가 오래는 안 타니 낮잠·짐 운반용. 이동은 그랩 7인승, 10/22는 대절</li>
-    <li>이동 기본 그랩 7인승 (베트남 그랩에 카시트 없음, 아이는 무릎) · 10/22 이동일은 7인승 대절 6시간(경유·대기 포함)</li>
-    <li>10월 우기 끝물 소나기 전제 — 비 오면 실내(아쿠아리움·키즈클럽·스파)로 전환, 우비·방수팩 상시</li>
-    <li>기내 유아식 없음 → 이유식·분유·간식·빨대컵 직접 준비</li>
-  </ul>
-</section>
-
-<section class="card" id="d1">
-  <h2>10/19 1일차 <span class="d">도착 · 크라운플라자 체크인</span></h2>
-  <p class="sub">인천 17:00 출발 → 푸꾸옥 21시 전후 도착. 공항셔틀 막차 20:00라 이용 불가.</p>
-  <ul class="tl">
-    <li><div class="time">21:00</div><div class="what"><b>푸꾸옥 공항 도착·입국</b><span>그랩 7인승 우선 → 안 잡히면 공항 택시. 호텔 프라이빗(150만동)은 미사용. 물·간식 공항에서 미리 구입.</span><span class="tag warn">셔틀 없음</span><span class="tag">그랩7→택시</span></div></li>
-    <li><div class="time">22:30</div><div class="what"><b>크라운플라자 체크인 후 취침</b><span>룸서비스 간단히. 킹베드 1개 — 아이는 인텍스 에어매트(지참) 사용.</span></div></li>
-  </ul>
-  <div class="links">
-    <a href="https://www.google.com/maps/search/?api=1&query=Crowne+Plaza+Phu+Quoc+Starbay">지도 · 크라운플라자</a>
-    <a class="ghost" href="https://phuquoc.crowneplaza.com/resort/transportation/">셔틀 안내</a>
-  </div>
-</section>
-
-<section class="card" id="d2">
-  <h2>10/20 2일차 <span class="d">빈펄 사파리 · 앰버샌즈 디너</span></h2>
-  <ul class="tl">
-    <li><div class="time">09:00</div><div class="what"><b>사파리 출발</b><span>호텔셔틀→그랜드월드→VinBus 환승 or 그랩 직행 약 10분.</span><span class="tag">티켓 QR 준비</span></div></li>
-    <li><div class="time">09:00~12</div><div class="what"><b>빈펄 사파리 3시간 컷</b><span>버스투어 → 기린식당 먹이주기+점심. 이동은 일반 전동카트(1인 10만동·현장) — VIP 미사용.</span><span class="tag">낮잠 전 철수</span></div></li>
-    <li><div class="time">12:00~15</div><div class="what"><b>리조트 복귀 · 낮잠 사수</b><span>늦은 오후 키즈풀·라군풀 가볍게.</span></div></li>
-    <li><div class="time">저녁</div><div class="what"><b>앰버샌즈 비치클럽 선셋 디너</b><span>리조트 앞, 이동 제로. (그랜드월드 야경은 10/21로 이동)</span></div></li>
-  </ul>
-  <div class="links">
-    <a href="https://www.google.com/maps/search/?api=1&query=Vinpearl+Safari+Phu+Quoc">지도 · 사파리</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=Grand+World+Phu+Quoc">지도 · 그랜드월드</a>
-    <a class="ghost" href="https://vinwonders.com/ko/vinpearl-safari-phu-quoc">사파리 공식</a>
-    <a class="ghost" href="https://vinbus.vn/">VinBus 시간표</a>
-  </div>
-</section>
-
-<section class="card" id="d3">
-  <h2>10/21 3일차 <span class="d">빈원더스 오후~저녁 + 그랜드월드</span></h2>
-  <ul class="tl">
-    <li><div class="time">오전</div><div class="what"><b>키즈클럽 + 비치 모래놀이 → 11:00 이른 점심</b><span>늦은 조식 후 무리 없이.</span></div></li>
-    <li><div class="time">12:00~13:15</div><div class="what"><b>낮잠 75분</b><span>인어쇼 14:00 관람용 조정 — 컨디션 나쁘면 낮잠 우선·14:15 입장으로 전환.</span><span class="tag warn">낮잠 단축</span></div></li>
-    <li><div class="time">13:40</div><div class="what"><b>빈원더스 입장 → 씨쉘(Sea Shell)</b><span>그랩 약 10분 · 13:45 도착·좌석 확보. 티켓은 공원 전체권(수족관 단독권 없음).</span></div></li>
-    <li><div class="time">14:00~14:20</div><div class="what"><b>인어쇼</b><span>수요일은 14:00 회차만(15:30 회차는 금~일). 정면석은 13:45 도착 권장.</span></div></li>
-    <li><div class="time">14:20~16:00</div><div class="what"><b>수족관 빠뜨림 없이 전 구간</b><span>메인수조·수중터널·펭귄·해파리·터치풀·2층까지. 피딩쇼 시간(11:00 vs 15:00)은 현장 시간판 확인.</span><span class="tag">실내·냉방</span></div></li>
-    <li><div class="time">16:00~16:40</div><div class="what"><b>대관람차 '시간의 바퀴'</b><span>어드벤처 월드 · 18:00 마감이라 이 시간대가 적기. 실내 키즈존·아케이드는 제외.</span></div></li>
-    <li><div class="time">17:00~17:30</div><div class="what"><b>카니발 퍼레이드 + 중앙 분수쇼</b><span>유럽 월드 · 분수쇼 17:30~17:35.</span></div></li>
-    <li><div class="time">17:40~18:10</div><div class="what"><b>파크 간식</b><span>롯데리아 등 가볍게 — 저녁은 그랜드월드에서.</span></div></li>
-    <li><div class="time">18:45~19:05</div><div class="what"><b>ONCE 쇼</b><span>18:30 자리 잡기(15분 전·자유석 선착순) · 10세 미만 보호자 동반 · 음식·음료 금지 · 귀마개·뒷자리.</span><span class="tag warn">불·큰소리</span></div></li>
-    <li><div class="time">19:30~21:00</div><div class="what"><b>그랜드월드 저녁</b><span>퇴장 19:15 → 도착 19:30. 마담 타오·똠하우스·야시장 등 / 분수쇼 뷰는 드래프트 비어(자리 조기 확보).</span></div></li>
-    <li><div class="time">21:30~22:00</div><div class="what"><b>'베네치아의 컬러' 분수쇼 — 당일 판단</b><span>사랑의 호수·무료(통칭 그랜드월드 분수쇼). 아이 컨디션·날씨 보고 관람/철수 — 철수 시 21:00 전후 귀가(취침 21:15경), 관람 시 취침 22:45경.</span><span class="tag warn">선택</span></div></li>
-  </ul>
-  <div class="tip">물놀이(타이푼 월드)는 미포함 — 뉴월드 워터파크(슬라이드 4개)·10/23 아쿠아토피아로 충족. 즈엉동 야시장은 기본 패스(가면 17:00 출발→19:30까지→20:30 복귀).</div>
-  <div class="links">
-    <a href="https://www.google.com/maps/search/?api=1&query=VinWonders+Phu+Quoc">지도 · 빈원더스</a>
-    <a href="https://vinwonders.com/ko/vinwonders-phu-quoc">빈원더스 공식</a>
-    <a class="ghost" href="https://vinwonders.com/ko/charm-of-venice/">그랜드월드 분수쇼 공식</a>
-    <a class="ghost" href="https://www.google.com/maps/search/?api=1&query=Grand+World+Phu+Quoc">지도 · 그랜드월드</a>
-  </div>
-</section>
-
-<section class="card" id="d4">
-  <h2>10/22 4일차 <span class="d">북부→남부 이동일 · 6시간 대절</span></h2>
-  <ul class="tl">
-    <li><div class="time">11:30</div><div class="what"><b>체크아웃·대절 7인승(6시간) 출발</b><span>11:30~17:30 · 이동 60~90분, 아이는 차에서 낮잠.</span><span class="tag">대절 확정</span></div></li>
-    <li><div class="time">12:30~16</div><div class="what"><b>즈엉동 점심 + 킹콩마트 + 카페 1곳</b><span>망고·간식·기저귀/물티슈·기념품 보충. 기사 대기(짐은 차량 보관).</span></div></li>
-    <li><div class="time">16:30</div><div class="what"><b>뉴월드 풀빌라 체크인</b><span>켐비치·120m풀·유아풀 + 슬라이드 4개 워터파크·미니 물놀이터. 전동버기 이용.</span></div></li>
-    <li><div class="time">저녁</div><div class="what"><b>켐비치 씨푸드</b><span>껌또따이깜 등 도보권. 일찍 재우기.</span></div></li>
-  </ul>
-  <div class="links">
-    <a href="https://www.google.com/maps/search/?api=1&query=New+World+Phu+Quoc+Resort">지도 · 뉴월드</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=King+Kong+Mart+Phu+Quoc">지도 · 킹콩마트</a>
-    <a class="ghost" href="https://phuquoc.newworldhotels.com/ko/">뉴월드 공식</a>
-  </div>
-</section>
-
-<section class="card" id="d5">
-  <h2>10/23 5일차 <span class="d">혼톰 케이블카 + 키스오브더씨</span></h2>
-  <ul class="tl">
-    <li><div class="time">09:00~12</div><div class="what"><b>혼톰 케이블카 + 아쿠아토피아</b><span>해상케이블카 약 15분. 유수풀·키즈풀 위주, 점심 전 복귀. 당일 아침 운휴 공지 확인.</span><span class="tag warn">운휴 확인</span></div></li>
-    <li><div class="time">13:00~16</div><div class="what"><b>낮잠 길게</b><span>밤이 늦어서 필수.</span></div></li>
-    <li><div class="time">16:30~19</div><div class="what"><b>선셋타운 산책·키스브릿지·일몰 카페</b><span>가족사진은 이때.</span></div></li>
-    <li><div class="time">21:00~21</div><div class="what"><b>키스오브더씨 쇼</b><span>티켓: 뉴월드 특혜 전원 무료(10/22 체크인 시 등록·키스브릿지 포함 여부 확인). 귀마개·우비·방수커버, 앞열 피하기. 끝나기 10분 전 탈출로 잡기(그랩 몰림 회피). 끝나면 카페에서 30분 식히고 그랩.</span><span class="tag warn">큰소리·물튐</span></div></li>
-  </ul>
-  <div class="links">
-    <a href="https://www.google.com/maps/search/?api=1&query=Sun+World+Hon+Thom+Cable+Car+Phu+Quoc">지도 · 케이블카</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=Sunset+Town+Phu+Quoc+Kiss+Bridge">지도 · 선셋타운</a>
-    <a class="ghost" href="https://www.klook.com/ko/activity/20750-sun-world-hon-thom-cable-car-ticket/">케이블카 티켓</a>
-    <a class="ghost" href="https://www.kkday.com/ko/product/137219-kiss-the-stars-show-ticket-from-phu-quoc-vietnam">키스오브더씨 티켓</a>
-  </div>
-</section>
-
-<section class="card" id="d6">
-  <h2>10/24 6일차 <span class="d">완전 휴식 · 교대 마사지</span></h2>
-  <ul class="tl">
-    <li><div class="time">09:00~11</div><div class="what"><b>사오비치 2시간 or 풀빌라 올데이</b><span>호국사는 붙여도 30분. 둘 다 15~25분 거리.</span></div></li>
-    <li><div class="time">오후</div><div class="what"><b>낮잠 + 부모 교대 마사지</b><span>키즈클럽 시간 or 낮잠 중 인빌라. 애프터눈티.</span></div></li>
-    <li><div class="time">저녁</div><div class="what"><b>선셋타운 씨푸드거리 or 켐비치 로컬집</b><span>아이 메뉴(볶음밥·쌀국수) 되는 곳.</span></div></li>
-  </ul>
-  <div class="links">
-    <a href="https://www.google.com/maps/search/?api=1&query=Sao+Beach+Phu+Quoc">지도 · 사오비치</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=Ho+Quoc+Pagoda+Phu+Quoc">지도 · 호국사</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=Khem+Beach+Phu+Quoc">지도 · 켐비치</a>
-  </div>
-</section>
-
-<section class="card" id="d7">
-  <h2>10/25 7일차 <span class="d">막날 TBD · 23:15 출발</span></h2>
-  <ul class="tl">
-    <li><div class="time">12:00</div><div class="what"><b>체크아웃·짐 보관</b><span>수영복·갈아입을옷·귀중품 별도 가방.</span></div></li>
-    <li><div class="time">오후</div><div class="what"><b>A안: 남부 풀투어</b><span>프라이빗풀→점심→사오/호국사+선셋타운 카페→18:30 복귀 샤워.</span><span class="tag">기본안</span></div></li>
-    <li><div class="time">오후</div><div class="what"><b>B안: 스파 샌딩 패키지</b><span>짐보관+샤워+마사지+공항샌딩. 출국 1주 전 선택.</span><span class="tag warn">TBD</span></div></li>
-    <li><div class="time">20:30~21</div><div class="what"><b>공항 출발</b><span>뉴월드→공항 20~25분. 21:15까지 도착. 기저귀·분유·간식 최종점검.</span></div></li>
-  </ul>
-  <div class="links">
-    <a href="https://www.google.com/maps/search/?api=1&query=Phu+Quoc+International+Airport">지도 · 푸꾸옥공항</a>
-  </div>
-</section>
 
 <section class="card" id="prep">
   <h2>출국 전 체크리스트 <span class="d">계획서(md)와 동일 내용 — 여행 전 점검</span></h2>
@@ -213,7 +98,8 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
     <li>막날(10/25) A안/B안 결정 — 출국 1주 전</li>
     <li>유모차 게이트체크 가능 여부 항공사 확인</li>
     <li>(선택) 베이비시팅 사전 문의 · (선택) 가족관계증명서 영문 사본</li>
-    <li>즈엉동 야시장: 기본 패스 — 가는 경우 10/21 숏코스</li>
+    <li>즈엉동 야시장: 기본 패스 유지(2일차 저녁 불가·4일차 점심 비활성 — 재래시장 5~19시·킹콩마트로 대체)</li>
+    <li>(여행 중) 일출 관람 — 5~7일차 중 기상 최상일, 전날 저녁 예보로 확정(켐비치·사오비치)</li>
   </ul>
   <h3>서류·폰</h3>
   <ul class="chk">
@@ -245,6 +131,143 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
     <li>eSIM은 도착 후 활성화, 로밍 OFF 유지</li>
     <li>10/19 14:00 인천공항 도착 목표 (3시간 여유)</li>
   </ul>
+  <p class="resetwrap"><button id="chkReset" class="resetbtn" type="button">체크 상태 초기화</button></p>
+</section>
+
+<section class="card" id="d1">
+  <h2>10/19 1일차 <span class="d">도착 · 크라운플라자 체크인</span></h2>
+  <p class="sub">인천 17:00 출발 → 푸꾸옥 21시 전후 도착. 공항셔틀 막차 20:00라 이용 불가.</p>
+  <ul class="tl">
+    <li><div class="time">21:00</div><div class="what"><b>푸꾸옥 공항 도착·입국</b><span>그랩 7인승 우선 → 안 잡히면 공항 택시. 호텔 프라이빗(150만동)은 미사용. 물·간식 공항에서 미리 구입.</span><span class="tag warn">셔틀 없음</span><span class="tag">그랩7→택시</span></div></li>
+    <li><div class="time">22:30</div><div class="what"><b>크라운플라자 체크인 후 취침</b><span>룸서비스 간단히. 킹베드 1개 — 아이는 인텍스 에어매트(지참) 사용.</span></div></li>
+  </ul>
+  <div class="links">
+    <a href="https://www.google.com/maps/search/?api=1&query=Crowne+Plaza+Phu+Quoc+Starbay">지도 · 크라운플라자</a>
+    <a class="ghost" href="https://phuquoc.crowneplaza.com/resort/transportation/">셔틀 안내</a>
+  </div>
+</section>
+
+<section class="card" id="d2">
+  <h2>10/20 2일차 <span class="d">빈펄 사파리 · 앰버샌즈 디너</span></h2>
+  <ul class="tl">
+    <li><div class="time">09:00</div><div class="what"><b>사파리 출발</b><span>호텔셔틀→그랜드월드→VinBus 환승 or 그랩 직행 약 10분.</span><span class="tag">티켓 QR 준비</span></div></li>
+    <li><div class="time">09:00~12</div><div class="what"><b>빈펄 사파리 3시간 컷</b><span>버스투어 → 기린식당 먹이주기(당근 3만동)+점심(패스트푸드 — 버거·치킨·볶음밥). 이동은 일반 전동카트(1인 10만동·현장) — VIP 미사용.</span><span class="tag">낮잠 전 철수</span></div></li>
+    <li><div class="time">12:00~15</div><div class="what"><b>리조트 복귀 · 낮잠</b><span>늦은 오후 키즈풀·라군풀 가볍게.</span></div></li>
+    <li><div class="time">저녁</div><div class="what"><b>앰버샌즈 비치클럽 선셋 디너</b><span>리조트 앞, 이동 제로. (그랜드월드 야경은 10/21로 이동)</span></div></li>
+  </ul>
+  <div class="tip">🍽 중식: 기린식당(사파리) · 석식: 앰버샌즈 비치클럽 — 해변 프런트·라이브 파이어 댄스</div>
+  <div class="links">
+    <a href="https://www.google.com/maps/search/?api=1&query=Vinpearl+Safari+Phu+Quoc">지도 · 사파리</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Grand+World+Phu+Quoc">지도 · 그랜드월드</a>
+    <a class="ghost" href="https://vinwonders.com/ko/vinpearl-safari-phu-quoc">사파리 공식</a>
+    <a class="ghost" href="https://vinbus.vn/">VinBus 시간표</a>
+  </div>
+</section>
+
+<section class="card" id="d3">
+  <h2>10/21 3일차 <span class="d">빈원더스 오후~저녁 + 그랜드월드</span></h2>
+  <ul class="tl">
+    <li><div class="time">오전</div><div class="what"><b>키즈클럽 + 비치 모래놀이 → 11:00 이른 점심</b><span>조식 쌀국수·베이커리 추천. 점심은 호라이즌 런치 12:00 오픈 — 이르면 앰버샌즈·룸서비스.</span></div></li>
+    <li><div class="time">12:00~13:15</div><div class="what"><b>낮잠 75분</b><span>인어쇼 14:00 관람용 조정 — 컨디션 나쁘면 낮잠 우선·14:15 입장으로 전환.</span><span class="tag warn">낮잠 단축</span></div></li>
+    <li><div class="time">13:40</div><div class="what"><b>빈원더스 입장 → 씨쉘(Sea Shell)</b><span>그랩 약 10분 · 13:45 도착·좌석 확보. 티켓은 공원 전체권(수족관 단독권 없음).</span></div></li>
+    <li><div class="time">14:00~14:20</div><div class="what"><b>인어쇼</b><span>수요일은 14:00 회차만(15:30 회차는 금~일). 정면석은 13:45 도착 권장.</span></div></li>
+    <li><div class="time">14:20~15:00</div><div class="what"><b>수족관 1층</b><span>메인수조·수중터널·펭귄·해파리·터치풀.</span><span class="tag">실내·냉방</span></div></li>
+    <li><div class="time">15:00~15:15</div><div class="what"><b>물고기 피딩쇼</b><span>가오리·상어 먹이주기(메인수조) — 시간표 상충 이력, 당일 확인.</span></div></li>
+    <li><div class="time">15:15~16:00</div><div class="what"><b>수족관 마저</b><span>2층 씨호스·놀이공간 포함.</span></div></li>
+    <li><div class="time">16:00~16:40</div><div class="what"><b>대관람차 '시간의 바퀴'</b><span>어드벤처 월드 · 18:00 마감이라 이 시간대가 적기. 실내 키즈존·아케이드는 제외.</span></div></li>
+    <li><div class="time">17:00~17:30</div><div class="what"><b>카니발 퍼레이드 + 중앙 분수쇼</b><span>유럽 월드 · 분수쇼 17:30~17:35.</span></div></li>
+    <li><div class="time">18:45~19:05</div><div class="what"><b>ONCE 쇼</b><span>18:30 자리 잡기(15분 전·자유석 선착순) · 10세 미만 보호자 동반 · 음식·음료 금지 · 귀마개·뒷자리.</span><span class="tag warn">불·큰소리</span></div></li>
+    <li><div class="time">19:30~21:00</div><div class="what"><b>그랜드월드 저녁</b><span>퇴장 19:15 → 도착 19:30. 마담 타오·똠하우스·야시장 등 / 분수쇼 뷰는 드래프트 비어(자리 조기 확보).</span></div></li>
+    <li><div class="time">21:30~22:00</div><div class="what"><b>'베네치아의 컬러' 분수쇼 — 당일 판단</b><span>사랑의 호수·무료(통칭 그랜드월드 분수쇼). 아이 컨디션·날씨 보고 관람/철수 — 철수 시 21:00 전후 귀가(취침 21:15경), 관람 시 취침 22:45경.</span><span class="tag warn">선택</span></div></li>
+  </ul>
+  <div class="tip">🍽 석식: 그랜드월드 식당가 — 마담 타오(반쎄오·쌀국수)·똠하우스(껌냐)·피자 택시(아이) · 분수쇼 뷰는 드래프트 비어(자리 조기 확보).</div>
+  <div class="tip">물놀이(타이푼 월드)는 미포함 — 뉴월드 워터파크(슬라이드 4개)·10/23 아쿠아토피아로 충족. 즈엉동 야시장: 저녁만 운영(약 17~18시 오픈) — 2일차 저녁 불가·4일차 점심 비활성, 기본 패스.</div>
+  <div class="links">
+    <a href="https://www.google.com/maps/search/?api=1&query=VinWonders+Phu+Quoc">지도 · 빈원더스</a>
+    <a href="https://vinwonders.com/ko/vinwonders-phu-quoc">빈원더스 공식</a>
+    <a class="ghost" href="https://vinwonders.com/ko/charm-of-venice/">그랜드월드 분수쇼 공식</a>
+    <a class="ghost" href="https://www.google.com/maps/search/?api=1&query=Grand+World+Phu+Quoc">지도 · 그랜드월드</a>
+  </div>
+</section>
+
+<section class="card" id="d4">
+  <h2>10/22 4일차 <span class="d">북부→남부 이동일 · 6시간 대절</span></h2>
+  <ul class="tl">
+    <li><div class="time">11:30</div><div class="what"><b>체크아웃·대절 7인승(6시간) 출발</b><span>11:30~17:30 · 이동 60~90분, 아이는 차에서 낮잠.</span><span class="tag">대절 확정</span></div></li>
+    <li><div class="time">12:30~16</div><div class="what"><b>즈엉동 점심 + 킹콩마트 + 카페 1곳</b><span>점심: 반쎄오 푸꾸옥(에어컨·킹콩마트 근처)·포남딘·퍼 사이공(쌀국수). 망고·기저귀/물티슈·기념품 보충. 기사 대기(짐은 차량 보관).</span></div></li>
+    <li><div class="time">16:30</div><div class="what"><b>뉴월드 풀빌라 체크인</b><span>켐비치·120m풀·유아풀 + 슬라이드 4개 워터파크·미니 물놀이터. 전동버기 이용.</span></div></li>
+    <li><div class="time">저녁</div><div class="what"><b>켐비치 씨푸드</b><span>껌또따이깜 등 도보권. 일찍 재우기.</span></div></li>
+  </ul>
+  <div class="tip">🍽 중식: 즈엉동(반쎄오 푸꾸옥 등) · 석식: 껌또따이깜 또는 안 씨푸드(해변 뷰·해피아워 11~16시 · 뉴월드 픽업 가능). 참고: 즈엉동 야시장은 저녁 운영 — 낮엔 재래시장(5~19시).</div>
+  <details class="shop">
+    <summary>🛒 쇼핑 리스트 — 킹콩마트</summary>
+    <ul>
+      <li>먹거리: 건망고·말린 열대과일, 캐슈넛·마카다미아, 코코넛 과자·캔디, 푸꾸옥 후추·액젓(특산), 커피(Trung Nguyen)·연유, 라이스페이퍼·과자·젤리</li>
+      <li>선물: 데비스 베이커리 악마의 잼·샌드쿠키(마트 바로 옆) · 마그넷·소품</li>
+      <li>주의: 신선 과일·육류·유제품 한국 반입 금지 / 액젓·오일은 밀봉 후 위탁 / 08:00~22:00·오후 혼잡(가방 케이블타이)</li>
+    </ul>
+  </details>
+  <div class="links">
+    <a href="https://www.google.com/maps/search/?api=1&query=New+World+Phu+Quoc+Resort">지도 · 뉴월드</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=King+Kong+Mart+Phu+Quoc">지도 · 킹콩마트</a>
+    <a class="ghost" href="https://phuquoc.newworldhotels.com/ko/">뉴월드 공식</a>
+  </div>
+</section>
+
+<section class="card" id="d5">
+  <h2>10/23 5일차 <span class="d">혼톰 케이블카 + 키스오브더씨</span></h2>
+  <ul class="tl">
+    <li><div class="time">일출</div><div class="what"><b>일출 후보일 — 기상 최상 시</b><span>켐비치 리조트 앞(약 5:55). 5~7일차 중 기상 최상인 하루는 일출 관람 — 전날 저녁 예보로 확정, 흐리면 이월.</span><span class="tag warn">날씨 판정</span></div></li>
+    <li><div class="time">09:00~12</div><div class="what"><b>혼톰 케이블카 + 아쿠아토피아</b><span>해상케이블카 약 15분. 유수풀·키즈풀 위주, 점심 전 복귀. 당일 아침 운휴 공지 확인.</span><span class="tag warn">운휴 확인</span></div></li>
+    <li><div class="time">13:00~16</div><div class="what"><b>낮잠 길게</b><span>밤이 늦어서 필수.</span></div></li>
+    <li><div class="time">16:30~19</div><div class="what"><b>선셋타운 산책·키스브릿지·일몰 카페</b><span>가족사진은 이때.</span></div></li>
+    <li><div class="time">21:00~21</div><div class="what"><b>키스오브더씨 쇼</b><span>티켓: 뉴월드 특혜 전원 무료(10/22 체크인 시 등록·키스브릿지 포함 여부 확인). 귀마개·우비·방수커버, 앞열 피하기. 끝나기 10분 전 탈출로 잡기(그랩 몰림 회피). 끝나면 카페에서 30분 식히고 그랩.</span><span class="tag warn">큰소리·물튐</span></div></li>
+  </ul>
+  <div class="tip">🍽 중식: 안 씨푸드(켐비치·해피아워 11~16시) 또는 리조트 · 석식: 선셋타운 — 소렌토(오션뷰·예약 권장)·드래프트 비어(오징어구이) · 카페 루남(에그커피)</div>
+  <div class="links">
+    <a href="https://www.google.com/maps/search/?api=1&query=Sun+World+Hon+Thom+Cable+Car+Phu+Quoc">지도 · 케이블카</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Sunset+Town+Phu+Quoc+Kiss+Bridge">지도 · 선셋타운</a>
+    <a class="ghost" href="https://www.klook.com/ko/activity/20750-sun-world-hon-thom-cable-car-ticket/">케이블카 티켓</a>
+    <a class="ghost" href="https://www.kkday.com/ko/product/137219-kiss-the-stars-show-ticket-from-phu-quoc-vietnam">키스오브더씨 티켓</a>
+  </div>
+</section>
+
+<section class="card" id="d6">
+  <h2>10/24 6일차 <span class="d">완전 휴식 · 교대 마사지</span></h2>
+  <ul class="tl">
+    <li><div class="time">일출</div><div class="what"><b>일출 후보일 — 기상 최상 시</b><span>사오비치(동향 해안·차 15분·5:20 출발) 또는 켐비치 — 이후 조식·휴식.</span><span class="tag warn">날씨 판정</span></div></li>
+    <li><div class="time">09:00~11</div><div class="what"><b>사오비치 2시간 or 풀빌라 올데이</b><span>호국사는 붙여도 30분. 둘 다 15~25분 거리.</span></div></li>
+    <li><div class="time">오후</div><div class="what"><b>낮잠 + 부모 교대 마사지</b><span>키즈클럽 시간 or 낮잠 중 인빌라. 애프터눈티.</span></div></li>
+    <li><div class="time">저녁</div><div class="what"><b>선셋타운 씨푸드거리 or 켐비치 로컬집</b><span>아이 메뉴(볶음밥·쌀국수) 되는 곳.</span></div></li>
+  </ul>
+  <div class="tip">🍽 중식: 사오비치 비치바(코코넛·해산물 — 일부 구역 입장 60,000동=바 크레딧) · 석식: 선셋타운 Phố Nướng(해산물 그릴·한국어 메뉴판) 또는 켐비치 안 씨푸드</div>
+  <div class="links">
+    <a href="https://www.google.com/maps/search/?api=1&query=Sao+Beach+Phu+Quoc">지도 · 사오비치</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Ho+Quoc+Pagoda+Phu+Quoc">지도 · 호국사</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Khem+Beach+Phu+Quoc">지도 · 켐비치</a>
+  </div>
+</section>
+
+<section class="card" id="d7">
+  <h2>10/25 7일차 <span class="d">막날 TBD · 23:15 출발</span></h2>
+  <ul class="tl">
+    <li><div class="time">일출</div><div class="what"><b>일출 후보일 — 기상 최상 시</b><span>프라이빗풀·켐비치 여유 일출(짐 정리 전).</span><span class="tag warn">날씨 판정</span></div></li>
+    <li><div class="time">12:00</div><div class="what"><b>체크아웃·짐 보관</b><span>수영복·갈아입을옷·귀중품 별도 가방.</span></div></li>
+    <li><div class="time">오후</div><div class="what"><b>A안: 남부 풀투어</b><span>프라이빗풀→점심→사오/호국사+선셋타운 카페→18:30 복귀 샤워.</span><span class="tag">기본안</span></div></li>
+    <li><div class="time">오후</div><div class="what"><b>B안: 스파 샌딩 패키지</b><span>짐보관+샤워+마사지+공항샌딩. 출국 1주 전 선택.</span><span class="tag warn">TBD</span></div></li>
+    <li><div class="time">20:30~21</div><div class="what"><b>공항 출발</b><span>뉴월드→공항 20~25분. 21:15까지 도착. 기저귀·분유·간식 최종점검.</span></div></li>
+  </ul>
+  <div class="tip">🍽 중식: 남부 코스 내 · 석식: 공항 전 이른 저녁(선셋타운 18:00~19:30 권장 — 공항 내 식음 제한적)</div>
+  <details class="shop">
+    <summary>🛒 쇼핑 리스트 — 공항 면세점</summary>
+    <ul>
+      <li>마지막 보충용: 커피·연유, 캐슈넛류, 주류(면세) — 마트보다 비쌈, 원칙은 킹콩마트에서 완료</li>
+      <li>액체·액젓류는 기내 반입 제한 — 위탁 확인</li>
+    </ul>
+  </details>
+  <div class="links">
+    <a href="https://www.google.com/maps/search/?api=1&query=Phu+Quoc+International+Airport">지도 · 푸꾸옥공항</a>
+  </div>
 </section>
 
 <section class="card" id="info">
@@ -276,16 +299,17 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
     <li>도착일 교통: 그랩 7인승 → 택시 폴백 · 호텔 픽업 미사용. 재검토: 심야 공급 재확인</li>
     <li>10/22 이동: 7인승 대절 6시간 확정 — 그랩 2구간 대비 차액 소폭(1.5~2.2만원). 재검토: 예약 시 특가·권역 추가금</li>
     <li>eSIM 7일권 ×2 (무제한 미채택). 재검토: 구매일 최저가 비교</li>
-    <li>즈엉동 야시장: 기본 패스, 숏코스 대비만 유지. 재검토: 10/21 당일 컨디션</li>
+    <li>즈엉동 야시장: 기본 패스 유지 — 2일차 저녁 불가(앰버 디너·이동 80~100분)·4일차 점심 비활성(재래시장 5~19시·킹콩마트 대체)</li>
     <li>막날 A/B: A안 기본 → 출국 1주 전 확정</li>
     <li>아이 키 100cm(신발 시 초과) → 사파리·빈원더스·케이블카 전부 소인. 재검토: 티켓 구매 시(10월 초)</li>
     <li>사파리: 일반 입장권+현장 전동카트 확정 — VIP 미사용(3인 차량요금 비효율)</li>
     <li>키스오브더씨: 뉴월드 특혜 3인 무료(체크인 등록) — 구매 제외</li>
     <li>빈원더스: 수족관 단독권 없음(전체권 포함) — 콤보 대비 개별 유지, 구매 시 재비교 · 10/21 동선: 인어쇼·수족관·대관람차·ONCE</li>
     <li>10/21 구성: 인어쇼 14:00 포함 · 낮잠 75분 조정 · 수족관 정독 · 대관람차 포함 · 실내 키즈존/아케이드 제외. 폴백: 낮잠 우선(14:15 입장)</li>
-    <li>10/21 저녁: 그랜드월드로 변경(파크는 간식) — 19:30~21:15 대기시간을 저녁으로 활용. 재검토: 당일</li>
+    <li>10/21 저녁: 그랜드월드로 변경(파크 내 식사 없음) — 19:30~21:15 대기시간을 저녁으로 활용. 재검토: 당일</li>
     <li>그랜드월드 21:30 분수쇼(베네치아의 컬러·무료): 상황 따라 관람/철수 — 관람 시 취침 22:45경</li>
     <li>앰버샌즈 디너 10/20 이동 · ONCE 쇼 포함(18:45 · 파크 티켓 포함 · 18:30 도착 · 보호자 동반 · 귀마개)</li>
+    <li>일출 관람(5~7일차): 기상 최상인 하루 일출 필수 — 켐비치(도보)·사오비치(차 15분), 약 5:55. 전날 저녁 예보로 확정(이월 가능, 마지막 후보 10/25)</li>
   </ul>
 </section>
 
@@ -301,6 +325,30 @@ const onScroll=()=>{
   nav.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
 };
 addEventListener('scroll',onScroll,{passive:true}); onScroll();
+</script>
+<script>
+/* 체크리스트 로컬 저장 (localStorage) */
+const CHK_KEY='pq-checklist-v1';
+let chkStore={};
+try{ chkStore=JSON.parse(localStorage.getItem(CHK_KEY)||'{}')||{}; }catch(e){ chkStore={}; }
+const chkHash=s=>{let x=5381; for(const c of s){ x=((x*33)^c.charCodeAt(0))>>>0; } return x.toString(36);};
+const chkSave=()=>{ try{ localStorage.setItem(CHK_KEY, JSON.stringify(chkStore)); }catch(e){} };
+document.querySelectorAll('#prep ul.chk').forEach((ul,ui)=>{
+  ul.querySelectorAll(':scope > li').forEach((li,i)=>{
+    const key='p'+ui+'-'+i+'-'+chkHash(li.textContent.trim().slice(0,32));
+    if(chkStore[key]) li.classList.add('done');
+    li.addEventListener('click',()=>{
+      li.classList.toggle('done');
+      if(li.classList.contains('done')){ chkStore[key]=1; } else { delete chkStore[key]; }
+      chkSave();
+    });
+  });
+});
+const chkResetBtn=document.getElementById('chkReset');
+if(chkResetBtn){ chkResetBtn.addEventListener('click',e=>{
+  e.stopPropagation();
+  if(confirm('체크 상태를 모두 초기화할까요?')){ chkStore={}; chkSave(); document.querySelectorAll('#prep ul.chk li.done').forEach(li=>li.classList.remove('done')); }
+}); }
 </script>
 </body>
 </html>
