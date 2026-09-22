@@ -35,7 +35,7 @@ main section{scroll-margin-top:85px} /* 상단 고정 탭(≈77px)+여유 8px �
 .tl{list-style:none; margin:10px 0 0; padding:0}
 .tl li{display:flex; gap:10px; padding:10px 0; border-top:1px dashed var(--line)}
 .tl li:first-child{border-top:0}
-.time{flex:0 0 62px; font-weight:700; font-size:13px; color:var(--accent)}
+.time{flex:0 0 72px; font-weight:700; font-size:13px; color:var(--accent)}
 .what b{display:block; font-size:14.5px}
 .what span{font-size:13.5px; color:#33414b}
 .tag{display:inline-block; font-size:11.5px; background:var(--accent-soft); color:var(--accent);
@@ -64,13 +64,50 @@ ul.plain li{padding:6px 0; border-top:1px dashed var(--line); font-size:13.5px}
 ul.plain li:first-child{border-top:0}
 footer{max-width:640px; margin:0 auto; padding:0 12px; color:var(--muted); font-size:12.5px}
 h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
+.daynavwrap{position:sticky; top:0; z-index:10; background:var(--bg)}
+.daynavwrap .daynav{position:relative}
+.daynavwrap::after{content:""; position:absolute; top:0; right:0; bottom:1px; width:32px; z-index:20;
+  background:linear-gradient(to right, rgba(247,245,239,0), var(--bg)); pointer-events:none;
+  opacity:0; transition:opacity .2s}
+.daynavwrap.fade::after{opacity:1}
+.prog{font-size:13px; font-weight:700; color:var(--accent); margin:2px 0 6px}
+.what a{color:var(--accent); font-weight:700; text-decoration:none; white-space:nowrap}
+.links a[href*="google.com/maps"]::before{content:"🌐 "}
+.fab{position:fixed; right:16px; width:52px; height:52px; border-radius:50%; border:0;
+  display:flex; align-items:center; justify-content:center; font-size:22px; cursor:pointer;
+  box-shadow:0 4px 14px rgba(30,42,50,.28); z-index:60; background:var(--accent); color:#fff}
+.fab-top{background:var(--ink); bottom:calc(82px + env(safe-area-inset-bottom)); opacity:0; pointer-events:none; transition:opacity .2s}
+.fab-top.show{opacity:.92; pointer-events:auto}
+.fab-calc{bottom:calc(18px + env(safe-area-inset-bottom))}
+body.calcopen .fab-top{opacity:0; pointer-events:none}
+.calc{position:fixed; right:16px; bottom:calc(82px + env(safe-area-inset-bottom)); width:min(320px, calc(100vw - 32px));
+  background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 14px 12px;
+  box-shadow:0 10px 30px rgba(30,42,50,.25); z-index:70; display:none}
+.calc.open{display:block}
+.calc h3{margin:0 34px 8px 0; font-size:14.5px}
+.calc .row{display:flex; align-items:center; gap:8px; margin:7px 0}
+.calc .row input{flex:1; min-width:0; padding:10px; font-size:15px; font-weight:700; text-align:right;
+  border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink)}
+.calc .unit{width:26px; font-size:12.5px; color:var(--muted)}
+.calc .rate{font-size:12px; color:var(--muted); margin:8px 0 0; line-height:1.5}
+.calc .rate input{width:56px; padding:5px 8px; font-size:12.5px; text-align:right;
+  border:1px solid var(--line); border-radius:8px; color:var(--ink)}
+.calc .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:9px}
+.calc .chips button{flex:1 1 52px; min-height:36px; border:1px solid var(--line); border-radius:9px;
+  background:#fff; color:var(--ink); font-size:12.5px; cursor:pointer}
+.calc .close{position:absolute; top:6px; right:6px; width:34px; height:34px; border:0; background:none;
+  color:var(--muted); font-size:16px; cursor:pointer}
+details.logwrap{border:1px dashed var(--line); border-radius:12px; padding:10px 12px; background:#fff}
+details.logwrap summary{cursor:pointer; font-weight:700; font-size:14px}
+details.logwrap ul{margin:8px 0 0}
 </style>
 </head>
 <body>
 <header>
   <h1>푸꾸옥 6박 7일 가족여행</h1>
-  <p>10/19~10/25 · 성인 2 + 40개월 · 북부 크라운플라자 3박 → 남부 뉴월드 풀빌라 3박</p>
+  <p>10/19~10/25 · 성인 2 + 44개월 · 북부 크라운플라자 3박 → 남부 뉴월드 풀빌라 3박</p>
 </header>
+<div class="daynavwrap" id="daynavwrap">
 <nav class="daynav" id="daynav">
   <a href="#prep"><b>✅</b>출국 전</a>
   <a href="#d1"><b>10/19</b>도착</a>
@@ -82,13 +119,16 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   <a href="#d7"><b>10/25</b>귀국</a>
   <a href="#info"><b>ℹ️</b>정보</a>
 </nav>
+</div>
 <main>
 
 <section class="card" id="prep">
   <h2>출국 전 체크리스트 <span class="d">계획서(md)와 동일 내용 — 여행 전 점검</span></h2>
+  <p class="prog" id="chkProg"></p>
   <h3>예약·구매·확인</h3>
   <ul class="chk">
     <li>10/22 7인승 대절 예약 — 6시간(11:30~17:30)·취소무료·경유지(즈엉동)·대기 2~3시간·짐/유모차·카시트 요청 명시</li>
+    <li>예약·연락처 확보 → 정보 탭에 기재: 뉴월드 예약번호 · 항공편명·터미널 · 10/22 대절 기사 연락처 (수령 시 채움)</li>
     <li>티켓 3종 QR 구매(각 성인2+소인1) — 사파리 / 빈원더스 / 혼톰 케이블카+아쿠아토피아 · 아이 100cm=소인(무료는 100cm 미만)</li>
     <li>(10/22 체크인) 키스오브더씨 등록 — 뉴월드 특혜 3인 무료(키스브릿지 포함 여부 확인)</li>
     <li>앰버샌즈 비치클럽 선셋 디너 예약 문의(10/20) — 리조트 프런트로 확인</li>
@@ -99,7 +139,7 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
     <li>유모차 게이트체크 가능 여부 항공사 확인</li>
     <li>(선택) 베이비시팅 사전 문의 · (선택) 가족관계증명서 영문 사본</li>
     <li>즈엉동 야시장: 기본 패스 유지(2일차 저녁 불가·4일차 점심 비활성 — 재래시장 5~19시·킹콩마트로 대체)</li>
-    <li>(여행 중) 일출 관람 — 5~7일차 중 기상 최상일, 전날 저녁 예보로 확정(켐비치·사오비치)</li>
+    <li>(여행 중) 일출 관람 — 5~7일차 중 기상 최상일, 전날 저녁 예보로 확정(켐비치·사오비치) · 준비: 담요·모기기피제</li>
   </ul>
   <h3>서류·폰</h3>
   <ul class="chk">
@@ -120,7 +160,7 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   <h3>짐 — 공통</h3>
   <ul class="chk">
     <li>귀마개·우비·방수팩·여벌옷 (10월 소나기 대비)</li>
-    <li>보조배터리·멀티어댑터(220V) — 보조배터리는 기내 수하물만</li>
+    <li>보조배터리(샤오미 P15ZM·10,000mAh·37Wh) — 기내 휴대만 · 절연 조치(비닐팩) · 기내 사용·충전 금지 / 멀티어댑터(220V)</li>
     <li>그랩 결제카드 · 현금(동) 소액 · eSIM · 양치용 생수</li>
     <li>기저귀·물티슈는 첫 1~2일분만 → 즈엉동 마트에서 보충</li>
   </ul>
@@ -138,20 +178,21 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   <h2>10/19 1일차 <span class="d">도착 · 크라운플라자 체크인</span></h2>
   <p class="sub">인천 17:00 출발 → 푸꾸옥 21시 전후 도착. 공항셔틀 막차 20:00라 이용 불가.</p>
   <ul class="tl">
-    <li><div class="time">21:00</div><div class="what"><b>푸꾸옥 공항 도착·입국</b><span>그랩 7인승 우선 → 안 잡히면 공항 택시. 호텔 프라이빗(150만동)은 미사용. 물·간식 공항에서 미리 구입.</span><span class="tag warn">셔틀 없음</span><span class="tag">그랩7→택시</span></div></li>
+    <li><div class="time">21:00</div><div class="what"><b>푸꾸옥 공항 도착·입국</b><span>그랩 7인승(60~75만동) 우선 → 안 잡히면 공항 택시(약 60만동). 호텔 프라이빗(150만동)은 미사용. 물·간식 공항에서 미리 구입. <a href="#info">상세 →</a></span><span class="tag warn">셔틀 없음</span><span class="tag">그랩7→택시</span></div></li>
     <li><div class="time">22:30</div><div class="what"><b>크라운플라자 체크인 후 취침</b><span>룸서비스 간단히. 킹베드 1개 — 아이는 인텍스 에어매트(지참) 사용.</span></div></li>
   </ul>
   <div class="links">
     <a href="https://www.google.com/maps/search/?api=1&query=Crowne+Plaza+Phu+Quoc+Starbay">지도 · 크라운플라자</a>
     <a class="ghost" href="https://phuquoc.crowneplaza.com/resort/transportation/">셔틀 안내</a>
+    <a class="ghost" href="#info">ℹ️ 정보·비상</a>
   </div>
 </section>
 
 <section class="card" id="d2">
   <h2>10/20 2일차 <span class="d">빈펄 사파리 · 앰버샌즈 디너</span></h2>
   <ul class="tl">
-    <li><div class="time">09:00</div><div class="what"><b>사파리 출발</b><span>호텔셔틀→그랜드월드→VinBus 환승 or 그랩 직행 약 10분.</span><span class="tag">티켓 QR 준비</span></div></li>
-    <li><div class="time">09:00~12</div><div class="what"><b>빈펄 사파리 3시간 컷</b><span>버스투어 → 기린식당 먹이주기(당근 3만동)+점심(패스트푸드 — 버거·치킨·볶음밥). 이동은 일반 전동카트(1인 10만동·현장) — VIP 미사용.</span><span class="tag">낮잠 전 철수</span></div></li>
+    <li><div class="time">09:00</div><div class="what"><b>사파리 출발</b><span>호텔셔틀→그랜드월드→VinBus 환승(무료·30분 간격) or 그랩 직행 약 10분. <a href="#info">상세 →</a></span><span class="tag">티켓 QR 준비</span></div></li>
+    <li><div class="time">09:00~12</div><div class="what"><b>빈펄 사파리 3시간 컷</b><span>버스투어 → 기린식당 먹이주기(당근 3만동·시간은 현장 확인)+점심(패스트푸드 — 버거·치킨·볶음밥). 이동은 일반 전동카트(1인 10만동·현장) — VIP 미사용.</span><span class="tag">낮잠 전 철수</span></div></li>
     <li><div class="time">12:00~15</div><div class="what"><b>리조트 복귀 · 낮잠</b><span>늦은 오후 키즈풀·라군풀 가볍게.</span></div></li>
     <li><div class="time">저녁</div><div class="what"><b>앰버샌즈 비치클럽 선셋 디너</b><span>리조트 앞, 이동 제로. (그랜드월드 야경은 10/21로 이동)</span></div></li>
   </ul>
@@ -167,7 +208,7 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
 <section class="card" id="d3">
   <h2>10/21 3일차 <span class="d">빈원더스 오후~저녁 + 그랜드월드</span></h2>
   <ul class="tl">
-    <li><div class="time">오전</div><div class="what"><b>키즈클럽 + 비치 모래놀이 → 11:00 이른 점심</b><span>조식 쌀국수·베이커리 추천. 점심은 호라이즌 런치 12:00 오픈 — 이르면 앰버샌즈·룸서비스.</span></div></li>
+    <li><div class="time">오전</div><div class="what"><b>키즈클럽 + 비치 모래놀이 → 11:00 이른 점심</b><span>조식 쌀국수·베이커리 추천. 점심은 호라이즌 런치 12:00~15:30 — 이르면 앰버샌즈·룸서비스.</span></div></li>
     <li><div class="time">12:00~13:15</div><div class="what"><b>낮잠 75분</b><span>인어쇼 14:00 관람용 조정 — 컨디션 나쁘면 낮잠 우선·14:15 입장으로 전환.</span><span class="tag warn">낮잠 단축</span></div></li>
     <li><div class="time">13:40</div><div class="what"><b>빈원더스 입장 → 씨쉘(Sea Shell)</b><span>그랩 약 10분 · 13:45 도착·좌석 확보. 티켓은 공원 전체권(수족관 단독권 없음).</span></div></li>
     <li><div class="time">14:00~14:20</div><div class="what"><b>인어쇼</b><span>수요일은 14:00 회차만(15:30 회차는 금~일). 정면석은 13:45 도착 권장.</span></div></li>
@@ -198,7 +239,7 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
     <li><div class="time">16:30</div><div class="what"><b>뉴월드 풀빌라 체크인</b><span>켐비치·120m풀·유아풀 + 슬라이드 4개 워터파크·미니 물놀이터. 전동버기 이용.</span></div></li>
     <li><div class="time">저녁</div><div class="what"><b>켐비치 씨푸드</b><span>껌또따이깜 등 도보권. 일찍 재우기.</span></div></li>
   </ul>
-  <div class="tip">🍽 중식: 즈엉동(반쎄오 푸꾸옥 등) · 석식: 껌또따이깜 또는 안 씨푸드(해변 뷰·해피아워 11~16시 · 뉴월드 픽업 가능). 참고: 즈엉동 야시장은 저녁 운영 — 낮엔 재래시장(5~19시).</div>
+  <div class="tip">🍽 중식: 즈엉동(반쎄오 푸꾸옥 등) · 석식: 껌또따이깜 또는 안 씨푸드(해변 뷰·해피아워 11~16시 · 뉴월드 픽업 가능). 참고: 즈엉동 야시장은 저녁 운영 — 낮엔 재래시장(5~19시)·일부 식당 브레이크타임(현장 확인).</div>
   <details class="shop">
     <summary>🛒 쇼핑 리스트 — 킹콩마트</summary>
     <ul>
@@ -217,8 +258,8 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
 <section class="card" id="d5">
   <h2>10/23 5일차 <span class="d">혼톰 케이블카 + 키스오브더씨</span></h2>
   <ul class="tl">
-    <li><div class="time">일출</div><div class="what"><b>일출 후보일 — 기상 최상 시</b><span>켐비치 리조트 앞(약 5:55). 5~7일차 중 기상 최상인 하루는 일출 관람 — 전날 저녁 예보로 확정, 흐리면 이월.</span><span class="tag warn">날씨 판정</span></div></li>
-    <li><div class="time">09:00~12</div><div class="what"><b>혼톰 케이블카 + 아쿠아토피아</b><span>해상케이블카 약 15분. 유수풀·키즈풀 위주, 점심 전 복귀. 당일 아침 운휴 공지 확인.</span><span class="tag warn">운휴 확인</span></div></li>
+    <li><div class="time">일출</div><div class="what"><b>일출 후보일 — 기상 최상 시</b><span>켐비치 리조트 앞(약 5:55·준비: 담요·모기기피제). 5~7일차 중 기상 최상인 하루는 일출 관람 — 전날 저녁 예보로 확정, 흐리면 이월.</span><span class="tag warn">날씨 판정</span></div></li>
+    <li><div class="time">09:00~12</div><div class="what"><b>혼톰 케이블카 + 아쿠아토피아</b><span>해상케이블카 약 15분. 유수풀·키즈풀 위주, 점심 전 복귀. 운휴 확인: 당일 아침 sunworld.vn·Sun Paradise Land 앱·핫라인 0886 045 888 / 호텔 프런트.</span><span class="tag warn">운휴 확인</span></div></li>
     <li><div class="time">13:00~16</div><div class="what"><b>낮잠 길게</b><span>밤이 늦어서 필수.</span></div></li>
     <li><div class="time">16:30~19</div><div class="what"><b>선셋타운 산책·키스브릿지·일몰 카페</b><span>가족사진은 이때.</span></div></li>
     <li><div class="time">21:00~21</div><div class="what"><b>키스오브더씨 쇼</b><span>티켓: 뉴월드 특혜 전원 무료(10/22 체크인 시 등록·키스브릿지 포함 여부 확인). 귀마개·우비·방수커버, 앞열 피하기. 끝나기 10분 전 탈출로 잡기(그랩 몰림 회피). 끝나면 카페에서 30분 식히고 그랩.</span><span class="tag warn">큰소리·물튐</span></div></li>
@@ -237,7 +278,7 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   <ul class="tl">
     <li><div class="time">일출</div><div class="what"><b>일출 후보일 — 기상 최상 시</b><span>사오비치(동향 해안·차 15분·5:20 출발) 또는 켐비치 — 이후 조식·휴식.</span><span class="tag warn">날씨 판정</span></div></li>
     <li><div class="time">09:00~11</div><div class="what"><b>사오비치 2시간 or 풀빌라 올데이</b><span>호국사는 붙여도 30분. 둘 다 15~25분 거리.</span></div></li>
-    <li><div class="time">오후</div><div class="what"><b>낮잠 + 부모 교대 마사지</b><span>키즈클럽 시간 or 낮잠 중 인빌라. 애프터눈티.</span></div></li>
+    <li><div class="time">오후</div><div class="what"><b>낮잠 + 부모 교대 마사지</b><span>키즈클럽 시간 or 낮잠 중 인빌라(스파는 체크인 때 예약 <a href="#info">상세 →</a>). 애프터눈티.</span></div></li>
     <li><div class="time">저녁</div><div class="what"><b>선셋타운 씨푸드거리 or 켐비치 로컬집</b><span>아이 메뉴(볶음밥·쌀국수) 되는 곳.</span></div></li>
   </ul>
   <div class="tip">🍽 중식: 사오비치 비치바(코코넛·해산물 — 일부 구역 입장 60,000동=바 크레딧) · 석식: 선셋타운 Phố Nướng(해산물 그릴·한국어 메뉴판) 또는 켐비치 안 씨푸드</div>
@@ -253,7 +294,7 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   <ul class="tl">
     <li><div class="time">일출</div><div class="what"><b>일출 후보일 — 기상 최상 시</b><span>프라이빗풀·켐비치 여유 일출(짐 정리 전).</span><span class="tag warn">날씨 판정</span></div></li>
     <li><div class="time">12:00</div><div class="what"><b>체크아웃·짐 보관</b><span>수영복·갈아입을옷·귀중품 별도 가방.</span></div></li>
-    <li><div class="time">오후</div><div class="what"><b>A안: 남부 풀투어</b><span>프라이빗풀→점심→사오/호국사+선셋타운 카페→18:30 복귀 샤워.</span><span class="tag">기본안</span></div></li>
+    <li><div class="time">오후</div><div class="what"><b>A안: 남부 풀투어</b><span>프라이빗풀→점심→사오/호국사+선셋타운 카페→18:30 복귀 샤워(샤워 장소는 체크아웃 시 프런트 확인).</span><span class="tag">기본안</span></div></li>
     <li><div class="time">오후</div><div class="what"><b>B안: 스파 샌딩 패키지</b><span>짐보관+샤워+마사지+공항샌딩. 출국 1주 전 선택.</span><span class="tag warn">TBD</span></div></li>
     <li><div class="time">20:30~21</div><div class="what"><b>공항 출발</b><span>뉴월드→공항 20~25분. 21:15까지 도착. 기저귀·분유·간식 최종점검.</span></div></li>
   </ul>
@@ -267,6 +308,7 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   </details>
   <div class="links">
     <a href="https://www.google.com/maps/search/?api=1&query=Phu+Quoc+International+Airport">지도 · 푸꾸옥공항</a>
+    <a class="ghost" href="#info">ℹ️ 정보·비상</a>
   </div>
 </section>
 
@@ -275,16 +317,18 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
   <h3>호텔·셔틀</h3>
   <p class="sub">크라운: 예약번호 2680336 (10/19~22, 킹 스탠다드 오션뷰, 조식 2+1). 체크인 시 보증금 2,000,000동/박(3박 6,000,000동, 카드 가능) + 결제카드 원본 지참 + 여권. 도착일 교통: 그랩 7인승(60~75만동) 우선 → 공항 택시(약 60만동) 폴백 · 호텔 프라이빗 7인승(150만동)은 미사용. 백업 앱: 카카오T(국내전용카드/휴대폰결제 사전등록 필요)·Xanh SM.</p>
   <p class="sub">공항셔틀 12시간 전 예약, 막차 20:00(10:15/12:45/14:15/15:45/20:00) · 리조트→공항 08:45/11:30/12:45/14:30/18:45 · 그랜드월드행 야간셔틀은 로비 시간표 확인. VinBus는 크라운 앞에 안 섬 → 그랜드월드에서 V1~V5 환승(무료·30분 간격·8:00~20:30, 티켓 QR 있으면 외부구간도 무료). 연락: reservations.cppq@ihg.com · +84-297-3683-999</p>
+  <h3>예약·연락처 (확보 시 채움)</h3>
+  <p class="sub">뉴월드 예약번호 [입력 필요] · 항공편명·터미널 [입력 필요] — 제주항공 10/19 ICN 17:00 → PQC 21:25 / 10/25 23:15 출발 · 10/22 대절 기사 연락처 [입력 필요] · 뉴월드 버기 호출 방법 [체크인 시 확인]</p>
   <h3>마사지·아이케어</h3>
-  <p class="sub">키즈클럽(크라운 트라이브·뉴월드 키즈클럽) 시간에 맞춰 맡기고 교대, or 아이 낮잠 중 인빌라 1명씩. 유료 베이비시팅은 두 호텔에 사전 메일 문의(날짜·시간·40개월 명시). 스파는 체크인 때 바로 예약.</p>
+  <p class="sub">키즈클럽(크라운 트라이브·뉴월드 키즈클럽) 시간에 맞춰 맡기고 교대, or 아이 낮잠 중 인빌라 1명씩. 유료 베이비시팅은 두 호텔에 사전 메일 문의(날짜·시간·44개월 명시). 스파는 체크인 때 바로 예약.</p>
   <h3>씨푸드·카페</h3>
-  <p class="sub">북부: 리조트 주변 외져서 그랜드월드 식당가 활용 · 남부: 켐비치 껌또따이깜 + 선셋타운 씨푸드거리 + 사오비치 비치펍 점심 · 카페는 선셋타운 오션뷰 1곳. 그랩 지도 평점 4.5↑·리뷰 500+ 기준.</p>
+  <p class="sub">선정 기준: 그랩 지도 평점 4.5↑·리뷰 500+ · 아이 메뉴(볶음밥·쌀국수) 되는 곳. 일자별 식당 후보는 각 날짜 카드의 🍽 추천 줄 참조.</p>
   <h3>장비 메모</h3>
   <p class="sub">유모차: 낮잠·짐 운반 위주(오래 타진 않음) — 사파리는 현장 전동카트 병행 · 아이 침대: 인텍스 에어매트 지참(호텔 난간·엑스트라베드 요청 불요)</p>
   <h3>비용·환전</h3>
   <p class="sub">호텔 보증금 200만동/박(카드) · 현금 400~600만동(소액권 위주)+트래블월렛 · 10/22 대절 6시간 ≈90~130만동. 상세 비교: K&W phuquoc-trip-cost-review.md</p>
   <h3>비상</h3>
-  <p class="sub">베트남 응급 115 · 경찰 113 · Vinmec 푸꾸옥 응급실은 그랩에 "Vinmec Phu Quoc" 검색. 여권사본·호텔바우처 오프라인 저장.</p>
+  <p class="sub">베트남 응급 115 · 경찰 113 · Vinmec 푸꾸옥 국제병원(북부 바이자이): 핫라인 0297 398 5588 · 응급 0297 398 5511 — 응급실 24/24(주말·공휴일 포함) · 그랩에 "Vinmec Phu Quoc" 검색. 여권사본·호텔바우처 오프라인 저장.</p>
   <div class="links">
     <a href="https://www.google.com/maps/search/?api=1&query=Vinmec+Phu+Quoc">지도 · 빈멕병원</a>
     <a class="ghost" href="https://vinbus.vn/">VinBus</a>
@@ -293,6 +337,8 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
 
 <section class="card" id="log">
   <h2>결정 로그 <span class="d">근거·재검토 트리거 (요약)</span></h2>
+  <details class="logwrap">
+  <summary>전체 보기 — 접기/펼치기</summary>
   <ul class="plain">
     <li>유모차 지참 — 낮잠·짐 운반용. 재검토: 출국 1주 전 짐 구성</li>
     <li>아이 침대: 인텍스 에어매트 지참 → 호텔 난간·엑스트라베드 불요</li>
@@ -310,21 +356,49 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
     <li>그랜드월드 21:30 분수쇼(베네치아의 컬러·무료): 상황 따라 관람/철수 — 관람 시 취침 22:45경</li>
     <li>앰버샌즈 디너 10/20 이동 · ONCE 쇼 포함(18:45 · 파크 티켓 포함 · 18:30 도착 · 보호자 동반 · 귀마개)</li>
     <li>일출 관람(5~7일차): 기상 최상인 하루 일출 필수 — 켐비치(도보)·사오비치(차 15분), 약 5:55. 전날 저녁 예보로 확정(이월 가능, 마지막 후보 10/25)</li>
+    <li>환율계산기: 탭 대신 우측 하단 FAB — 오프라인 정적 계산, 환율 19.0 기본(수정값 기기 저장)</li>
+    <li>리뷰 반영(9/23): 44개월 표기 정정 · UI 개선(내비 중앙정렬·Top 버튼·진행률·로그 접기·스크롤 힌트) · 비상·운휴 확인처 보강 — 여권번호·보험증권 등 민감정보는 공개 페이지 제외</li>
   </ul>
+  </details>
 </section>
 
 </main>
-<footer><p>오프라인용: 출국 전 이 페이지를 저장해두세요. 티켓 QR·바우처는 별도 보관.</p></footer>
+<button class="fab fab-calc" id="calcFab" type="button" aria-label="환율 계산기">💱</button>
+<button class="fab fab-top" id="topFab" type="button" aria-label="맨 위로">⬆️</button>
+<div class="calc" id="calcPanel" role="dialog" aria-label="환율 계산기">
+  <button class="close" id="calcClose" type="button" aria-label="닫기">✕</button>
+  <h3>💱 환율 계산 (동 ↔ 원)</h3>
+  <div class="row"><input type="number" id="calcVnd" inputmode="numeric" placeholder="동(VND)"><span class="unit">동</span></div>
+  <div class="row"><input type="number" id="calcKrw" inputmode="numeric" placeholder="원(KRW)"><span class="unit">원</span></div>
+  <p class="rate">환율: 1,000원 = <input type="number" id="calcRate" step="0.1" min="1"> 동 — 기본 19.0 · 수정값은 이 기기에 저장 · 오프라인 동작</p>
+  <div class="chips">
+    <button type="button" data-v="10000">1만동</button><button type="button" data-v="50000">5만동</button><button type="button" data-v="100000">10만동</button><button type="button" data-v="500000">50만동</button><button type="button" data-v="1000000">100만동</button>
+  </div>
+</div>
+<footer><p><b>오프라인 저장(출국 전):</b> ① 아이폰(사파리): 공유 → '홈 화면에 추가' / 안드로이드(크롬): ⋮ → '홈 화면에 추가' ② 또는 공유 → '프린트' → 'PDF로 저장'. 티켓 QR·바우처는 별도 오프라인 보관.</p></footer>
 <script>
 const nav=document.querySelectorAll('#daynav a');
 const secs=[...document.querySelectorAll('main section')].filter(s=>document.querySelector('#daynav a[href="#'+s.id+'"]'));
 const off=document.getElementById('daynav').offsetHeight+25; // 활성 탭 판정선 — 섹션 상단이 탭 하단+25px을 지나면 전환
+const navEl=document.getElementById('daynav'), navWrap=document.getElementById('daynavwrap');
+document.querySelectorAll('.time').forEach(t=>{ if(t.textContent.indexOf('~')>-1) t.innerHTML=t.innerHTML.replace(/~/g,'~<wbr>'); });
+let lastOn=null;
 const onScroll=()=>{
   let cur=null;
   secs.forEach(s=>{ if(s.getBoundingClientRect().top<off) cur=s.id; });
   nav.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+  const act=document.querySelector('#daynav a.on');
+  if(act && act!==lastOn){ lastOn=act; act.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'}); }
 };
 addEventListener('scroll',onScroll,{passive:true}); onScroll();
+const updNavFade=()=>{ const atEnd=navEl.scrollLeft+navEl.clientWidth>=navEl.scrollWidth-4; navWrap.classList.toggle('fade',!atEnd); };
+navEl.addEventListener('scroll',updNavFade,{passive:true}); addEventListener('resize',updNavFade); updNavFade();
+const topFab=document.getElementById('topFab');
+if(topFab){
+  const updTopFab=()=>topFab.classList.toggle('show', window.scrollY>600);
+  addEventListener('scroll',updTopFab,{passive:true}); updTopFab();
+  topFab.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
 </script>
 <script>
 /* 체크리스트 로컬 저장 (localStorage) */
@@ -340,15 +414,36 @@ document.querySelectorAll('#prep ul.chk').forEach((ul,ui)=>{
     li.addEventListener('click',()=>{
       li.classList.toggle('done');
       if(li.classList.contains('done')){ chkStore[key]=1; } else { delete chkStore[key]; }
-      chkSave();
+      chkSave(); chkUpdate();
     });
   });
 });
+const chkProg=document.getElementById('chkProg');
+const chkUpdate=()=>{ if(!chkProg) return; const all=document.querySelectorAll('#prep ul.chk li').length, done=document.querySelectorAll('#prep ul.chk li.done').length; chkProg.textContent='진행률 '+done+' / '+all+' 항목'+(all>0&&done===all?' — 전부 완료 ✔':''); };
+chkUpdate();
 const chkResetBtn=document.getElementById('chkReset');
 if(chkResetBtn){ chkResetBtn.addEventListener('click',e=>{
   e.stopPropagation();
-  if(confirm('체크 상태를 모두 초기화할까요?')){ chkStore={}; chkSave(); document.querySelectorAll('#prep ul.chk li.done').forEach(li=>li.classList.remove('done')); }
+  if(confirm('체크 상태를 모두 초기화할까요?')){ chkStore={}; chkSave(); chkUpdate(); document.querySelectorAll('#prep ul.chk li.done').forEach(li=>li.classList.remove('done')); }
 }); }
+</script>
+<script>
+/* 환율 계산기 FAB (오프라인 정적) */
+const rateKey='pq-rate-v1';
+const calcFab=document.getElementById('calcFab'), calcPanel=document.getElementById('calcPanel'),
+  calcVnd=document.getElementById('calcVnd'), calcKrw=document.getElementById('calcKrw'), calcRate=document.getElementById('calcRate');
+if(calcFab && calcRate){
+  let rate=19.0; try{ const r=parseFloat(localStorage.getItem(rateKey)); if(r>0) rate=r; }catch(e){}
+  calcRate.value=rate;
+  const syncV=()=>{ const v=parseFloat(calcVnd.value)||0; calcKrw.value=v>0? Math.round(v/rate):''; };
+  const syncK=()=>{ const k=parseFloat(calcKrw.value)||0; calcVnd.value=k>0? Math.round(k*rate):''; };
+  calcVnd.addEventListener('input',syncV); calcKrw.addEventListener('input',syncK);
+  calcRate.addEventListener('input',()=>{ const r=parseFloat(calcRate.value); if(r>0){ rate=r; try{ localStorage.setItem(rateKey,String(r)); }catch(e){} syncV(); } });
+  document.querySelectorAll('.calc .chips button').forEach(b=>b.addEventListener('click',()=>{ calcVnd.value=b.getAttribute('data-v'); syncV(); }));
+  const toggleCalc=open=>{ calcPanel.classList.toggle('open',open); document.body.classList.toggle('calcopen',open); };
+  calcFab.addEventListener('click',()=>toggleCalc(!calcPanel.classList.contains('open')));
+  document.getElementById('calcClose').addEventListener('click',()=>toggleCalc(false));
+}
 </script>
 </body>
 </html>
