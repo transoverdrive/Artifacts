@@ -83,6 +83,8 @@ h2 .d{display:block; font-size:12px; color:var(--muted); font-weight:400}
 .rowlinks a{display:inline-flex;align-items:center;min-height:32px;padding:4px 10px;border-radius:8px;background:var(--ink);color:#fff;text-decoration:none;font-size:12px;font-weight:600;white-space:normal}
 .rowlinks a.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
 .rowlinks a[href*="google.com/maps"]::before{content:"🌐 "}
+.gmap{width:100%;height:220px;background:#eef3f1}
+.gmap-fail{display:flex;align-items:center;justify-content:center;height:220px;padding:0 16px;font-size:13px;color:var(--muted);text-align:center}
 .fab{position:fixed; right:16px; width:52px; height:52px; border-radius:50%; border:0;
   display:flex; align-items:center; justify-content:center; font-size:22px; cursor:pointer;
   box-shadow:0 4px 14px rgba(30,42,50,.28); z-index:60; background:var(--accent); color:#fff}
@@ -202,7 +204,7 @@ details.logwrap ul{margin:8px 0 0}
   <h2>10/19 1일차 <span class="d">도착 · 크라운플라자 체크인</span></h2>
   <p class="sub">인천 17:00 출발 → 푸꾸옥 21시 전후 도착. 공항셔틀 막차 20:00라 이용 불가.</p>
   <div class="daymap">
-<iframe title="10/19 동선 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?saddr=Phu+Quoc+International+Airport&amp;daddr=Crowne+Plaza+Phu+Quoc+Starbay&amp;output=embed"></iframe>
+<div class="gmap" id="gmap-d1" data-day="d1"></div>
 <div class="mapcap"><span>① 푸꾸옥공항 → ② 크라운플라자</span><a href="https://www.google.com/maps/dir/?api=1&amp;origin=Phu+Quoc+International+Airport&amp;destination=Crowne+Plaza+Phu+Quoc+Starbay" target="_blank" rel="noopener">Google Maps에서 열기 ↗</a></div>
 </div>
   <ul class="tl">
@@ -214,7 +216,7 @@ details.logwrap ul{margin:8px 0 0}
 <section class="card" id="d2">
   <h2>10/20 2일차 <span class="d">빈펄 사파리 · 앰버샌즈 디너</span></h2>
   <div class="daymap">
-<iframe title="10/20 동선 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?saddr=Crowne+Plaza+Phu+Quoc+Starbay&amp;daddr=Vinpearl+Safari+Phu+Quoc+to:Crowne+Plaza+Phu+Quoc+Starbay&amp;output=embed"></iframe>
+<div class="gmap" id="gmap-d2" data-day="d2"></div>
 <div class="mapcap"><span>① 크라운플라자 → ② 빈펄사파리 → ③ 복귀(앰버샌즈=리조트 앞)</span><a href="https://www.google.com/maps/dir/?api=1&amp;origin=Crowne+Plaza+Phu+Quoc+Starbay&amp;destination=Crowne+Plaza+Phu+Quoc+Starbay&amp;waypoints=Vinpearl+Safari+Phu+Quoc" target="_blank" rel="noopener">Google Maps에서 열기 ↗</a></div>
 </div>
   <ul class="tl">
@@ -229,7 +231,7 @@ details.logwrap ul{margin:8px 0 0}
 <section class="card" id="d3">
   <h2>10/21 3일차 <span class="d">빈원더스 오후~저녁 + 그랜드월드</span></h2>
   <div class="daymap">
-<iframe title="10/21 동선 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?saddr=Crowne+Plaza+Phu+Quoc+Starbay&amp;daddr=VinWonders+Phu+Quoc+to:Grand+World+Phu+Quoc+to:Crowne+Plaza+Phu+Quoc+Starbay&amp;output=embed"></iframe>
+<div class="gmap" id="gmap-d3" data-day="d3"></div>
 <div class="mapcap"><span>① 크라운플라자 → ② 빈원더스 → ③ 그랜드월드 → ④ 복귀</span><a href="https://www.google.com/maps/dir/?api=1&amp;origin=Crowne+Plaza+Phu+Quoc+Starbay&amp;destination=Crowne+Plaza+Phu+Quoc+Starbay&amp;waypoints=VinWonders+Phu+Quoc%7CGrand+World+Phu+Quoc" target="_blank" rel="noopener">Google Maps에서 열기 ↗</a></div>
 </div>
   <ul class="tl">
@@ -252,7 +254,7 @@ details.logwrap ul{margin:8px 0 0}
 <section class="card" id="d4">
   <h2>10/22 4일차 <span class="d">북부→남부 이동일 · 조기 출발 + Aqua World</span></h2>
   <div class="daymap">
-<iframe title="10/22 동선 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?saddr=Crowne+Plaza+Phu+Quoc+Starbay&amp;daddr=Duong+Dong+Phu+Quoc+to:King+Kong+Mart+Phu+Quoc+to:New+World+Phu+Quoc+Resort&amp;output=embed"></iframe>
+<div class="gmap" id="gmap-d4" data-day="d4"></div>
 <div class="mapcap"><span>① 크라운 → ② 즈엉동 점심 → ③ 킹콩마트 → ④ 뉴월드</span><a href="https://www.google.com/maps/dir/?api=1&amp;origin=Crowne+Plaza+Phu+Quoc+Starbay&amp;destination=New+World+Phu+Quoc+Resort&amp;waypoints=Duong+Dong+Phu+Quoc%7CKing+Kong+Mart+Phu+Quoc" target="_blank" rel="noopener">Google Maps에서 열기 ↗</a></div>
 </div>
   <ul class="tl">
@@ -286,7 +288,7 @@ details.logwrap ul{margin:8px 0 0}
     </ul>
   </div>
   <div class="daymap">
-<iframe title="10/23 동선 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?saddr=New+World+Phu+Quoc+Resort&amp;daddr=Sun+World+Hon+Thom+Cable+Car+Phu+Quoc&amp;output=embed"></iframe>
+<div class="gmap" id="gmap-d5" data-day="d5"></div>
 <div class="mapcap"><span>① 뉴월드 → ② 케이블카역(선셋타운) · 섬 내부는 도보 이동</span><a href="https://www.google.com/maps/dir/?api=1&amp;origin=New+World+Phu+Quoc+Resort&amp;destination=Sun+World+Hon+Thom+Cable+Car+Phu+Quoc" target="_blank" rel="noopener">Google Maps에서 열기 ↗</a></div>
 </div>
   <ul class="tl">
@@ -307,7 +309,7 @@ details.logwrap ul{margin:8px 0 0}
 <section class="card" id="d6">
   <h2>10/24 6일차 <span class="d">호캉스 데이 + 선셋타운·키스오브더씨</span></h2>
   <div class="daymap">
-<iframe title="10/24 동선 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?saddr=New+World+Phu+Quoc+Resort&amp;daddr=Sunset+Town+Phu+Quoc+Kiss+Bridge+to:New+World+Phu+Quoc+Resort&amp;output=embed"></iframe>
+<div class="gmap" id="gmap-d6" data-day="d6"></div>
 <div class="mapcap"><span>① 뉴월드(호캉스) → ② 선셋타운·키스브릿지 → ③ 복귀</span><a href="https://www.google.com/maps/dir/?api=1&amp;origin=New+World+Phu+Quoc+Resort&amp;destination=New+World+Phu+Quoc+Resort&amp;waypoints=Sunset+Town+Phu+Quoc+Kiss+Bridge" target="_blank" rel="noopener">Google Maps에서 열기 ↗</a></div>
 </div>
   <ul class="tl">
@@ -337,7 +339,7 @@ details.logwrap ul{margin:8px 0 0}
 <section class="card" id="d7">
   <h2>10/25 7일차 <span class="d">대절 하루 — 사오비치·호국사·OCSEN·야시장 · 23:15 출발</span></h2>
   <div class="daymap">
-<iframe title="10/25 동선 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?saddr=New+World+Phu+Quoc+Resort&amp;daddr=Sao+Beach+Phu+Quoc+to:Ho+Quoc+Pagoda+Phu+Quoc+to:OCSEN+Beach+Bar+Phu+Quoc+to:Duong+Dong+Night+Market+to:Phu+Quoc+International+Airport&amp;output=embed"></iframe>
+<div class="gmap" id="gmap-d7" data-day="d7"></div>
 <div class="mapcap"><span>① 뉴월드 → ② 사오비치 → ③ 호국사 → ④ OCSEN → ⑤ 야시장 → ⑥ 공항</span><a href="https://www.google.com/maps/dir/?api=1&amp;origin=New+World+Phu+Quoc+Resort&amp;destination=Phu+Quoc+International+Airport&amp;waypoints=Sao+Beach+Phu+Quoc%7CHo+Quoc+Pagoda+Phu+Quoc%7COCSEN+Beach+Bar+Phu+Quoc%7CDuong+Dong+Night+Market" target="_blank" rel="noopener">Google Maps에서 열기 ↗</a></div>
 </div>
   <ul class="tl">
@@ -502,6 +504,7 @@ details.logwrap ul{margin:8px 0 0}
     <li>혼똠섬 준비물(9/23): D5 카드 '오늘 준비물' 체크 박스(수영복·아쿠아슈즈 등) + 짐—공통 성인 물놀이 항목</li>
     <li>물고기 피딩쇼(9/23 검증): 오전 11:00~11:10만 운영(공식) — 10/21 오후 일정에서 제외(수족관 마저로 통합), '시간표 상충' 표기 종결</li>
     <li>지도·버튼 개편(9/23): 날짜 카드 상단 구글맵스 동선 iframe 7개(방문 순서 캡션 + 경로선·Google Maps 열기) · 하단 버튼 전량 → 일정 행 칩으로 이동(무손실)</li>
+    <li>JS API 지도(9/23): 경로 iframe → 번호 핀 지도 7개(경로선 없음·lazy 로드) · 좌표 OSM/Overpass 실측 + 구글 지오코딩 대조 · 키 리퍼러 제한</li>
   </ul>
   </details>
 </section>
@@ -660,6 +663,25 @@ if(calcFab && calcRate){
   }
   if(btn) btn.addEventListener('click', sync);
   sync();
+})();
+</script>
+<script>
+/* 날짜별 지도 — JS API 번호 핀(경로선 없음) · 화면 진입 시 lazy 로드 */
+(function(){
+var KEY='AIzaSyBqxcuXsmRL70b2_vcWVa1RnfAoPXRaWnI';
+var PQDATA={"d1": [{"n": "푸꾸옥공항", "lat": 10.172708, "lng": 103.992156}, {"n": "크라운플라자", "lat": 10.317026, "lng": 103.857822}], "d2": [{"n": "크라운플라자", "lat": 10.317026, "lng": 103.857822}, {"n": "빈펄사파리", "lat": 10.339396, "lng": 103.895011}], "d3": [{"n": "크라운플라자", "lat": 10.317026, "lng": 103.857822}, {"n": "빈원더스", "lat": 10.338401, "lng": 103.854675}, {"n": "그랜드월드", "lat": 10.32494, "lng": 103.858138}], "d4": [{"n": "크라운플라자", "lat": 10.317026, "lng": 103.857822}, {"n": "즈엉동 점심", "lat": 10.182596, "lng": 103.972223}, {"n": "킹콩마트", "lat": 10.133687, "lng": 103.981683}, {"n": "뉴월드", "lat": 10.03896, "lng": 104.027318}], "d5": [{"n": "뉴월드", "lat": 10.03896, "lng": 104.027318}, {"n": "케이블카역", "lat": 9.992008, "lng": 104.012443}], "d6": [{"n": "뉴월드", "lat": 10.03896, "lng": 104.027318}, {"n": "선셋타운·키스브릿지", "lat": 10.028263, "lng": 104.004195}], "d7": [{"n": "뉴월드", "lat": 10.03896, "lng": 104.027318}, {"n": "사오비치", "lat": 10.052473, "lng": 104.035193}, {"n": "호국사", "lat": 10.110708, "lng": 104.028516}, {"n": "OCSEN", "lat": 10.193504, "lng": 103.964304}, {"n": "야시장", "lat": 10.216296, "lng": 103.960578}, {"n": "공항", "lat": 10.172708, "lng": 103.992156}]};
+var apiLoading=false,apiReady=false,pending=[];
+function failAll(m){document.querySelectorAll('.gmap').forEach(function(el){if(!el.dataset.done){el.dataset.done='1';el.innerHTML='<div class="gmap-fail">'+m+'</div>';}});}
+window.__pqMapsInit=function(){apiReady=true;pending.forEach(initMap);pending=[];};
+window.gm_authFailure=function(){failAll('지도를 불러오지 못했습니다 — API 키 리퍼러 제한 설정을 확인해주세요.');};
+function loadApi(){if(apiLoading)return;apiLoading=true;var s=document.createElement('script');s.src='https://maps.googleapis.com/maps/api/js?key='+KEY+'&loading=async&callback=__pqMapsInit';s.async=true;s.onerror=function(){failAll('오프라인 상태에서는 지도가 표시되지 않습니다.');};document.head.appendChild(s);}
+function initMap(el){if(el.dataset.done)return;el.dataset.done='1';var pts=PQDATA[el.dataset.day];if(!pts||!pts.length)return;
+var map=new google.maps.Map(el,{gestureHandling:'cooperative',zoomControl:false,mapTypeControl:false,streetViewControl:false,fullscreenControl:false});
+var b=new google.maps.LatLngBounds(),iw=new google.maps.InfoWindow();
+pts.forEach(function(p,i){var mk=new google.maps.Marker({position:{lat:p.lat,lng:p.lng},map:map,title:p.n,icon:{path:google.maps.SymbolPath.CIRCLE,fillColor:'#0e7c7b',fillOpacity:1,strokeColor:'#ffffff',strokeWeight:2,scale:13},label:{text:String(i+1),color:'#ffffff',fontSize:'12px',fontWeight:'700'}});mk.addListener('click',function(){iw.setContent('<b>'+p.n+'</b>');iw.open(map,mk);});b.extend(mk.getPosition());});
+map.fitBounds(b,{top:24,bottom:24,left:24,right:24});if(map.getZoom()>14)map.setZoom(14);}
+if(!('IntersectionObserver' in window)){loadApi();window.__pqMapsInit=function(){apiReady=true;document.querySelectorAll('.gmap').forEach(initMap);} ;}
+else{var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){var el=en.target;io.unobserve(el);if(apiReady&&window.google&&google.maps){initMap(el);}else{pending.push(el);loadApi();}}});},{rootMargin:'200px'});document.querySelectorAll('.gmap').forEach(function(el){io.observe(el);});}
 })();
 </script>
 </body>
