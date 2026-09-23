@@ -92,9 +92,9 @@ body.calcopen .fab-top{opacity:0; pointer-events:none}
 .calc .rate{font-size:12px; color:var(--muted); margin:8px 0 0; line-height:1.5}
 .calc .rate input{width:56px; padding:5px 8px; font-size:12.5px; text-align:right;
   border:1px solid var(--line); border-radius:8px; color:var(--ink)}
-.calc .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:9px}
-.calc .chips button{flex:1 1 52px; min-height:36px; border:1px solid var(--line); border-radius:9px;
-  background:#fff; color:var(--ink); font-size:12.5px; cursor:pointer}
+.calc .chips{display:grid; grid-template-columns:repeat(5,1fr); gap:5px; margin-top:9px}
+.calc .chips button{min-height:36px; padding:4px 2px; border:1px solid var(--line); border-radius:9px;
+  background:#fff; color:var(--ink); font-size:12px; cursor:pointer; white-space:nowrap}
 .calc .close{position:absolute; top:6px; right:6px; width:34px; height:34px; border:0; background:none;
   color:var(--muted); font-size:16px; cursor:pointer}
 details.logwrap{border:1px dashed var(--line); border-radius:12px; padding:10px 12px; background:#fff}
@@ -484,7 +484,7 @@ details.logwrap ul{margin:8px 0 0}
     <li>그랜드월드 21:30 분수쇼(베네치아의 컬러·무료): 상황 따라 관람/철수 — 관람 시 취침 22:45경</li>
     <li>앰버샌즈 디너 10/20 이동 · ONCE 쇼 포함(18:45 · 파크 티켓 포함 · 18:30 도착 · 보호자 동반 · 귀마개)</li>
     <li>일출 관람: 기상 최상인 하루 일출 필수 — 후보지 켐비치(도보), 약 5:55. 후보일 10/24·10/25(10/23 풀데이 제외). 확정: 전날 저녁 예보(흐림·비면 이월). 준비: 담요·모기기피제</li>
-    <li>환율계산기: 탭 대신 우측 하단 FAB — 오프라인 정적 계산, 환율 19.0 기본(수정값 기기 저장)</li>
+    <li>환율계산기: 탭 대신 우측 하단 FAB — 오프라인 정적 계산, 환율 19.0 기본(수정값 기기 저장) · quick 칩 9종(1만~200만동, 5+4 배열)</li>
     <li>리뷰 반영(9/23): 44개월 표기 정정 · UI 개선(내비 중앙정렬·Top 버튼·진행률·로그 접기·스크롤 힌트) · 비상·운휴 확인처 보강 — 여권번호·보험증권 등 민감정보는 공개 페이지 제외</li>
     <li>티켓(9/23): 사파리·빈원더스 QR 수령 → D2·D3 버튼 등록(성인 2·아이 1) · 혼똠 케이블카 티켓은 별도 구매 확인</li>
     <li>예산(9/23): 예산 탭 — 사용자 시트 갱신본 동기화 + VND 병기(총 ₩1,666,089 · 시트 기준)</li>
@@ -502,7 +502,8 @@ details.logwrap ul{margin:8px 0 0}
   <div class="row"><input type="number" id="calcKrw" inputmode="numeric" placeholder="원(KRW)"><span class="unit">원</span></div>
   <p class="rate">환율: 1,000원 = <input type="number" id="calcRate" step="0.1" min="1"> 동 — 기본 19.0 · 수정값은 이 기기에 저장 · 오프라인 동작</p>
   <div class="chips">
-    <button type="button" data-v="10000">1만동</button><button type="button" data-v="50000">5만동</button><button type="button" data-v="100000">10만동</button><button type="button" data-v="500000">50만동</button><button type="button" data-v="1000000">100만동</button>
+    <button type="button" data-v="10000">1만동</button><button type="button" data-v="50000">5만동</button><button type="button" data-v="100000">10만동</button><button type="button" data-v="200000">20만동</button><button type="button" data-v="300000">30만동</button>
+    <button type="button" data-v="400000">40만동</button><button type="button" data-v="500000">50만동</button><button type="button" data-v="1000000">100만동</button><button type="button" data-v="2000000">200만동</button>
   </div>
 </div>
 <footer><p><b>오프라인 저장(출국 전):</b> ① 아이폰(사파리): 공유 → '홈 화면에 추가' / 안드로이드(크롬): ⋮ → '홈 화면에 추가' ② 또는 공유 → '프린트' → 'PDF로 저장'. 티켓 QR·바우처는 별도 오프라인 보관.</p></footer>
