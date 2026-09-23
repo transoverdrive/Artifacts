@@ -417,7 +417,7 @@ details.logwrap ul{margin:8px 0 0}
     <li><div class="bwrap"><div class="bitem">Trung Nguyen 커피/연유</div><div class="bplace">킹콩마트</div></div><div class="bamt">₩13,158<span class="bvnd">250,000동</span></div></li>
     <li><div class="bwrap"><div class="bitem">라이스페이퍼/과자/젤리</div><div class="bplace">킹콩마트</div></div><div class="bamt">₩10,526<span class="bvnd">200,000동</span></div></li>
     <li><div class="bwrap"><div class="bitem">악마의잼/샌드쿠키 등 선물</div><div class="bplace">Davis Bakery</div></div><div class="bamt">₩26,316<span class="bvnd">500,000동</span></div></li>
-    <li><div class="bwrap"><div class="bitem">저녁 씨푸드</div><div class="bplace">켐비치/뉴월드</div></div><div class="bamt">₩5,263<span class="bvnd">100,000동</span></div></li>
+    <li><div class="bwrap"><div class="bitem">저녁 씨푸드</div><div class="bplace">켐비치/뉴월드</div></div><div class="bamt">₩52,632<span class="bvnd">1,000,000동</span></div></li>
   </ul>
   <h3>10/23(금)</h3>
   <ul>
@@ -462,7 +462,7 @@ details.logwrap ul{margin:8px 0 0}
     <li><div class="bwrap"><div class="bitem">기타 예비비</div><div class="bplace">푸꾸옥</div></div><div class="bamt">₩52,632<span class="bvnd">1,000,000동</span></div></li>
   </ul>
   </div>
-  <div class="bsum"><span>총 예상금액(시트 기준)</span><span id="budgetTotal">₩1,666,089</span></div>
+  <div class="bsum"><span>총 예상금액(시트 기준)</span><span id="budgetTotal">₩1,713,457</span></div>
   <p class="resetwrap"><button id="budgetRefresh" class="resetbtn" type="button">↻ 시트 새로고침</button></p>
 </section>
 
@@ -492,7 +492,7 @@ details.logwrap ul{margin:8px 0 0}
     <li>환율계산기: 탭 대신 우측 하단 FAB — 오프라인 정적 계산, 환율 19.0 기본(수정값 기기 저장) · quick 칩 9종(1만~200만동, 5+4 배열)</li>
     <li>리뷰 반영(9/23): 44개월 표기 정정 · UI 개선(내비 중앙정렬·Top 버튼·진행률·로그 접기·스크롤 힌트) · 비상·운휴 확인처 보강 — 여권번호·보험증권 등 민감정보는 공개 페이지 제외</li>
     <li>티켓(9/23): 사파리·빈원더스 QR 수령 → D2·D3 버튼 등록(성인 2·아이 1) · 혼똠 케이블카 티켓은 별도 구매 확인</li>
-    <li>예산(9/23): 예산 탭 — 사용자 시트 갱신본 동기화 + VND 병기(총 ₩1,666,089 · 시트 기준)</li>
+    <li>예산(9/23): 예산 탭 — 사용자 시트 연동(자동 동기화·VND 병기) · 총 ₩1,713,457(시트 기준)</li>
     <li>탭 회전·시트 연동(9/23): daynav 기기 날짜 회전(오늘 먼저·지난 날짜 뒤로) · 예산 탭 구글 시트 자동 동기화(실패 시 내장 데이터 폴백)</li>
   </ul>
   </details>
@@ -607,7 +607,7 @@ if(calcFab && calcRate){
 <script>
 /* 예산 탭 — 구글 시트 자동 동기화 (실패 시 내장 데이터 유지) */
 (function(){
-  const SHEET='https://docs.google.com/spreadsheets/d/1bj1Ecem3tkVYIwN-mBf6tP4Gk2xsJqUfCSEHYHq3Yng/gviz/tq?tqx=out:csv';
+  const SHEET='https://docs.google.com/spreadsheets/d/1bj1Ecem3tkVYIwN-mBf6tP4Gk2xsJqUfCSEHYHq3Yng/export?format=csv';
   const list=document.getElementById('budgetList'), status=document.getElementById('budgetSync'), totalEl=document.getElementById('budgetTotal'), btn=document.getElementById('budgetRefresh');
   if(!list||!status) return;
   const WD={'10/19':'(월)','10/20':'(화)','10/21':'(수)','10/22':'(목)','10/23':'(금)','10/24':'(토)','10/25':'(일)'};
@@ -637,7 +637,7 @@ if(calcFab && calcRate){
       if(iD<0||iK<0) throw new Error('columns');
       let html='', total='', cur=null, open=false;
       for(let r=1;r<rows.length;r++){ const row=rows[r]; const d=String(row[iD]||'').trim();
-        if(!d){ const k=String(row[iK]||'').trim(); if(k) total=k; continue; }
+        if(!d){ const k=String(row[iK]||'').trim(); if(k.indexOf('₩')===0) total=k; continue; }
         const kv=String(row[iK]||'').replace(/[\u20A9,]/g,'').trim();
         const vnd=fmtVnd(row[iV]);
         const amt=(/^\d+$/.test(kv)&&Number(kv)===0) ? '무료' : esc(String(row[iK]||'').trim())+(vnd?'<span class="bvnd">'+esc(vnd)+'</span>':'');
