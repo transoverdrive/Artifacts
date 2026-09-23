@@ -100,6 +100,14 @@ body.calcopen .fab-top{opacity:0; pointer-events:none}
 details.logwrap{border:1px dashed var(--line); border-radius:12px; padding:10px 12px; background:#fff}
 details.logwrap summary{cursor:pointer; font-weight:700; font-size:14px}
 details.logwrap ul{margin:8px 0 0}
+.budget ul{list-style:none; padding:0; margin:0}
+.budget li{display:flex; align-items:center; gap:10px; padding:8px 0; border-top:1px dashed var(--line)}
+.budget li:first-child{border-top:0}
+.budget .bwrap{flex:1 1 auto; min-width:0}
+.budget .bitem{font-size:13.5px; color:#33414b}
+.budget .bplace{font-size:12px; color:var(--muted)}
+.budget .bamt{flex:0 0 auto; font-weight:700; font-size:13.5px; white-space:nowrap}
+.budget .bsum{display:flex; justify-content:space-between; margin-top:12px; padding-top:10px; border-top:1px solid var(--line); font-weight:700; font-size:14px}
 </style>
 </head>
 <body>
@@ -118,6 +126,7 @@ details.logwrap ul{margin:8px 0 0}
   <a href="#d6"><b>10/24</b>휴식</a>
   <a href="#d7"><b>10/25</b>귀국</a>
   <a href="#info"><b>ℹ️</b>정보</a>
+  <a href="#budget"><b>💰</b>예산</a>
 </nav>
 </div>
 <main>
@@ -366,6 +375,91 @@ details.logwrap ul{margin:8px 0 0}
   </div>
 </section>
 
+<section class="card budget" id="budget">
+  <h2>💰 예산 <span class="d">예상 지출 (KRW) — 사용자 시트 기준 2026-09-23</span></h2>
+  <h3>10/19(월)</h3>
+  <ul>
+    <li><div class="bwrap"><div class="bitem">공항→호텔 Grab/택시</div><div class="bplace">푸꾸옥공항→크라운플라자</div></div><div class="bamt">₩36,842</div></li>
+  </ul>
+  <h3>10/20(화)</h3>
+  <ul>
+    <li><div class="bwrap"><div class="bitem">크라운플라자→사파리 Grab</div><div class="bplace">빈펄사파리</div></div><div class="bamt">₩7,895</div></li>
+    <li><div class="bwrap"><div class="bitem">사파리 성인 &amp; 소인</div><div class="bplace">빈펄사파리 &amp; 빈원더스</div></div><div class="bamt">₩222,632</div></li>
+    <li><div class="bwrap"><div class="bitem">일반 전동카트</div><div class="bplace">빈펄사파리</div></div><div class="bamt">₩15,789</div></li>
+    <li><div class="bwrap"><div class="bitem">기린 먹이 당근</div><div class="bplace">빈펄사파리</div></div><div class="bamt">₩1,579</div></li>
+    <li><div class="bwrap"><div class="bitem">기린식당 점심</div><div class="bplace">빈펄사파리</div></div><div class="bamt">₩31,579</div></li>
+    <li><div class="bwrap"><div class="bitem">복귀 Grab</div><div class="bplace">빈펄사파리→크라운플라자</div></div><div class="bamt">₩7,895</div></li>
+    <li><div class="bwrap"><div class="bitem">Amber Sands 선셋 디너</div><div class="bplace">크라운플라자</div></div><div class="bamt">₩52,632</div></li>
+  </ul>
+  <h3>10/21(수)</h3>
+  <ul>
+    <li><div class="bwrap"><div class="bitem">이른 점심</div><div class="bplace">크라운플라자</div></div><div class="bamt">₩31,579</div></li>
+    <li><div class="bwrap"><div class="bitem">Grab</div><div class="bplace">크라운플라자→빈원더스</div></div><div class="bamt">₩7,895</div></li>
+    <li><div class="bwrap"><div class="bitem">음료/간식</div><div class="bplace">빈원더스</div></div><div class="bamt">₩13,158</div></li>
+    <li><div class="bwrap"><div class="bitem">이동</div><div class="bplace">빈원더스→그랜드월드</div></div><div class="bamt">₩5,263</div></li>
+    <li><div class="bwrap"><div class="bitem">저녁식사</div><div class="bplace">그랜드월드</div></div><div class="bamt">₩52,632</div></li>
+    <li><div class="bwrap"><div class="bitem">음료/디저트/간식</div><div class="bplace">그랜드월드</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">Grab</div><div class="bplace">그랜드월드→크라운플라자</div></div><div class="bamt">₩7,895</div></li>
+  </ul>
+  <h3>10/22(목)</h3>
+  <ul>
+    <li><div class="bwrap"><div class="bitem">7인승 6시간 차량대절</div><div class="bplace">크라운플라자→뉴월드</div></div><div class="bamt">₩74,000</div></li>
+    <li><div class="bwrap"><div class="bitem">점심</div><div class="bplace">즈엉동</div></div><div class="bamt">₩31,579</div></li>
+    <li><div class="bwrap"><div class="bitem">카페/음료</div><div class="bplace">즈엉동</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">건망고/말린과일</div><div class="bplace">킹콩마트</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">캐슈넛/마카다미아</div><div class="bplace">킹콩마트</div></div><div class="bamt">₩15,789</div></li>
+    <li><div class="bwrap"><div class="bitem">코코넛 과자/캔디</div><div class="bplace">킹콩마트</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">느억맘</div><div class="bplace">킹콩마트</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">Trung Nguyen 커피/연유</div><div class="bplace">킹콩마트</div></div><div class="bamt">₩13,158</div></li>
+    <li><div class="bwrap"><div class="bitem">라이스페이퍼/과자/젤리</div><div class="bplace">킹콩마트</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">악마의잼/샌드쿠키 등 선물</div><div class="bplace">Davis Bakery</div></div><div class="bamt">₩26,316</div></li>
+    <li><div class="bwrap"><div class="bitem">저녁 씨푸드</div><div class="bplace">켐비치/뉴월드</div></div><div class="bamt">₩5,263</div></li>
+  </ul>
+  <h3>10/23(금)</h3>
+  <ul>
+    <li><div class="bwrap"><div class="bitem">혼똠 케이블카역 Grab</div><div class="bplace">뉴월드→선셋타운</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">혼똠 일반권 성인2+소인1</div><div class="bplace">혼똠</div></div><div class="bamt">₩119,010</div></li>
+    <li><div class="bwrap"><div class="bitem">락커</div><div class="bplace">혼똠</div></div><div class="bamt">₩2,632</div></li>
+    <li><div class="bwrap"><div class="bitem">음료/간식</div><div class="bplace">혼똠</div></div><div class="bamt">₩15,789</div></li>
+    <li><div class="bwrap"><div class="bitem">Grab</div><div class="bplace">선셋타운→뉴월드</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">저녁식사</div><div class="bplace">뉴월드/켐비치</div></div><div class="bamt">₩52,632</div></li>
+  </ul>
+  <h3>10/24(토)</h3>
+  <ul>
+    <li><div class="bwrap"><div class="bitem">점심</div><div class="bplace">뉴월드</div></div><div class="bamt">₩52,632</div></li>
+    <li><div class="bwrap"><div class="bitem">음료/간식/애프터눈티</div><div class="bplace">뉴월드</div></div><div class="bamt">₩26,316</div></li>
+    <li><div class="bwrap"><div class="bitem">성인 마사지 60분</div><div class="bplace">뉴월드 The Zen</div></div><div class="bamt">₩210,526</div></li>
+    <li><div class="bwrap"><div class="bitem">이른 저녁 또는 리조트 저녁</div><div class="bplace">뉴월드</div></div><div class="bamt">₩52,632</div></li>
+    <li><div class="bwrap"><div class="bitem">Grab</div><div class="bplace">뉴월드→선셋타운</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">Kiss Bridge</div><div class="bplace">Kiss Bridge</div></div><div class="bamt">무료</div></li>
+    <li><div class="bwrap"><div class="bitem">Kiss of the Sea</div><div class="bplace">Kiss of the Sea</div></div><div class="bamt">무료</div></li>
+    <li><div class="bwrap"><div class="bitem">카페/음료/간식</div><div class="bplace">선셋타운</div></div><div class="bamt">₩15,789</div></li>
+    <li><div class="bwrap"><div class="bitem">Grab</div><div class="bplace">선셋타운→뉴월드</div></div><div class="bamt">₩10,526</div></li>
+  </ul>
+  <h3>10/25(일)</h3>
+  <ul>
+    <li><div class="bwrap"><div class="bitem">피크타임 7인승 12시간 차량대절</div><div class="bplace">뉴월드→공항 전 일정</div></div><div class="bamt">₩101,500</div></li>
+    <li><div class="bwrap"><div class="bitem">점심</div><div class="bplace">사오비치</div></div><div class="bamt">₩42,105</div></li>
+    <li><div class="bwrap"><div class="bitem">선베드/비치 이용료</div><div class="bplace">사오비치</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">샤워시설 이용</div><div class="bplace">사오비치</div></div><div class="bamt">₩2,632</div></li>
+    <li><div class="bwrap"><div class="bitem">코코넛/음료/간식</div><div class="bplace">사오비치</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">관람</div><div class="bplace">호국사</div></div><div class="bamt">무료</div></li>
+    <li><div class="bwrap"><div class="bitem">기부/향 등</div><div class="bplace">호국사</div></div><div class="bamt">₩5,263</div></li>
+    <li><div class="bwrap"><div class="bitem">음료</div><div class="bplace">OCSEN Beach Bar</div></div><div class="bamt">₩31,579</div></li>
+    <li><div class="bwrap"><div class="bitem">저녁식사</div><div class="bplace">즈엉동 야시장</div></div><div class="bamt">₩31,579</div></li>
+    <li><div class="bwrap"><div class="bitem">간식/아이스크림/주스</div><div class="bplace">즈엉동 야시장</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">마약땅콩</div><div class="bplace">즈엉동 야시장</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">마그넷/소품/추가 선물</div><div class="bplace">즈엉동 야시장</div></div><div class="bamt">₩15,789</div></li>
+    <li><div class="bwrap"><div class="bitem">출국 전 생수/간식</div><div class="bplace">푸꾸옥공항</div></div><div class="bamt">₩10,526</div></li>
+    <li><div class="bwrap"><div class="bitem">면세/마지막 선물 보충</div><div class="bplace">푸꾸옥공항</div></div><div class="bamt">₩15,789</div></li>
+  </ul>
+  <h3>전 일정</h3>
+  <ul>
+    <li><div class="bwrap"><div class="bitem">기타 예비비</div><div class="bplace">푸꾸옥</div></div><div class="bamt">₩52,632</div></li>
+  </ul>
+  <div class="bsum"><span>총 예상금액(시트 기준)</span><span>₩1,666,089</span></div>
+</section>
+
 <section class="card" id="log">
   <h2>결정 로그 <span class="d">근거·재검토 트리거 (요약)</span></h2>
   <details class="logwrap">
@@ -392,6 +486,7 @@ details.logwrap ul{margin:8px 0 0}
     <li>환율계산기: 탭 대신 우측 하단 FAB — 오프라인 정적 계산, 환율 19.0 기본(수정값 기기 저장)</li>
     <li>리뷰 반영(9/23): 44개월 표기 정정 · UI 개선(내비 중앙정렬·Top 버튼·진행률·로그 접기·스크롤 힌트) · 비상·운휴 확인처 보강 — 여권번호·보험증권 등 민감정보는 공개 페이지 제외</li>
     <li>티켓(9/23): 사파리·빈원더스 QR 수령 → D2·D3 버튼 등록(성인 2·아이 1) · 혼똠 케이블카 티켓은 별도 구매 확인</li>
+    <li>예산(9/23): 예산 탭 추가 — 사용자 시트 기반(날짜·지역/장소·지출항목·KRW), 총 ₩1,666,089(시트 기준)</li>
   </ul>
   </details>
 </section>
