@@ -7,25 +7,27 @@
 <title>Feature-Sliced Design (FSD) — 바이브코딩 PM 소개</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;color:#1e293b;background:#f8fafc;padding:0 0 4rem}
+body{font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.75;color:#1e293b;background:#f8fafc;padding:0 0 4rem}
 header{background:#0f172a;color:#fff;padding:2.5rem 1.25rem}
-header .wrap,main{max-width:820px;margin:0 auto}
+header .wrap,main{max-width:840px;margin:0 auto}
 header h1{font-size:1.6rem;margin-bottom:.4rem}
 header p{color:#cbd5e1;font-size:.95rem}
-nav.toc{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem 1.25rem;margin:-1.2rem auto 1.5rem;max-width:820px}
-nav.toc a{color:#0369a1;text-decoration:none;font-size:.9rem;margin-right:.4rem}
+nav.toc{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem 1.25rem;margin:-1.2rem auto 1.5rem;max-width:840px;line-height:2}
+nav.toc a{color:#0369a1;text-decoration:none;font-size:.88rem;margin-right:.35rem}
 main{padding:0 1.25rem}
-section{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.4rem 1.4rem;margin-bottom:1.1rem}
-h2{font-size:1.2rem;margin-bottom:.7rem;color:#0f172a}
-h3{font-size:1rem;margin:1rem 0 .4rem;color:#334155}
+section{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem 1.5rem;margin-bottom:1.1rem}
+h2{font-size:1.22rem;margin-bottom:.7rem;color:#0f172a}
+h3{font-size:1rem;margin:1.1rem 0 .4rem;color:#334155}
 p,li{font-size:.95rem}
 ul,ol{padding-left:1.3rem;margin:.4rem 0}
-li{margin-bottom:.3rem}
+li{margin-bottom:.35rem}
 code{background:#f1f5f9;padding:.1rem .4rem;border-radius:6px;font-size:.85em;font-family:ui-monospace,Menlo,Consolas,monospace}
-pre{background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:10px;overflow-x:auto;font-size:.82rem;line-height:1.6;margin:.6rem 0}
-.rule{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:.9rem 1rem;margin:.6rem 0;font-size:.93rem}
-.warn{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:.9rem 1rem;margin:.6rem 0;font-size:.93rem}
-.tip{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.9rem 1rem;margin:.6rem 0;font-size:.93rem}
+pre{background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:10px;overflow-x:auto;font-size:.82rem;line-height:1.65;margin:.6rem 0}
+.rule{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
+.warn{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
+.tip{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
+.src{display:block;margin-top:.8rem;font-size:.87rem;color:#0369a1}
+.src a{color:#0369a1}
 table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.6rem 0}
 th,td{border:1px solid #e2e8f0;padding:.5rem .6rem;text-align:left;vertical-align:top}
 th{background:#f8fafc}
@@ -42,7 +44,7 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 </div></header>
 
 <nav class="toc">
-<a href="#s30">30초 요약</a> · <a href="#tree">폴더 예시</a> · <a href="#layers">7 레이어</a> · <a href="#rules">2대 규칙</a> · <a href="#mistakes">흔한 실수</a> · <a href="#migrate">점진 도입</a> · <a href="#rn">RN/Expo</a> · <a href="#prompts">AI 지시문</a> · <a href="#links">핵심 링크</a>
+<a href="#s30">30초 요약</a> · <a href="#why">왜 필요한가</a> · <a href="#three">3겹 구조</a> · <a href="#layers">7 레이어</a> · <a href="#rules">2대 규칙</a> · <a href="#publicapi">Public API 심화</a> · <a href="#mistakes">흔한 실수</a> · <a href="#migrate">점진 도입</a> · <a href="#rn">RN/Expo</a> · <a href="#vsbp">BP와 차이</a> · <a href="#prompts">AI 지시문</a> · <a href="#path">딥다이브 경로</a>
 </nav>
 
 <main>
@@ -52,9 +54,15 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 <li>프레임워크·언어 무관. 앱이 아니라 <b>애플리케이션</b>을 만들 때 쓴다 (라이브러리용 아님).</li>
 <li>작은 앱은 <code>app</code>+<code>pages</code>+<code>shared</code> 3층으로 시작, 필요할 때 추가.</li>
 <li>공식 문서의 첫 충고: <b>멀쩡한 구조는 뜯지 마라.</b> 새 멤버 적응이 느리거나, 무관한 수정이 연쇄 파손될 때만 도입.</li>
-</ul></section>
+</ul>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/get-started/overview">Overview — 전체 개념·도입 판단 기준</a></span></section>
 
-<section id="tree"><h2>폴더 예시</h2>
+<section id="why"><h2>왜 필요한가 — PM이 느낄 통증</h2>
+<p>규모가 커진 프론트엔드에서 흔한 장면: "A 화면 고쳤더니 B 기능이 깨졌다", "신입이 2주째 코드 위치를 못 찾는다", "새 기능 하나에 손댈 곳이 열 군데". FSD는 이 통증의 처방전이다. 코드를 <b>영향 범위</b>(어디까지 파급되나), <b>업무 도메인</b>(무슨 일용 코드인가), <b>기술 목적</b>(화면용? 서버용? 설정용?)으로 나눠, 수정 파급을 눈에 보이게 가둔다.</p>
+<p>다만 공식 문서가 못 박듯, 지금 구조가 멀쩡하면 도입 비용(학습+마이그레이션)이 이득보다 크다. 전환 설득용 논리 3개: ① 점진적이라 새 기능 개발 중단 없음 ② 신입 온보딩 단축 ③ 문서화된 구조라 자체 문서 유지비 절감.</p>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/get-started/overview#is-it-right-for-me">Is it right for me?</a> · <a href="https://feature-sliced.design/docs/guides/migration/from-custom#before-you-start">전환 전 자문 (Migration)</a></span></section>
+
+<section id="three"><h2>3겹 구조 — Layers → Slices → Segments</h2>
 <pre>src/
 ├── app/          앱 전체 (라우터·프로바이더·전역 설정)
 ├── pages/feed/   화면 = slice (도메인 단위)
@@ -65,59 +73,72 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 ├── entities/     user·post·product (업무 개념)
 ├── widgets/      여러 화면 공용 큰 UI (헤더·탭바)
 └── shared/       UI킷·API클라이언트·공용 lib·config</pre>
-</section>
+<h3>Layers — 영향 범위 (이름 고정, 추가 금지)</h3>
+<p>위층일수록 책임·의존이 크다. 새 레이어를 만들지 않는 게 규칙 — 의미가 표준화돼 있어야 팀원·AI가 같은 뜻으로 읽기 때문이다.</p>
+<h3>Slices — 업무 도메인 (이름 자유)</h3>
+<p>같은 층 안에서 "무슨 일" 기준으로 나눈다. 사진 앱이면 <code>photo</code>·<code>effects</code>, SNS면 <code>post</code>·<code>comments</code>. 핵심 속성: <b>같은 층의 다른 slice를 모른다</b>(zero coupling). <code>app</code>·<code>shared</code>에는 slice가 없다 — shared는 업무를 모르고, app은 전부 품기 때문이다.</p>
+<h3>Segments — 기술 목적 (관용 이름)</h3>
+<p><code>ui</code> · <code>api</code> · <code>model</code> · <code>lib</code> · <code>config</code>. 이름은 <b>목적(why)</b>으로 짓는다. <code>components</code>·<code>hooks</code>·<code>types</code>·<code>utils</code> 같은 본질(what) 이름은 금지 — 무관한 코드가 한 폴더에 뭉쳐 리팩터링·리뷰가 깨진다. AI가 이런 폴더를 만들려 하면 바로잡을 것.</p>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/get-started/overview#concepts">Concepts (Overview)</a> · <a href="https://feature-sliced.design/docs/reference/slices-segments">Slices &amp; Segments 레퍼런스</a></span></section>
 
 <section id="layers"><h2>7 레이어 (위 → 아래)</h2>
 <table><tr><th>레이어</th><th>담는 것</th></tr>
 <tr><td><code>app</code></td><td>라우터 설정·프로바이더·전역 스타일·진입점·글로벌 store 설정</td></tr>
 <tr><td><code>processes</code></td><td><b>폐기 예정 — 사용 금지.</b> <code>features</code>·<code>app</code>으로</td></tr>
-<tr><td><code>pages</code></td><td>화면(screen). 1화면=1slice. 재사용 안 되는 UI는 여기 둬도 됨</td></tr>
-<tr><td><code>widgets</code></td><td>여러 화면에서 쓰는 큰 UI 블록. 중첩 라우터에선 라우터 블록 자리</td></tr>
-<tr><td><code>features</code></td><td>사용자가 하는 액션. <b>여러 화면 재사용되는 것만</b> (남발 금지)</td></tr>
-<tr><td><code>entities</code></td><td>user·post 같은 업무 개념 + 표시용 UI + 검증 스키마</td></tr>
-<tr><td><code>shared</code></td><td>UI킷·API클라이언트·lib·config·i18n·route 상수. 비즈니스 로직 없음</td></tr>
-</table></section>
+<tr><td><code>pages</code></td><td>화면(screen). 1화면=1slice. 재사용 안 되는 UI는 여기 둬도 됨. 로딩·에러바운더리는 <code>ui</code>에</td></tr>
+<tr><td><code>widgets</code></td><td>여러 화면 공용 큰 UI 블록. 중첩 라우터에선 라우터 블록 자리, 페이지 레이아웃도 여기</td></tr>
+<tr><td><code>features</code></td><td>사용자에게 비즈니스 가치를 주는 액션 (좋아요·댓글·로그인). 대표 신호는 여러 화면 재사용이지만 단일 화면 액션도 가능. 남발 금지</td></tr>
+<tr><td><code>entities</code></td><td>user·post 같은 업무 개념 + 표시용 UI + 검증 스키마 + 관련 API. 개체 간 연결은 상위 레이어(features·pages)에</td></tr>
+<tr><td><code>shared</code></td><td>UI킷·API클라이언트·lib·config·i18n·route 상수. 비즈니스 로직 없음. <code>lib</code>는 영역별+README 문서화</td></tr>
+</table>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/reference/layers">Layers 레퍼런스 (레이어별 정의·import rule)</a></span></section>
 
 <section id="rules"><h2>딱 2대 규칙</h2>
 <div class="rule"><b>규칙 1 — import rule:</b> 위 레이어는 <b>strictly 아래 레이어만</b> import. 같은 층끼리 금지.<br>
-예: <code>features/aaa</code>는 <code>features/bbb</code> 불가, <code>entities</code>·<code>shared</code>는 가능. 예외 <code>app</code>·<code>shared</code>는 내부 segment끼리 자유.</div>
+예: <code>features/aaa/api/request.ts</code>는 <code>features/bbb</code> 일체 불가, <code>entities</code>·<code>shared</code>·같은 slice 내부는 가능. 예외 <code>app</code>·<code>shared</code>는 내부 segment끼리 자유.</div>
 <div class="rule"><b>규칙 2 — public API:</b> slice 바깥은 slice의 <code>index.ts</code>로만 import (내부 구조 직접 참조 금지).<br>
-<code>pages/feed/index.ts</code> → <code>export { FeedPage } from "./ui/FeedPage"</code>. 바깥 계약만 지키면 내부는 맘대로 뜯어고쳐도 됨.</div>
-<h3>세그먼트 이름 짓기</h3>
-<p>관용 이름: <code>ui</code> · <code>api</code> · <code>model</code> · <code>lib</code> · <code>config</code>. 이름은 <b>목적(why)</b>으로. <code>components</code>·<code>hooks</code>·<code>types</code>·<code>utils</code> 같은 본질(what) 이름은 금지 — 무관한 코드가 뭉쳐 리팩터링이 깨진다.</p>
-<div class="tip"><b>entity끼리 알면 @x로 드러내기:</b> <code>entities/A/@x/B.ts</code> ("A crossed with B"). 몰래 import 말고 연결을 눈에 보이게. Entities에서만, 최소 사용.</div>
-</section>
+<code>pages/feed/index.ts</code> → <code>export { FeedPage } from "./ui/FeedPage"</code>. 바깥 계약만 지키면 내부는 맘대로 뜯어고쳐도 된다. 같은 slice 안은 상대경로 full path, 다른 slice는 절대경로(alias).</div>
+<div class="tip"><b>entity끼리 알면 @x로 드러내기:</b> <code>entities/A/@x/B.ts</code> ("A crossed with B"). 몰래 import 말고 연결을 눈에 보이게. Entities에서만, 최소 사용. <a href="https://feature-sliced.design/docs/reference/public-api#public-api-for-cross-imports">원문: cross-imports</a></div>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/reference/layers#import-rule-on-layers">Import rule</a> · <a href="https://feature-sliced.design/docs/reference/slices-segments#public-api-rule-on-slices">Public API rule on slices</a></span></section>
+
+<section id="publicapi"><h2>Public API 심화 — 좋은 계약과 barrel 함정</h2>
+<p>좋은 public API의 목표 3개: ① 내부 리팩터링으로부터 바깥 보호 ② 행위 변경은 API 변경으로 드러내기 ③ 필요한 것만 노출. <code>export *</code> 와일드카드는 금지 — 인터페이스 파악 불가 + 내부 노출로 리팩터링이 묶인다.</p>
+<p>다만 index(barrel) 파일의 실무 함정 4개를 공식이 솔직히 적시한다: 순환 import(같은 slice 안은 상대경로로 회피) · <code>shared/ui</code>·<code>shared/lib</code> 트리쉐이킹 파괴(컴포넌트별 index 분리로 해결) · IDE 자동import가 내부경로를 찍음(Steiger 린터로 단속) · 대규모에서 번들러 성능 저하.</p>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/reference/public-api">Public API 레퍼런스 (4대 함정 상세)</a> · 린터 <a href="https://github.com/feature-sliced/steiger">Steiger</a></span></section>
 
 <section id="mistakes"><h2>흔한 실수 5</h2>
 <ol>
 <li><b>Shared 비대화</b> — Shared는 계획 말고 개발 중 "진짜 공유되는 것만" 추출. 의존자가 많아 수정 파급이 큼.</li>
 <li><b>페이지 중복 무리한 추상화</b> — 복붙은 architecturally wrong이 아님. 단 비즈니스 로직 복붙은 금지.</li>
-<li><b>Feature 남발</b> — 신입이 pages+features만 봐도 앱 기능이 보여야 함.</li>
+<li><b>Feature 남발</b> — 기준은 '유저 가치 단위', 재사용은 대표 신호. 신입이 pages+features만 봐도 앱 기능이 보여야 함.</li>
 <li><b><code>export *</code></b> — slice 인터페이스 파악 불가 + 내부 노출. 필요한 것만 명시 export.</li>
-<li><b>barrel(index) 함정</b> — 순환 import(같은 slice 안은 상대경로로 해결) · <code>shared/ui</code> 트리쉐이킹 파괴(컴포넌트별 index 분리) · IDE 자동import 경로 틀어짐(Steiger 린터로 단속).</li>
+<li><b>목적 아닌 이름</b> — <code>components/utils/hooks</code> 폴더는 세그먼트 목적명으로. <code>shared/lib</code> 잡동사니 금지.</li>
 </ol></section>
 
 <section id="migrate"><h2>기존 프로젝트 점진 도입 (8단계 요약)</h2>
 <ol>
-<li>페이지로 나누기 (route 얇게, page 두껍게)</li>
-<li>페이지 외 분리 → <code>shared</code> / <code>app</code></li>
+<li>페이지로 나누기 (route 얇게, page 두껍게 + <code>index.js</code>)</li>
+<li>페이지 외 분리 → <code>shared</code>(페이지가 안 쓰는 것) / <code>app</code>(페이지 쓰는 것·라우트 포함)</li>
 <li>페이지 간 cross-import 제거 (복붙 or shared행)</li>
-<li>Shared 털기 (한 화면 전용은 page slice로)</li>
+<li>Shared 털기 (한 화면 전용은 page slice로 — actions·reducers 포함)</li>
 <li>목적별 정리 (<code>components</code>→<code>shared/ui</code>, <code>utils</code>→<code>shared/lib</code>, <code>constants</code>→<code>shared/config</code>)</li>
-<li>(선택) 공용 Redux slice → entities / features</li>
-<li>(선택) modules 폴더 → features or widgets</li>
+<li>(선택) 공용 Redux slice → entities(개념) / features(액션)</li>
+<li>(선택) modules 폴더 → features or widgets(헤더급)</li>
 <li>(선택) <code>shared/ui</code>에서 비즈니스 로직 분리 → 순수 UI킷</li>
 </ol>
-<div class="warn">팀·매니저 설득 먼저. 셀링 포인트: 점진적이라 <b>새 기능 개발이 중단되지 않음</b> + 문서화된 구조라新人 온보딩 단축.</div>
-</section>
+<div class="warn">팀·매니저 설득 먼저 ("팀원 의사에 반한 전환 금지" — 공식). 셀링 포인트: 점진적이라 <b>새 기능 개발이 중단되지 않음</b>.</div>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/guides/migration/from-custom">Migration from custom (8단계 전문·코드 예시)</a> · <a href="https://feature-sliced.design/docs/get-started/tutorial">Tutorial — Conduit 실습 (설계 Part 1 + 코드 Part 2)</a></span></section>
 
 <section id="rn"><h2>React Native / Expo 적용</h2>
 <table><tr><th>FSD</th><th>RN/Expo 대응</th></tr>
-<tr><td><code>app/</code></td><td>Expo Router면 <code>app/_layout.tsx</code>가 진입점·프로바이더 자리. 이름 충돌 시 <code>src/</code> 아래 FSD + 라우트에서 얇게 re-export</td></tr>
+<tr><td><code>app/</code></td><td>Expo Router가 <code>app/</code>(<code>src/</code> 있으면 <code>src/app/</code>까지) 라우팅용으로 점유. 라우트 폴더는 얇은 등록 전용으로 비우고, FSD 전역 <code>app</code> 레이어(프로바이더·전역 설정)는 별도 폴더명 분리 or <code>_layout</code>에 집중. <code>src/</code> 아래 두기만으로는 해소 안 됨</td></tr>
 <tr><td><code>pages/</code></td><td>screen 단위 slice</td></tr>
 <tr><td><code>model</code></td><td>Zustand store 자리. RN은 오프라인 캐시·동기화 로직이 entity <code>model</code>에</td></tr>
 <tr><td><code>shared/</code></td><td>디자인시스템·fetch 래퍼·딥링크 상수·i18n</td></tr>
 </table></section>
+
+<section id="vsbp"><h2>bulletproof-react와 차이 (개념 오염 주의)</h2>
+<p>FSD가 "폴더 존재론"이면 BP는 "라이브러리 처방전" — FSD 뼈대 + BP 도구세트로 병행 가능. 단 한 가지 충돌: <b>index(barrel) 파일.</b> FSD는 캡슐화 계약으로 <code>index.ts</code>를 필수로, BP는 Vite 트리쉐이킹·순환참조 이유로 직접 import를 지향한다. 팀(프로젝트)은 둘 중 하나로 통일할 것. <a href="https://transoverdrive.github.io/Artifacts/Tech/2026-Bulletproof-React/">BP 소개 페이지</a> 참조.</p></section>
 
 <section id="prompts"><h2>AI에게 시킬 말 (복붙용)</h2>
 <div class="prompt">"이 레포 FSD import rule 위반 찾아줘 (같은 층·위층 import 목록으로)."</div>
@@ -126,18 +147,15 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 <div class="prompt">"components/utils/hooks 폴더 있으면 목적명 세그먼트로 재구성해줘."</div>
 </section>
 
-<section id="links"><h2>핵심 링크 (공식 문서)</h2>
-<div class="links">
-<a href="https://feature-sliced.design/docs/get-started/overview">Overview — 전체 개념</a>
-<a href="https://feature-sliced.design/docs/get-started/tutorial">Tutorial — Conduit 실습 (Part 1 설계 + Part 2 코드)</a>
-<a href="https://feature-sliced.design/docs/reference/layers">Layers — 7 레이어 정의 + import rule</a>
-<a href="https://feature-sliced.design/docs/reference/slices-segments">Slices &amp; Segments — 제로 커플링·세그먼트 작명</a>
-<a href="https://feature-sliced.design/docs/reference/public-api">Public API — 좋은 계약 + barrel 4대 함정</a>
-<a href="https://feature-sliced.design/docs/guides/migration/from-custom">Migration — 기존 구조에서 8단계 전환</a>
-<a href="https://github.com/feature-sliced/steiger">Steiger — 아키텍처 린터</a>
-<a href="https://feature-sliced.design/examples">Examples — 예제 모음</a>
-</div></section>
+<section id="path"><h2>딥다이브 경로 (읽는 순서)</h2>
+<ol>
+<li><a href="https://feature-sliced.design/docs/get-started/overview">Overview</a> — 개념·도입 판단 (15분)</li>
+<li><a href="https://feature-sliced.design/docs/get-started/tutorial">Tutorial</a> — Conduit로 설계→코드 실습 (1~2시간)</li>
+<li><a href="https://feature-sliced.design/docs/reference/layers">Layers</a> → <a href="https://feature-sliced.design/docs/reference/slices-segments">Slices &amp; Segments</a> → <a href="https://feature-sliced.design/docs/reference/public-api">Public API</a> — 레퍼런스 정독</li>
+<li><a href="https://feature-sliced.design/docs/guides/migration/from-custom">Migration</a> — 기존 프로젝트 적용 시</li>
+<li><a href="https://feature-sliced.design/examples">Examples</a> · <a href="https://github.com/feature-sliced/steiger">Steiger</a> — 예제·린터</li>
+</ol></section>
 </main>
-<footer>출처: Feature-Sliced Design 공식 문서 (2026-10-14 수집) · K&W Artifacts/Tech/2026-Feature-Sliced-Design/</footer>
+<footer>출처: Feature-Sliced Design 공식 문서 (2026-10-14 수집·전문 Inbox 보관) · 외부 검수(Gemini 3.8 Flash) PASS_WITH_FIXES 반영 · K&W Artifacts/Tech/2026-Feature-Sliced-Design/</footer>
 </body>
 </html>
