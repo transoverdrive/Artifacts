@@ -42,7 +42,7 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 <p>작은 전역 상태 관리자 — store 자체가 hook, Provider 없음. React / RN / 바닐라 동일 API.</p>
 </div></header>
 <nav class="toc">
-<a href="#s30">30초 요약</a> · <a href="#code">최소 코드</a> · <a href="#merge">병합 규칙</a> · <a href="#compare">비교표</a> · <a href="#core">핵심 7</a> · <a href="#ts">TypeScript</a> · <a href="#mid">미들웨어</a> · <a href="#test">테스트</a> · <a href="#rn">RN 적용</a> · <a href="#prompts">AI 지시문</a> · <a href="#path">딥다이브 경로</a>
+<a href="#s30">30초 요약</a> · <a href="#code">최소 코드</a> · <a href="#merge">병합 규칙</a> · <a href="#compare">비교표</a> · <a href="#core">핵심 7</a> · <a href="#tictactoe">Tic-Tac-Toe</a> · <a href="#nested">중첩 업데이트</a> · <a href="#shallow">useShallow 실예</a> · <a href="#persistex">persist·구독</a> · <a href="#ts">TypeScript</a> · <a href="#mid">미들웨어</a> · <a href="#test">테스트</a> · <a href="#rn">RN 적용</a> · <a href="#prompts">AI 지시문</a> · <a href="#path">딥다이브 경로</a>
 </nav>
 <main>
 <section id="s30"><h2>30초 요약</h2>
@@ -118,6 +118,40 @@ const bears = useBear((s) => s.bears)</pre>
 <li><code>persist</code> 저장소만 AsyncStorage 어댑터로 교체. 단 AsyncStorage는 <b>비동기</b>(웹 localStorage는 동기)라 앱 시작 시 하이드레이션 대기(스플래시·완료 확인) 없이 쓰면 초기 화면 깜빡임·초기값 덮어쓰기가 난다.</li>
 <li>FSD <code>model/</code> 세그먼트가 slice 자리. 토큰 저장은 <code>expo-secure-store</code> 등 OS 암호화 저장소 (BP 보안 섹션 참조).</li>
 </ul></section>
+
+<section id="tictactoe"><h2>Tic-Tac-Toe 뜯어보기 — 공식 튜토리얼 핵심</h2>
+<p>게임 판 + 수 history를 <code>combine</code>(초기상태+액션 분리, TS 추론용)으로 만든다:</p>
+<pre>const useGameStore = create(
+  combine({ history: [Array(9).fill(null)], currentMove: 0 },
+    (set, get) =&gt; ({ setHistory: ..., setCurrentMove: ... })));</pre>
+<p>수 두면 <code>history</code>에 판 스냅샷 추가 + <code>currentMove</code> 전진, "몇 수로 돌아가기"는 currentMove만 되돌리면 됨 — 시간여행이 공짜다. 마지막 정리의 교훈: <code>xIsNext</code>(다음 차례)는 state에 저장하지 말고 <code>currentMove % 2 === 0</code>으로 계산. <b>파생값 저장은 동기화 깨짐의 씨앗</b> — zustand 전체의 제1원칙이다.</p>
+<span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/tutorial-tic-tac-toe.html">Tutorial: Tic-Tac-Toe (전문)</a></span></section>
+
+<section id="nested"><h2>중첩 업데이트 — spread vs Immer</h2>
+<pre>// 기본: 층마다 spread (길지만 명시적)
+set((s) =&gt; ({ deep: { ...s.deep, nested: {
+  ...s.deep.nested, obj: {
+    ...s.deep.nested.obj, count: s.deep.nested.obj.count + 1 } } } }));
+// Immer: 직접 바꾸듯 (프록시가 불변 처리)
+set(produce((s) =&gt; { s.deep.nested.obj.count++ }));</pre>
+<p>3층 이상 중첩이 보이면 Immer 미들웨어(<code>zustand/middleware/immer</code>)를 검토. PM 리뷰: "spread 지옥(5층 이상)이면 Immer 제안" — AI가 알아서 쓰겠다고 하면 gotcha 문서 확인시킬 것.</p>
+<span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/updating-state.html#deeply-nested-object">Deeply nested object (4법 비교)</a></span></section>
+
+<section id="shallow"><h2>useShallow 실예 — 곰 식사</h2>
+<pre>const names = useMeals((s) =&gt; Object.keys(s));  // 값은 같은데 매번 새 배열 → 리렌더!
+// 수정:
+const names = useMeals(useShallow((s) =&gt; Object.keys(s)));  // 얕게 같으면 스킵</pre>
+<p>셀렉터가 객체·배열을 <b>만들어 반환</b>하면(키 목록, 묶음 선택) 내용은 같아도 참조가 달라 매번 다시 그린다. <code>useShallow</code>로 감싸면 해결. AI 코드에서 <code>useStore(s =&gt; ({a: s.a, b: s.b}))</code> 패턴이 보이면 useShallow 유무가 첫 리뷰 포인트.</p>
+<span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/prevent-rerenders-with-use-shallow.html">Prevent rerenders</a></span></section>
+
+<section id="persistex"><h2>persist·구독 실예</h2>
+<pre>import { persist } from 'zustand/middleware';
+const useFish = create(persist((set, get) =&gt; ({
+  fishes: 0,
+  addAFish: () =&gt; set({ fishes: get().fishes + 1 }),
+}), { name: 'food-storage' }));  // localStorage 키</pre>
+<p>감싸기 하나로 새로고침 유지. RN은 저장소만 교체(비동기 주의 — RN 섹션 참조). 컴포넌트 밖에서는 <code>getState/setState/subscribe</code> — <code>subscribeWithSelector</code> 미들웨어로 특정 조각 변경만 구독 + 이전값 비교 + 즉시발화 가능.</p>
+<span class="src">원문 바로가기: <a href="https://github.com/pmndrs/zustand">레포 README (persist·subscribe·vanilla·transient 레시피)</a></span></section>
 
 <section id="prompts"><h2>AI에게 시킬 말 (복붙용)</h2>
 <div class="prompt">"전역 상태 X를 zustand store로: colocation + 셀렉터 구독."</div>
