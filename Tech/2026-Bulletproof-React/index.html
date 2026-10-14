@@ -42,7 +42,7 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 <p>실전 React 처방전 — "어떤 라이브러리로 앱을 만드는가". ★36k · MIT · 데모앱 포함.</p>
 </div></header>
 <nav class="toc">
-<a href="#s30">30초 요약</a> · <a href="#why">왜 필요한가</a> · <a href="#tree">폴더 뼈대</a> · <a href="#std">프로젝트 표준</a> · <a href="#comp">컴포넌트</a> · <a href="#state">상태 5분류</a> · <a href="#api">API 3단</a> · <a href="#test">테스트</a> · <a href="#err">에러</a> · <a href="#sec">보안</a> · <a href="#perf">성능</a> · <a href="#agents">AGENTS.md</a> · <a href="#rn">RN 적용</a> · <a href="#vsfsd">FSD와 차이</a> · <a href="#prompts">AI 지시문</a> · <a href="#path">딥다이브 경로</a>
+<a href="#s30">30초 요약</a> · <a href="#why">왜 필요한가</a> · <a href="#tree">폴더 뼈대</a> · <a href="#std">프로젝트 표준</a> · <a href="#comp">컴포넌트</a> · <a href="#state">상태 5분류</a> · <a href="#api">API 3단</a> · <a href="#api3">3단 뜯어보기</a> · <a href="#eslint">ESLint 강제</a> · <a href="#children">children 최적화</a> · <a href="#test">테스트</a> · <a href="#err">에러</a> · <a href="#sec">보안</a> · <a href="#perf">성능</a> · <a href="#agents">AGENTS.md</a> · <a href="#rn">RN 적용</a> · <a href="#vsfsd">FSD와 차이</a> · <a href="#prompts">AI 지시문</a> · <a href="#path">딥다이브 경로</a>
 </nav>
 <main>
 <section id="s30"><h2>30초 요약</h2>
@@ -151,6 +151,47 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 
 <section id="vsfsd"><h2>FSD와 차이 — barrel 논쟁</h2>
 <p>※ FSD(캡슐화 우선, <code>index.ts</code> 필수)와 달리, BP는 번들 최적화(Vite 트리쉐이킹)·순환참조 회피를 위해 <b>barrel 없는 직접 import</b>를 지향한다. 옛 권장(배럴)은 개정됨. 프로젝트는 둘 중 하나로 통일. <a href="https://transoverdrive.github.io/Artifacts/Tech/2026-Feature-Sliced-Design/">FSD 소개 페이지</a> 참조.</p></section>
+
+<section id="api3"><h2>API 3단 뜯어보기 — discussions 실예</h2>
+<p>공식 권장 패턴 그대로다. 타입 → fetcher → react-query 훅:</p>
+<pre>// api/get-discussions.ts
+export const getDiscussions = (params): Promise&lt;Discussion[]&gt; =&gt; {
+  return api.get('/discussions', { params });
+};
+
+export const useDiscussions = (params) =&gt; {
+  return useQuery({
+    queryKey: ['discussions', params],
+    queryFn: () =&gt; getDiscussions(params),
+  });
+};</pre>
+<p>포인트 3개: ① 단일 api-client 인스턴스 공유 (fetch·axios 무관) ② 요청 선언을 그때그때 만들지 않고 파일로 고정 → "우리 앱의 엔드포인트 목록"이 코드로 보인다 ③ 응답 타입이 아래로 추론. PM 리뷰: "새 API인데 타입·fetcher·훅 3파일(또는 3단)이 있나"만 보면 된다.</p>
+<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/api-layer.md">API Layer</a></span></section>
+
+<section id="eslint"><h2>ESLint 강제 — 규칙을 사람에게 맡기지 않는다</h2>
+<p>cross-feature 금지는 구호가 아니라 린트 규칙이다 (<code>import/no-restricted-paths</code> zones):</p>
+<pre>'import/no-restricted-paths': ['error', { zones: [
+  { target: './src/features/auth', from: './src/features', except: ['./auth'] },
+  // ...comments·discussions·teams·users 동일
+  { target: './src/features', from: './src/app' },  // 단방향 강제
+]}]</pre>
+<p>이게 BP의 핵심 철학이다 — "구조는 문서가 아니라 빌드가 지킨다". AI가 구조를 깨는 코드를 내면 커밋 전 Husky+ESLint가 차단한다. PM은 "이 규칙이 켜져 있나"만 확인하면 된다.</p>
+<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md">Project Structure (규칙 코드 전문)</a></span></section>
+
+<section id="children"><h2>children 최적화 — 코드로 이해하기</h2>
+<pre>// 미최적: count 바뀔 때마다 PureComponent도 리렌더
+const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+  return (&lt;div&gt;&lt;button onClick={...}/&gt;&lt;PureComponent /&gt;&lt;/div&gt;);
+};
+// 최적: children은 부모 리렌더에 영향 안 받음
+const App = () =&gt; (&lt;Counter&gt;&lt;PureComponent /&gt;&lt;/Counter&gt;);
+const Counter = ({ children }) =&gt; {
+  const [count, setCount] = useState(0);
+  return (&lt;div&gt;&lt;button onClick={...}/&gt;{children}&lt;/div&gt;);
+};</pre>
+<p>JSX를 children으로 넘기면 고립된 VDOM이 돼 부모가 다시 그려도 안 따라 그려진다. memo·useMemo 이전에 쓸 치트키. AI 리뷰 포인트: "상태 쓰는 컴포넌트 안에 안 쓰는 무거운 자식이 같이 있나".</p>
+<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/performance.md">Performance</a></span></section>
 
 <section id="prompts"><h2>AI에게 시킬 말 (복붙용)</h2>
 <div class="prompt">"기능 X를 features/X로: 필요한 폴더만 + cross-feature import 없이."</div>
