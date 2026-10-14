@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Zustand — 바이브코딩 PM 소개</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.7;color:#1e293b;background:#f8fafc;padding:0 0 4rem}
+header{background:#713f12;color:#fff;padding:2.5rem 1.25rem}
+header .wrap,main{max-width:820px;margin:0 auto}
+header h1{font-size:1.6rem;margin-bottom:.4rem}
+header p{color:#fde68a;font-size:.95rem}
+nav.toc{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem 1.25rem;margin:-1.2rem auto 1.5rem;max-width:820px}
+nav.toc a{color:#a16207;text-decoration:none;font-size:.9rem;margin-right:.4rem}
+main{padding:0 1.25rem}
+section{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.4rem;margin-bottom:1.1rem}
+h2{font-size:1.2rem;margin-bottom:.7rem;color:#0f172a}
+p,li{font-size:.95rem}
+ul,ol{padding-left:1.3rem;margin:.4rem 0}
+li{margin-bottom:.3rem}
+code{background:#f1f5f9;padding:.1rem .4rem;border-radius:6px;font-size:.85em;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre{background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:10px;overflow-x:auto;font-size:.82rem;line-height:1.6;margin:.6rem 0}
+.rule{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:.9rem 1rem;margin:.6rem 0;font-size:.93rem}
+table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.6rem 0}
+th,td{border:1px solid #e2e8f0;padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:#f8fafc}
+a{color:#a16207}
+.links a{display:block;padding:.3rem 0;font-size:.92rem;word-break:break-all}
+footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
+.prompt{background:#f8fafc;border:1px dashed #94a3b8;border-radius:10px;padding:.7rem .9rem;margin:.5rem 0;font-size:.9rem}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Zustand 🐻</h1>
+<p>작은 전역 상태 관리자 — store 자체가 hook, Provider 없음. React / RN / 바닐라 동일 API.</p>
+</div></header>
+<nav class="toc">
+<a href="#s30">30초 요약</a> · <a href="#code">최소 코드</a> · <a href="#compare">비교표</a> · <a href="#core">핵심 6</a> · <a href="#mid">미들웨어</a> · <a href="#rn">RN 적용</a> · <a href="#prompts">AI 지시문</a> · <a href="#links">핵심 링크</a>
+</nav>
+<main>
+<section id="s30"><h2>30초 요약</h2>
+<ul>
+<li><code>create()</code> 하나로 store, <code>useStore(s =&gt; s.조각)</code> 선택 구독. Provider 래핑 불필요.</li>
+<li>Redux와 개념 유사(불변)하되 보일러플레이트 없음. zombie child·동시성·context loss 해결.</li>
+<li>셀렉터가 곧 구독: 통째 구독 금지, 객체 묶음은 <code>useShallow</code>.</li>
+<li>서버 상태는 react-query 자리. zustand는 클라이언트 상태만.</li>
+</ul></section>
+
+<section id="code"><h2>최소 코드</h2>
+<pre>import { create } from 'zustand'
+
+const useBear = create((set) => ({
+  bears: 0,
+  increase: () => set((s) => ({ bears: s.bears + 1 })),
+}))
+
+// 이 조각이 바뀔 때만 리렌더
+const bears = useBear((s) => s.bears)</pre>
+<div class="rule"><b>주의:</b> <code>set</code>은 1레벨 얕은 병합. 중첩 상태는 spread/Immer로. <code>set(next, true)</code> 전체교체는 액션까지 삭제.</div>
+</section>
+
+<section id="compare"><h2>비교표</h2>
+<table><tr><th>상대</th><th>차이</th></tr>
+<tr><td>Redux</td><td>개념 유사, Provider 필수+보일러플레이트. 대규모 규율·DevTools 생태계면 Redux</td></tr>
+<tr><td>Valtio</td><td>mutable(proxy) 자동최적화. "막 써도 되게"면 Valtio, 명시적이면 Zustand</td></tr>
+<tr><td>Jotai</td><td>원자 조합 vs 단일 store. 잘게 쪼갠 파생이면 Jotai</td></tr>
+</table></section>
+
+<section id="core"><h2>핵심 6</h2>
+<ol>
+<li><b>파생값은 계산:</b> <code>xIsNext = currentMove % 2</code> — 저장하면 동기화 깨짐.</li>
+<li><b>Slices:</b> 큰 store는 slice로 나눠 합치기. middleware는 합친 곳에만.</li>
+<li><b>액션 외부화 가능:</b> <code>setState</code> 직접 호출 — hook 없이, 코드스플리팅 용이.</li>
+<li><b>컴포넌트 밖 구독:</b> <code>getState/subscribe</code> — 가드·유틸·백그라운드 자리.</li>
+<li><b>자주 바뀌는 값:</b> subscribe+ref transient 처리로 리렌더 없이.</li>
+<li><b>TS:</b> <code>create&lt;State&gt;()(...)</code> 한 겹 더. <code>combine</code>이면 추론.</li>
+</ol></section>
+
+<section id="mid"><h2>미들웨어 4종</h2>
+<ul>
+<li><code>persist</code> — 새로고침 유지 (localStorage 등)</li>
+<li><code>devtools</code> — Redux DevTools 연결, 액션명 지정 가능</li>
+<li><code>immer</code> — 중첩 업데이트 간편</li>
+<li><code>subscribeWithSelector</code> — 선택 구독+이전값+즉시발화</li>
+</ul></section>
+
+<section id="rn"><h2>React Native 적용</h2>
+<p>RN·웹·바닐라 동일 API. 네이티브 모듈과는 <code>createStore</code>(vanilla)로 공유. <code>persist</code> 저장소만 AsyncStorage 어댑터로 교체. 테스트는 RNTL+MSW. FSD <code>model/</code> 세그먼트가 slice 자리.</p></section>
+
+<section id="prompts"><h2>AI에게 시킬 말</h2>
+<div class="prompt">"전역 상태 X를 zustand store로: colocation + 셀렉터 구독."</div>
+<div class="prompt">"객체 선택에는 useShallow 붙여줘."</div>
+<div class="prompt">"파생값 store에서 빼고 셀렉터 계산으로."</div>
+<div class="prompt">"유지 필요하면 persist, slice 분할은 합친 곳에만 middleware."</div>
+</section>
+
+<section id="links"><h2>핵심 링크</h2>
+<div class="links">
+<a href="https://zustand.docs.pmnd.rs/learn.html">Learn — 전체 목차</a>
+<a href="https://zustand.docs.pmnd.rs/learn/getting-started/introduction.html">Introduction — 곰 예제</a>
+<a href="https://zustand.docs.pmnd.rs/learn/getting-started/comparison.html">Comparison — Redux·Valtio·Jotai·Recoil</a>
+<a href="https://zustand.docs.pmnd.rs/learn/guides/updating-state.html">Updating state — 중첩·Immer</a>
+<a href="https://zustand.docs.pmnd.rs/learn/guides/immutable-state-and-merging.html">Immutable &amp; merging — 병합 규칙</a>
+<a href="https://zustand.docs.pmnd.rs/learn/guides/slices-pattern.html">Slices pattern — store 분할</a>
+<a href="https://zustand.docs.pmnd.rs/learn/guides/prevent-rerenders-with-use-shallow.html">useShallow — 리렌더 방지</a>
+<a href="https://zustand.docs.pmnd.rs/learn/guides/beginner-typescript.html">Beginner TypeScript</a>
+<a href="https://zustand.docs.pmnd.rs/learn/guides/testing.html">Testing — RTL·RNTL·MSW</a>
+<a href="https://zustand.docs.pmnd.rs/learn/guides/tutorial-tic-tac-toe.html">Tutorial — Tic-Tac-Toe</a>
+<a href="https://github.com/pmndrs/zustand">레포 — 레시피 총집합</a>
+</div></section>
+</main>
+<footer>출처: Zustand 공식 문서·레포 (2026-10-15 수집) · K&W Artifacts/Tech/2026-Zustand/</footer>
+</body>
+</html>
