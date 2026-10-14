@@ -44,7 +44,7 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 </div></header>
 
 <nav class="toc">
-<a href="#s30">30초 요약</a> · <a href="#why">왜 필요한가</a> · <a href="#three">3겹 구조</a> · <a href="#layers">7 레이어</a> · <a href="#rules">2대 규칙</a> · <a href="#publicapi">Public API 심화</a> · <a href="#mistakes">흔한 실수</a> · <a href="#migrate">점진 도입</a> · <a href="#rn">RN/Expo</a> · <a href="#vsbp">BP와 차이</a> · <a href="#prompts">AI 지시문</a> · <a href="#path">딥다이브 경로</a>
+<a href="#s30">30초 요약</a> · <a href="#why">왜 필요한가</a> · <a href="#three">3겹 구조</a> · <a href="#layers">7 레이어</a> · <a href="#rules">2대 규칙</a> · <a href="#publicapi">Public API 심화</a> · <a href="#conduit">Conduit 뜯어보기</a> · <a href="#layerdetail">레이어별 내용</a> · <a href="#mistakes">흔한 실수</a> · <a href="#migrate">점진 도입</a> · <a href="#rn">RN/Expo</a> · <a href="#vsbp">BP와 차이</a> · <a href="#prompts">AI 지시문</a> · <a href="#path">딥다이브 경로</a>
 </nav>
 
 <main>
@@ -139,6 +139,33 @@ footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 
 <section id="vsbp"><h2>bulletproof-react와 차이 (개념 오염 주의)</h2>
 <p>FSD가 "폴더 존재론"이면 BP는 "라이브러리 처방전" — FSD 뼈대 + BP 도구세트로 병행 가능. 단 한 가지 충돌: <b>index(barrel) 파일.</b> FSD는 캡슐화 계약으로 <code>index.ts</code>를 필수로, BP는 Vite 트리쉐이킹·순환참조 이유로 직접 import를 지향한다. 팀(프로젝트)은 둘 중 하나로 통일할 것. <a href="https://transoverdrive.github.io/Artifacts/Tech/2026-Bulletproof-React/">BP 소개 페이지</a> 참조.</p></section>
+
+<section id="conduit"><h2>Conduit 뜯어보기 — 공식 튜토리얼 설계 과정</h2>
+<p>공식 튜토리얼은 Medium 클론(Conduit)을 FSD로 설계한다. 작은 앱이라 <code>App</code>+<code>Pages</code>+<code>Shared</code> 3층으로 시작한다. 과정 자체가 PM의 설계 리뷰 체크리스트다.</p>
+<h3>1) 화면 나열 → Pages slice</h3>
+<p>피드·로그인/가입·글읽기·글쓰기·프로필·설정 — 각 화면이 <code>pages/feed</code> 같은 slice가 된다. 핵심은 <b>화면끼리 서로 import 못 함</b> (import rule). 화면 간 공유는 아래층으로 내린다.</p>
+<h3>2) 피드 뜯기 — segments 나누기</h3>
+<p>태그 목록은 "목록 가져오기(api) + 칩 렌더(ui) + 선택 저장(model)"으로 쪼갠다. 글 목록도 동일하게 <code>api/ui/model</code>. "무슨 화면"이 아니라 "무슨 목적 코드"로 나누는 감각이 segments다.</p>
+<h3>3) Shared는 나중에 추출</h3>
+<p>UI킷·API 래퍼·env 파싱·i18n·라우터 상수 — 개발 중 "진짜 공유되는 것"만 내린다. 헤더 같은 공통 UI도, 윗층(business)을 import하지 않으면 Shared에 둬도 된다. 윗층을 참조해야 하면 Widgets행.</p>
+<h3>4) Public API — index.ts 계약</h3>
+<pre>pages/feed/index.ts
+export { FeedPage } from "./ui/FeedPage";</pre>
+<p>바깥은 이 index로만. Shared는 segment별 index(<code>shared/ui</code>, <code>shared/api</code>…), slice 있는 층은 slice당 index 1개가 관례.</p>
+<h3>5) 폼 화면 — model의 일</h3>
+<p>글쓰기 화면: 입력·버튼은 Shared에서 가져와 <code>ui</code>에 조립, 전송은 <code>api</code> mutation, 검증 스키마·에러문구·입력 임시저장은 <code>model</code>. "검증은 model"이 리뷰 포인트.</p>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/get-started/tutorial#part-1-on-paper">Tutorial Part 1 (설계)</a> · <a href="https://feature-sliced.design/docs/get-started/tutorial#part-2-in-code">Part 2 (Remix 실코드)</a></span></section>
+
+<section id="layerdetail"><h2>레이어별 무엇이 들어가나</h2>
+<ul>
+<li><b>Shared</b> — 외부 세계 접점(백엔드·서드파티·env) + 자체 미니 라이브러리. <code>api</code>(클라이언트+엔드포인트별 함수) · <code>ui</code>(순수 UI킷, 비즈니스 로직 없음 — 로고·레이아웃·검색바 정도는 OK) · <code>lib</code>(날짜·색상 등 영역별, README에 수록 기준 문서화) · <code>config</code> · <code>routes</code> · <code>i18n</code>.</li>
+<li><b>Entities</b> — <code>user·post</code> 같은 실세계 개념. model(저장·검증 스키마) + api(개체 관련 요청) + ui(여러 화면에서 쓰는 동일 생김새). 개체끼리 얽히면 <code>@x</code> 표기로 드러내고, 로직은 Features/Pages로 올린다.</li>
+<li><b>Features</b> — 유저가 하려는 일. UI(폼) + api + model(검증·내부상태) + config(플래그). 기준은 유저 가치, 재사용은 대표 신호.</li>
+<li><b>Widgets</b> — 여러 화면 공용 큰 블록 or 중첩 라우터의 라우터 블록. 한 화면 전용 큰 덩이는 widget으로 올리지 말고 page에 둔다.</li>
+<li><b>Pages</b> — 화면 그 자체 + 로딩·에러바운더리 + 전용 페칭. 전용 model은 드묾.</li>
+<li><b>App</b> — routes(라우터 설정)·store(전역 store 설정)·styles·entrypoint + 기술적·사업적 전역사 (프로바이더·분석).</li>
+</ul>
+<span class="src">원문 바로가기: <a href="https://feature-sliced.design/docs/reference/layers#layer-definitions">Layer definitions</a></span></section>
 
 <section id="prompts"><h2>AI에게 시킬 말 (복붙용)</h2>
 <div class="prompt">"이 레포 FSD import rule 위반 찾아줘 (같은 층·위층 import 목록으로)."</div>
