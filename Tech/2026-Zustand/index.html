@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>Zustand — 바이브코딩 PM 소개</title>
+<title>제3강 Zustand — 곰 스토어 사용법</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.75;color:#1e293b;background:#f8fafc;padding:0 0 4rem}
+body{font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.8;color:#1e293b;background:#f8fafc;padding:0 0 4rem}
 header{background:#713f12;color:#fff;padding:2.5rem 1.25rem}
 header .wrap,main{max-width:840px;margin:0 auto}
+header .lec{display:inline-block;background:#fde68a;color:#713f12;font-weight:700;font-size:.8rem;border-radius:999px;padding:.15rem .7rem;margin-bottom:.6rem}
 header h1{font-size:1.6rem;margin-bottom:.4rem}
 header p{color:#fde68a;font-size:.95rem}
 nav.toc{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem 1.25rem;margin:-1.2rem auto 1.5rem;max-width:840px;line-height:2}
@@ -20,41 +21,51 @@ h2{font-size:1.22rem;margin-bottom:.7rem;color:#0f172a}
 h3{font-size:1rem;margin:1.1rem 0 .4rem;color:#334155}
 p,li{font-size:.95rem}
 ul,ol{padding-left:1.3rem;margin:.4rem 0}
-li{margin-bottom:.35rem}
+li{margin-bottom:.4rem}
 code{background:#f1f5f9;padding:.1rem .4rem;border-radius:6px;font-size:.85em;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre{background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:10px;overflow-x:auto;font-size:.82rem;line-height:1.65;margin:.6rem 0}
+.goal{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
+.analog{background:#faf5ff;border:1px solid #d8b4fe;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
 .rule{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
 .warn{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
+.quiz{background:#fff7ed;border:1px solid #fdba74;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
 .src{display:block;margin-top:.8rem;font-size:.87rem;color:#a16207}
 .src a{color:#a16207}
 table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.6rem 0}
 th,td{border:1px solid #e2e8f0;padding:.5rem .6rem;text-align:left;vertical-align:top}
 th{background:#f8fafc}
 a{color:#a16207}
-.links a{display:block;padding:.3rem 0;font-size:.92rem;word-break:break-all}
+.next{background:#713f12;color:#fff;border-radius:12px;padding:1.3rem 1.5rem;margin-bottom:1.1rem}
+.prev{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.1rem;font-size:.9rem}
 footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 .prompt{background:#f8fafc;border:1px dashed #94a3b8;border-radius:10px;padding:.7rem .9rem;margin:.5rem 0;font-size:.9rem}
+details{margin-top:.5rem;font-size:.9rem}
+summary{cursor:pointer;color:#a16207}
 </style>
 </head>
 <body>
 <header><div class="wrap">
-<h1>Zustand 🐻</h1>
-<p>작은 전역 상태 관리자 — store 자체가 hook, Provider 없음. React / RN / 바닐라 동일 API.</p>
+<span class="lec">제3강 · 상태관리</span>
+<h1>Zustand 🐻 — 곰 스토어 사용법</h1>
+<p>마지막 3강입니다! 전역 상태가 필요할 때, Redux의 무거움 없이 가볍게 쓰는 법을 배웁니다. 곰 한 마리와 친해지는 시간, 시작합니다!</p>
 </div></header>
 <nav class="toc">
-<a href="#s30">30초 요약</a> · <a href="#code">최소 코드</a> · <a href="#merge">병합 규칙</a> · <a href="#compare">비교표</a> · <a href="#core">핵심 7</a> · <a href="#tictactoe">Tic-Tac-Toe</a> · <a href="#nested">중첩 업데이트</a> · <a href="#shallow">useShallow 실예</a> · <a href="#persistex">persist·구독</a> · <a href="#ts">TypeScript</a> · <a href="#mid">미들웨어</a> · <a href="#test">테스트</a> · <a href="#rn">RN 적용</a> · <a href="#prompts">AI 지시문</a> · <a href="#path">딥다이브 경로</a>
+<a href="#goal">학습목표</a> · <a href="#s30">30초 요약</a> · <a href="#code">최소 코드</a> · <a href="#merge">병합 규칙</a> · <a href="#compare">비교표</a> · <a href="#core">핵심 7</a> · <a href="#tictactoe">Tic-Tac-Toe</a> · <a href="#nested">중첩 업데이트</a> · <a href="#shallow">useShallow 실예</a> · <a href="#persistex">persist·구독</a> · <a href="#ts">TypeScript</a> · <a href="#mid">미들웨어</a> · <a href="#test">테스트</a> · <a href="#rn">RN 적용</a> · <a href="#prompts">AI 지시문</a> · <a href="#quiz">확인문제</a> · <a href="#path">딥다이브 경로</a>
 </nav>
 <main>
+<section id="goal"><h2>이 강의의 학습목표</h2>
+<div class="goal">① store를 만들고 조각만 구독할 수 있다 ② useShallow가 필요한 경우를 알아본다 ③ persist·devtools를 언제 쓰는지 안다. 약 20분, 곰 인형은 선택 사항입니다.</div></section>
+
 <section id="s30"><h2>30초 요약</h2>
 <ul>
-<li><code>create()</code> 하나로 store, <code>useStore(s =&gt; s.조각)</code> 선택 구독. Provider 래핑 불필요.</li>
-<li>Redux와 개념 유사(불변)하되 보일러플레이트 없음. zombie child·동시성·context loss 해결.</li>
-<li>셀렉터가 곧 구독: 통째 구독 금지, 객체 묶음은 <code>useShallow</code>.</li>
-<li>서버 상태는 react-query 자리. zustand는 클라이언트 상태만.</li>
+<li><code>create()</code> 하나로 store를 만들고, <code>useStore(s =&gt; s.조각)</code>으로 필요한 조각만 구독합니다. Provider 래핑이 필요 없습니다!</li>
+<li>Redux와 개념은 유사(불변)하되 보일러플레이트가 없습니다. zombie child·동시성·context loss 문제도 해결돼 있습니다.</li>
+<li>셀렉터가 곧 구독입니다. 통째로 구독하면 안 되고, 객체로 묶어 고르면 <code>useShallow</code>를 붙입니다.</li>
+<li>서버 상태는 react-query 자리! zustand는 클라이언트 상태만 맡습니다.</li>
 </ul>
 <span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn.html">Learn — 전체 목차</a> · <a href="https://zustand.docs.pmnd.rs/learn/getting-started/introduction.html">Introduction — 곰 예제·설치</a></span></section>
 
-<section id="code"><h2>최소 코드 — store가 hook이다</h2>
+<section id="code"><h2>최소 코드 — store가 곧 hook입니다</h2>
 <pre>import { create } from 'zustand'
 
 const useBear = create((set) => ({
@@ -62,69 +73,46 @@ const useBear = create((set) => ({
   increase: () => set((s) => ({ bears: s.bears + 1 })),
 }))
 
-// 이 조각이 바뀔 때만 리렌더
+// 이 조각이 바뀔 때만 다시 그려집니다
 const bears = useBear((s) => s.bears)</pre>
-<p>상태+액션을 한 store에 colocate하는 게 권장. 컴포넌트는 필요한 조각만 <b>선택</b>한다 — 선택한 조각이 바뀔 때만 리렌더되므로, 통째로 구독하는 것(<code>useBear()</code>)은 매 변경에 전부 다시 그리는 지름길이다.</p>
+<p>상태와 액션을 한 store에 같이 두는(colocate) 게 권장 방식입니다. 컴포넌트는 필요한 조각만 <b>선택</b>합니다. 선택한 조각이 바뀔 때만 리렌더되니까요. 반대로 통째로 구독하는 것(<code>useBear()</code>)은 "뭐가 바뀌든 전부 다시 그리기"라서 성능 지름길이 됩니다. 자제해 주세요!</p>
+<div class="analog">🐻 <b>비유 — 곰 우리 관람:</b> 동물원에 가면 보고 싶은 우리(조각)만 봅니다. 매번 동물원 전체(통째 구독)를 한 바퀴 돌 필요는 없죠? 셀렉터가 바로 "보고 싶은 우리만 골라보는" 행위입니다.</div>
 <span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/getting-started/introduction.html#first-create-a-store">First create a store</a></span></section>
 
-<section id="merge"><h2>병합 규칙 — set은 1레벨만 합친다</h2>
-<p><code>set</code>은 최상위 1레벨만 얕게 병합한다. <code>set({ bears: 5 })</code>는 나머지(state 전체)를 유지하지만, 중첩 객체는 직접 spread해야 한다:</p>
+<section id="merge"><h2>병합 규칙 — set은 1레벨만 합쳐줍니다</h2>
+<p><code>set</code>은 최상위 1레벨만 얕게 병합합니다. <code>set({ bears: 5 })</code>는 나머지(state 전체)를 유지합니다. 하지만 중첩 객체는 직접 spread로 열어줘야 합니다:</p>
 <pre>nested: { ...state.nested, count: state.nested.count + 1 }</pre>
-<p>깊어지면 Immer 미들웨어로 (<code>set(produce(s =&gt; { s.a.b.c++ }))</code>). 전체 교체는 <code>set(next, true)</code> — 액션까지 날아가니 주의. 액션 안에서 현재값 읽기는 <code>get()</code>, async 액션은 그냥 <code>set</code> 호출 (특별 취급 없음).</p>
+<p>깊어지면 Immer 미들웨어로 바꿉니다 (<code>set(produce(s =&gt; { s.a.b.c++ }))</code>). 전체 교체는 <code>set(next, true)</code>인데, 액션까지 날아가니 최후의 수단입니다. 액션 안에서 현재값이 필요하면 <code>get()</code>, async 액션은 그냥 <code>set</code> 호출 — 특별 취급 없습니다. "준비되면 set"이 전부예요.</p>
 <span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/immutable-state-and-merging.html">Immutable &amp; merging</a> · <a href="https://zustand.docs.pmnd.rs/learn/guides/updating-state.html">Updating state — 중첩·Immer·optics·Ramda</a></span></section>
 
-<section id="compare"><h2>비교표 — 왜 Redux 대신인가</h2>
+<section id="compare"><h2>비교표 — 왜 Redux 대신인가요?</h2>
 <table><tr><th>상대</th><th>차이</th><th>선택 기준</th></tr>
-<tr><td>Redux</td><td>개념 유사(불변). Redux는 Provider 필수 + 보일러플레이트</td><td>새 프로젝트·소규모→Zustand. 대규모 규율·DevTools 생태계→Redux Toolkit</td></tr>
-<tr><td>Valtio</td><td>mutable(proxy) + 접근 기반 자동최적화</td><td>"막 써도 되게"면 Valtio, 명시적 불변+셀렉터면 Zustand</td></tr>
-<tr><td>Jotai</td><td>원자(atoms) 조합 vs 단일 store</td><td>잘게 쪼갠 파생 상태→Jotai, 기능 단위 store→Zustand</td></tr>
-<tr><td>Recoil</td><td>atom 키 + Provider 필요</td><td>신규 비권장 분위기</td></tr>
+<tr><td>Redux</td><td>개념 유사(불변). Redux는 Provider 필수 + 보일러플레이트가 많음</td><td>새 프로젝트·소규모 → Zustand. 대규모 규율·DevTools 생태계 → Redux Toolkit</td></tr>
+<tr><td>Valtio</td><td>mutable(proxy) + 접근 기반 자동최적화</td><td>"막 써도 되게" → Valtio, "명시적으로" → Zustand</td></tr>
+<tr><td>Jotai</td><td>원자(atoms) 조합 vs 단일 store</td><td>잘게 쪼갠 파생 상태 → Jotai, 기능 단위 store → Zustand</td></tr>
+<tr><td>Recoil</td><td>atom 키 + Provider 필요</td><td>신규는 비권장 분위기입니다</td></tr>
 </table>
-<p>렌더 최적화는 넷 다 수동 셀렉터가 정석이다.</p>
+<p>렌더 최적화는 넷 다 수동 셀렉터가 정석입니다.</p>
 <span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/getting-started/comparison.html">Comparison — 코드 대조 포함</a></span></section>
 
-<section id="core"><h2>핵심 7</h2>
+<section id="core"><h2>핵심 7 — 이건 꼭 가져가세요</h2>
 <ol>
-<li><b>파생값은 계산, 저장 금지:</b> <code>xIsNext = currentMove % 2</code> (공식 Tic-Tac-Toe 교훈) — 저장하면 동기화 깨짐.</li>
-<li><b>Slices 패턴:</b> 큰 store는 <code>createFishSlice</code>+<code>createBearSlice</code>로 나눠 <code>create((...a) =&gt; ({...합침}))</code>. <b>middleware는 합친 store에만</b> (slice 안에 걸면 오동작).</li>
-<li><b>액션 외부화 가능:</b> store 밖에 <code>setState</code> 직접 호출 — hook 없이 호출 + 코드스플리팅 용이. 캡슐화 취향이면 colocation.</li>
-<li><b>컴포넌트 밖 읽기/구독:</b> <code>getState()·setState()·subscribe()</code> — 네비게이션 가드·유틸·백그라운드 자리. 단 Next 서버컴포넌트에서는 금지.</li>
-<li><b>자주 바뀌는 값:</b> subscribe+ref transient 처리로 리렌더 없이 (스크롤·애니메이션).</li>
-<li><b>객체 선택엔 useShallow:</b> <code>useShallow(s =&gt; ({nuts, honey}))</code> — 새 객체라 매번 바뀐 걸로 보이는 문제 해결.</li>
-<li><b>reset은 상수로:</b> <code>initialState</code> 상수 + <code>set(initialState)</code> (로그아웃·세션초기화).</li>
+<li><b>파생값은 계산, 저장 금지:</b> <code>xIsNext = currentMove % 2</code> (공식 Tic-Tac-Toe 교훈) — 저장하면 동기화가 깨집니다.</li>
+<li><b>Slices 패턴:</b> 큰 store는 <code>createFishSlice</code>+<code>createBearSlice</code>로 나눠 <code>create((...a) =&gt; ({...합침}))</code>. <b>middleware는 합친 store에만!</b> (slice 안에 걸면 오동작합니다)</li>
+<li><b>액션 외부화 가능:</b> store 밖에 <code>setState</code> 직접 호출 — hook 없이 호출되고 코드스플리팅에 유리. 캡슐화 취향이면 colocation.</li>
+<li><b>컴포넌트 밖 읽기/구독:</b> <code>getState()·setState()·subscribe()</code> — 네비게이션 가드·유틸·백그라운드 작업 자리입니다. 단 Next 서버컴포넌트에서는 금지!</li>
+<li><b>자주 바뀌는 값:</b> subscribe+ref transient 처리로 리렌더 없이 (스크롤·애니메이션 같은 것).</li>
+<li><b>객체 선택엔 useShallow:</b> <code>useShallow(s =&gt; ({nuts, honey}))</code> — 새 객체라 매번 바뀐 걸로 보이는 문제를 해결합니다.</li>
+<li><b>reset은 상수로:</b> <code>initialState</code> 상수 + <code>set(initialState)</code> (로그아웃·세션초기화용).</li>
 </ol>
 <span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/slices-pattern.html">Slices</a> · <a href="https://zustand.docs.pmnd.rs/learn/guides/practice-with-no-store-actions.html">No-store-actions</a> · <a href="https://zustand.docs.pmnd.rs/learn/guides/prevent-rerenders-with-use-shallow.html">useShallow</a> · <a href="https://zustand.docs.pmnd.rs/learn/guides/tutorial-tic-tac-toe.html">Tic-Tac-Toe 튜토리얼</a></span></section>
 
-<section id="ts"><h2>TypeScript — 커링 한 겹</h2>
-<p>타입 지정 시 커링(currying) 문법인 <code>create&lt;BearState&gt;()(…)</code> 형태로 선언한다. <code>combine</code>을 쓰면 interface 없이 상태·액션 추론. <code>ExtractState</code>로 테스트·유틸 타입 재활용. 비동기 액션도 타입 그대로 (<code>fetchBears: () =&gt; Promise&lt;void&gt;</code>).</p>
-<span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/beginner-typescript.html">Beginner TypeScript — combine·devtools·persist·async·멀티스토어</a></span></section>
-
-<section id="mid"><h2>미들웨어 4종</h2>
-<ul>
-<li><code>persist</code> — 새로고침 유지. <code>{ name: '저장키' }</code> + 저장소 교체 가능.</li>
-<li><code>devtools</code> — Redux DevTools 연결. <code>set</code> 3번째 인자로 액션명 지정.</li>
-<li><code>immer</code> — 중첩 업데이트 간편 (<code>zustand/middleware/immer</code>).</li>
-<li><code>subscribeWithSelector</code> — 선택 구독 + 이전값 + <code>fireImmediately</code>.</li>
-</ul>
-<p>이 넷을 겹쳐 쓰는 게 표준형: <code>create&lt;S&gt;()(devtools(persist(…)))</code>.</p></section>
-
-<section id="test"><h2>테스트 — RNTL까지 공식 지원</h2>
-<p>웹 RTL + <b>RN은 RNTL</b>(Native Testing Library) + MSW. store mock으로 테스트마다 <code>setState(initial, true)</code> 리셋 — Jest·Vitest 레시피가 공식 문서에 전문 수록. 행위 테스트 원칙(구현상세 금지)은 BP와 동일.</p>
-<span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/testing.html">Testing — Jest·Vitest 목 코드 전문</a></span></section>
-
-<section id="rn"><h2>React Native 적용 (오해 주의 2건 수정됨)</h2>
-<ul>
-<li>RN·웹·바닐라 동일 API. <code>createStore</code>(vanilla)는 React 밖 <b>순수 JS/TS 런타임</b>(이벤트 리스너·서비스·테스트)용 — OS 네이티브 코드(Swift/Kotlin)와 메모리를 공유하는 수단이 아니다.</li>
-<li><code>persist</code> 저장소만 AsyncStorage 어댑터로 교체. 단 AsyncStorage는 <b>비동기</b>(웹 localStorage는 동기)라 앱 시작 시 하이드레이션 대기(스플래시·완료 확인) 없이 쓰면 초기 화면 깜빡임·초기값 덮어쓰기가 난다.</li>
-<li>FSD <code>model/</code> 세그먼트가 slice 자리. 토큰 저장은 <code>expo-secure-store</code> 등 OS 암호화 저장소 (BP 보안 섹션 참조).</li>
-</ul></section>
-
-<section id="tictactoe"><h2>Tic-Tac-Toe 뜯어보기 — 공식 튜토리얼 핵심</h2>
-<p>게임 판 + 수 history를 <code>combine</code>(초기상태+액션 분리, TS 추론용)으로 만든다:</p>
+<section id="tictactoe"><h2>Tic-Tac-Toe 뜯어보기 — 시간여행이 공짜?!</h2>
+<p>공식 튜토리얼의 게임 판 + 수 history를 <code>combine</code>(초기상태+액션 분리, TS 추론용)으로 만듭니다:</p>
 <pre>const useGameStore = create(
   combine({ history: [Array(9).fill(null)], currentMove: 0 },
     (set, get) =&gt; ({ setHistory: ..., setCurrentMove: ... })));</pre>
-<p>수 두면 <code>history</code>에 판 스냅샷 추가 + <code>currentMove</code> 전진, "몇 수로 돌아가기"는 currentMove만 되돌리면 됨 — 시간여행이 공짜다. 마지막 정리의 교훈: <code>xIsNext</code>(다음 차례)는 state에 저장하지 말고 <code>currentMove % 2 === 0</code>으로 계산. <b>파생값 저장은 동기화 깨짐의 씨앗</b> — zustand 전체의 제1원칙이다.</p>
+<p>수를 두면 <code>history</code>에 판 스냅샷이 추가되고 <code>currentMove</code>가 전진합니다. "몇 수로 돌아가기"는 currentMove만 되돌리면 끝 — 시간여행이 공짜인 거죠! 마지막 정리의 교훈이 압권입니다. <code>xIsNext</code>(다음 차례)는 state에 저장하지 말고 <code>currentMove % 2 === 0</code>으로 <b>계산</b>하세요. <b>파생값 저장은 동기화 깨짐의 씨앗</b> — zustand 전체의 제1원칙입니다.</p>
 <span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/tutorial-tic-tac-toe.html">Tutorial: Tic-Tac-Toe (전문)</a></span></section>
 
 <section id="nested"><h2>중첩 업데이트 — spread vs Immer</h2>
@@ -132,32 +120,64 @@ const bears = useBear((s) => s.bears)</pre>
 set((s) =&gt; ({ deep: { ...s.deep, nested: {
   ...s.deep.nested, obj: {
     ...s.deep.nested.obj, count: s.deep.nested.obj.count + 1 } } } }));
-// Immer: 직접 바꾸듯 (프록시가 불변 처리)
+// Immer: 직접 바꾸듯 씁니다 (프록시가 불변 처리)
 set(produce((s) =&gt; { s.deep.nested.obj.count++ }));</pre>
-<p>3층 이상 중첩이 보이면 Immer 미들웨어(<code>zustand/middleware/immer</code>)를 검토. PM 리뷰: "spread 지옥(5층 이상)이면 Immer 제안" — AI가 알아서 쓰겠다고 하면 gotcha 문서 확인시킬 것.</p>
+<p>3층 이상 중첩이 보이면 Immer 미들웨어(<code>zustand/middleware/immer</code>)를 검토하세요. PM 리뷰 멘트: "spread 지옥(5층 이상)이면 Immer 제안해요" — AI가 알아서 쓰겠다고 하면 gotcha 문서부터 확인시키세요.</p>
+<div class="analog">🧅 <b>비유 — 양파 까기:</b> spread는 양파 껍질을 한 장씩 벗기며 속을 바꾸는 일입니다. 5겹이면 눈물 나죠. Immer는 "그냥 속을 짚어 바꾸면 껍질은 알아서" 해주는 마술 장갑입니다.</div>
 <span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/updating-state.html#deeply-nested-object">Deeply nested object (4법 비교)</a></span></section>
 
-<section id="shallow"><h2>useShallow 실예 — 곰 식사</h2>
+<section id="shallow"><h2>useShallow 실예 — 곰들의 식사</h2>
 <pre>const names = useMeals((s) =&gt; Object.keys(s));  // 값은 같은데 매번 새 배열 → 리렌더!
-// 수정:
-const names = useMeals(useShallow((s) =&gt; Object.keys(s)));  // 얕게 같으면 스킵</pre>
-<p>셀렉터가 객체·배열을 <b>만들어 반환</b>하면(키 목록, 묶음 선택) 내용은 같아도 참조가 달라 매번 다시 그린다. <code>useShallow</code>로 감싸면 해결. AI 코드에서 <code>useStore(s =&gt; ({a: s.a, b: s.b}))</code> 패턴이 보이면 useShallow 유무가 첫 리뷰 포인트.</p>
+const names = useMeals(useShallow((s) =&gt; Object.keys(s)));  // 얕게 같으면 스킵!</pre>
+<p>셀렉터가 객체·배열을 <b>만들어 반환</b>하면(키 목록, 묶음 선택) 내용은 같아도 참조(주소)가 달라서 매번 "바뀌었다"고 판단합니다. <code>useShallow</code>로 감싸면 내용만 비교해서 해결! AI 코드에서 <code>useStore(s =&gt; ({a: s.a, b: s.b}))</code> 패턴이 보이면, useShallow 유무가 첫 번째 리뷰 포인트입니다.</p>
+<div class="analog">📋 <b>비유 — 출석부:</b> 매일 새 출석부를 만들면(새 배열), 이름은 같아도 "다른 문서"로 보입니다. useShallow는 "내용이 같으면 같은 문서로 쳐주는" 도장입니다.</div>
 <span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/prevent-rerenders-with-use-shallow.html">Prevent rerenders</a></span></section>
 
-<section id="persistex"><h2>persist·구독 실예</h2>
+<section id="persistex"><h2>persist·구독 실예 — 감싸기 하나면 저장!</h2>
 <pre>import { persist } from 'zustand/middleware';
 const useFish = create(persist((set, get) =&gt; ({
   fishes: 0,
   addAFish: () =&gt; set({ fishes: get().fishes + 1 }),
 }), { name: 'food-storage' }));  // localStorage 키</pre>
-<p>감싸기 하나로 새로고침 유지. RN은 저장소만 교체(비동기 주의 — RN 섹션 참조). 컴포넌트 밖에서는 <code>getState/setState/subscribe</code> — <code>subscribeWithSelector</code> 미들웨어로 특정 조각 변경만 구독 + 이전값 비교 + 즉시발화 가능.</p>
+<p>감싸기 하나로 새로고침해도 유지됩니다. RN에서는 저장소만 교체(비동기 주의 — RN 섹션 참조). 컴포넌트 밖에서는 <code>getState/setState/subscribe</code>를 쓰고, <code>subscribeWithSelector</code> 미들웨어로 특정 조각 변경만 구독 + 이전값 비교 + 즉시 발화까지 가능합니다.</p>
 <span class="src">원문 바로가기: <a href="https://github.com/pmndrs/zustand">레포 README (persist·subscribe·vanilla·transient 레시피)</a></span></section>
+
+<section id="ts"><h2>TypeScript — 커링 한 겹만 기억하세요</h2>
+<p>타입 지정 시 커링(currying) 문법인 <code>create&lt;BearState&gt;()(…)</code> 형태로 선언합니다. 괄호가 한 겹 더 있죠? <code>combine</code>을 쓰면 interface 없이 상태·액션을 추론해 줍니다. <code>ExtractState</code>로 테스트·유틸 타입을 재활용하고, 비동기 액션도 타입 그대로 (<code>fetchBears: () =&gt; Promise&lt;void&gt;</code>) 씁니다.</p>
+<span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/beginner-typescript.html">Beginner TypeScript — combine·devtools·persist·async·멀티스토어</a></span></section>
+
+<section id="mid"><h2>미들웨어 4종 — 필요할 때 하나씩</h2>
+<ul>
+<li><code>persist</code> — 새로고침 유지. <code>{ name: '저장키' }</code> + 저장소 교체 가능.</li>
+<li><code>devtools</code> — Redux DevTools 연결. <code>set</code> 3번째 인자로 액션명 지정 ("bear/eatFish"처럼).</li>
+<li><code>immer</code> — 중첩 업데이트 간편 (<code>zustand/middleware/immer</code>).</li>
+<li><code>subscribeWithSelector</code> — 선택 구독 + 이전값 + <code>fireImmediately</code>.</li>
+</ul>
+<p>이 넷을 겹쳐 쓰는 게 표준형입니다: <code>create&lt;S&gt;()(devtools(persist(…)))</code>. 양파처럼 감싸는 거예요!</p></section>
+
+<section id="test"><h2>테스트 — RNTL까지 공식 지원!</h2>
+<p>웹 RTL + <b>RN은 RNTL</b>(Native Testing Library) + MSW 조합입니다. store mock으로 테스트마다 <code>setState(initial, true)</code> 리셋 — Jest·Vitest 레시피가 공식 문서에 전문으로 실려 있습니다. 행위 테스트 원칙(구현상세 금지)은 2강 BP와 동일합니다.</p>
+<span class="src">원문 바로가기: <a href="https://zustand.docs.pmnd.rs/learn/guides/testing.html">Testing — Jest·Vitest 목 코드 전문</a></span></section>
+
+<section id="rn"><h2>React Native 적용 (오해 주의 2건!)</h2>
+<ul>
+<li>RN·웹·바닐라 동일 API입니다. <code>createStore</code>(vanilla)는 React 밖 <b>순수 JS/TS 런타임</b>(이벤트 리스너·서비스·테스트)용 — OS 네이티브 코드(Swift/Kotlin)와 메모리를 공유하는 수단이 아닙니다! (외부 검수에서 잡힌 오해 1호)</li>
+<li><code>persist</code> 저장소만 AsyncStorage 어댑터로 교체합니다. 단 AsyncStorage는 <b>비동기</b>(웹 localStorage는 동기!)라서, 앱 시작 시 하이드레이션 대기(스플래시·완료 확인) 없이 쓰면 초기 화면 깜빡임·초기값 덮어쓰기가 납니다. (오해 2호)</li>
+<li>FSD <code>model/</code> 세그먼트가 slice 자리입니다. 토큰 저장은 <code>expo-secure-store</code> 등 OS 암호화 저장소 (2강 보안 섹션 참조).</li>
+</ul></section>
 
 <section id="prompts"><h2>AI에게 시킬 말 (복붙용)</h2>
 <div class="prompt">"전역 상태 X를 zustand store로: colocation + 셀렉터 구독."</div>
 <div class="prompt">"객체 선택에는 useShallow 붙여줘."</div>
 <div class="prompt">"파생값 store에서 빼고 셀렉터 계산으로."</div>
 <div class="prompt">"유지 필요하면 persist, slice 분할은 합친 곳에만 middleware."</div>
+</section>
+
+<section id="quiz"><h2>확인문제 — 1분 퀴즈</h2>
+<div class="quiz"><b>Q1.</b> <code>const state = useBear()</code>로 통째 구독했더니 화면이 자주 깜빡입니다. 처방은?
+<details><summary>정답 보기</summary>필요한 조각만 셀렉터로 구독하세요. <code>useBear((s) =&gt; s.bears)</code>처럼요. 객체로 묶으면 useShallow까지!</details></div>
+<div class="quiz"><b>Q2.</b> "장바구니 총액"을 store에 저장하자는 제안, 받아들일까요?
+<details><summary>정답 보기</summary>안 됩니다! 총액은 단가×수량으로 계산되는 파생값이라 셀렉터 계산이 정답입니다. 저장하면 동기화가 깨집니다.</details></div>
 </section>
 
 <section id="path"><h2>딥다이브 경로 (읽는 순서)</h2>
@@ -169,6 +189,8 @@ const useFish = create(persist((set, get) =&gt; ({
 <li><a href="https://github.com/pmndrs/zustand">레포 README</a> — 레시피 총집합 (subscribe·vanilla·transient·middleware)</li>
 </ol></section>
 </main>
-<footer>출처: Zustand 공식 문서·레포 (2026-10-15 수집·전문 Inbox 보관) · 외부 검수(Gemini 3.8 Flash) PASS_WITH_FIXES 반영 · K&W Artifacts/Tech/2026-Zustand/</footer>
+<div class="prev" style="max-width:840px;margin:0 auto 1rem">← 이전 강의: <a href="https://transoverdrive.github.io/Artifacts/Tech/2026-Bulletproof-React/">제2강 bulletproof-react</a> · <a href="https://transoverdrive.github.io/Artifacts/Tech/2026-Feature-Sliced-Design/">제1강 FSD</a></div>
+<div class="next" style="max-width:840px;margin:0 auto">🎓 3강 완주! 다음은 실전 프로젝트에서 세 강의를 엮어 쓰는 순서입니다 → 1강 뼈대 → 2강 처방전 → 3강 상태</div>
+<footer>출처: Zustand 공식 문서·레포 (2026-10-15 수집·전문 보관) · 외부 검수(Gemini 3.8 Flash) PASS_WITH_FIXES 반영 · K&W Artifacts/Tech/2026-Zustand/</footer>
 </body>
 </html>
