@@ -40,6 +40,12 @@ a{color:#c2410c}
 .prev{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.1rem;font-size:.9rem}
 footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:2rem}
 .prompt{background:#f8fafc;border:1px dashed #94a3b8;border-radius:10px;padding:.7rem .9rem;margin:.5rem 0;font-size:.9rem}
+.badgood{display:grid;gap:.6rem;margin:.6rem 0}
+@media(min-width:640px){.badgood{grid-template-columns:1fr 1fr}}
+.bad{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:.8rem 1rem;font-size:.88rem}
+.good{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.8rem 1rem;font-size:.88rem}
+.bad b{color:#dc2626}.good b{color:#16a34a}
+.compass{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:.9rem 1rem;margin:.7rem 0;font-size:.93rem}
 details{margin-top:.5rem;font-size:.9rem}
 summary{cursor:pointer;color:#c2410c}
 </style>
@@ -51,7 +57,7 @@ summary{cursor:pointer;color:#c2410c}
 <p>1강에서 폴더 뼈대를 배웠죠? 2강에서는 "그래서 뭘 깔고, 어떻게 짜느냐"는 실전 처방전을 다룹니다. 36,000개 별을 받은 레시피, 천천히 뜯어보시죠!</p>
 </div></header>
 <nav class="toc">
-<a href="#goal">학습목표</a> · <a href="#s30">30초 요약</a> · <a href="#why">9원칙</a> · <a href="#tree">폴더 뼈대</a> · <a href="#std">프로젝트 표준</a> · <a href="#comp">컴포넌트</a> · <a href="#state">상태 5분류</a> · <a href="#api">API 3단</a> · <a href="#api3">3단 뜯어보기</a> · <a href="#eslint">ESLint 강제</a> · <a href="#children">children 최적화</a> · <a href="#test">테스트</a> · <a href="#err">에러</a> · <a href="#sec">보안</a> · <a href="#perf">성능</a> · <a href="#agents">AGENTS.md</a> · <a href="#rn">RN 적용</a> · <a href="#vsfsd">FSD와 차이</a> · <a href="#prompts">AI 지시문</a> · <a href="#quiz">확인문제</a> · <a href="#path">딥다이브 경로</a>
+<a href="#goal">학습목표</a> · <a href="#s30">30초 요약</a> · <a href="#why">왜 필요한가</a> · <a href="#tree">폴더 뼈대+ESLint</a> · <a href="#std">프로젝트 표준</a> · <a href="#comp">컴포넌트</a> · <a href="#state">상태 5분류</a> · <a href="#api">API 3단</a> · <a href="#test">테스트</a> · <a href="#err">에러</a> · <a href="#sec">보안</a> · <a href="#perf">성능+배포</a> · <a href="#agents">AGENTS.md</a> · <a href="#rn">RN 적용</a> · <a href="#vsfsd">FSD와 차이</a> · <a href="#prompts">AI 지시문</a> · <a href="#quiz">확인문제</a> · <a href="#path">딥다이브 경로</a>
 </nav>
 <main>
 <section id="goal"><h2>이 강의의 학습목표</h2>
@@ -61,7 +67,7 @@ summary{cursor:pointer;color:#c2410c}
 <ul>
 <li>대부분 코드는 <code>src/features/</code>에 기능별로 담습니다. 기능끼리 import 금지, 방향은 <code>shared → features → app</code> (ESLint로 강제).</li>
 <li>상태는 5분류! 컴포넌트(useState) · 전역(zustand) · 서버캐시(react-query) · 폼(Hook Form+Zod) · URL.</li>
-<li>테스트는 통합 중심 + MSW. 에러는 3층 방어. 보안은 웹 기준 JWT 쿠키, RN은 별도(후술).</li>
+<li>테스트는 통합 중심 + MSW(백엔드 없이 진짜 HTTP로 테스트하는 가짜 서버). 에러 3층. JWT(로그인 증표 토큰)는 웹 기준 HttpOnly 쿠키, RN(React Native)은 별도 (후술).</li>
 <li>레포에 동봉된 <b>AGENTS.md가 AI 지시서</b>입니다. "이 규칙대로 만들어" 한 마디면 컨벤션이 강제됩니다.</li>
 <li>템플릿이 아니라 가이드입니다. 원칙을 보고 도구는 갈아끼워도 됩니다.</li>
 </ul>
@@ -85,6 +91,33 @@ summary{cursor:pointer;color:#c2410c}
 └── hooks·lib·stores·testing·types·utils·assets</pre>
 <p>확장성의 비결은 한 줄입니다. <b>"기능 코드를 공용이랑 섞지 마라."</b> feature 안 폴더는 필요한 것만 만듭니다. 1인 가구 냉장고에 반찬 통을 기능별로 두는 거예요. API 호출이 기능 간에 많이 겹치면 별도 <code>api</code> 폴더로 빼는 것도 허용됩니다. 융통성이 있다는 얘기죠.</p>
 <div class="rule"><b>두 강제 장치 (ESLint):</b> ① cross-feature import 금지 — 기능끼리 직거래 금지, 조합은 app 레벨에서. ② 단방향 <code>shared → features → app</code> — 거꾸로 흐르면 에러. 코드가 한 방향으로만 흘러야 예측 가능합니다.</div>
+<div class="rule">💡 <b>잠깐! 트리에 <code>shared</code> 폴더가 없는데 왜 <code>shared → features → app</code>일까요?</b> 제1강 FSD와 달리, BP에는 <code>src/shared</code>라는 폴더가 없습니다! 대신 <code>components·hooks·lib·stores·types·utils</code>처럼 앱 전체에서 공용으로 쓰는 폴더 묶음을 통틀어 <b>'shared(공용 계층)'</b>라 부릅니다. 방향 규칙의 shared는 폴더명이 아니라 "공용 묶음"이라는 뜻입니다.</div>
+<h3>기능끼리 import 금지인데 합치긴 어떻게 하나요?</h3>
+<p>초보자가 가장 막히는 질문입니다. "게시글(discussions) 안에 댓글(comments)을 넣어야 하는데 import를 못 하면요?" 답은 간단합니다. 두 기능이 서로를 부르지 않고, 최상위 <b><code>src/app/routes/</code>(페이지 조립소)</b>에서 나란히 불러 조립(Composition)하는 겁니다!</p>
+<div class="badgood">
+<div class="bad"><b>❌ 나쁜 예 — 기능이 기능을 직접 import (교차 참조 위반!)</b><pre style="margin:.4rem 0">// src/features/discussions/components/discussion-view.tsx
+import { CommentsList }
+  from '@/features/comments/components/comments-list';</pre></div>
+<div class="good"><b>⭕ 좋은 예 — 페이지에서 레고 조립!</b><pre style="margin:.4rem 0">// src/app/routes/app/discussions/discussion.tsx
+import { DiscussionView }
+  from '@/features/discussions/components/discussion-view';
+import { Comments }
+  from '@/features/comments/components/comments';
+
+export const DiscussionRoute = ({ discussionId }) =&gt; (
+  &lt;div&gt;
+    &lt;DiscussionView discussionId={discussionId} /&gt;
+    &lt;Comments discussionId={discussionId} /&gt;
+  &lt;/div&gt;
+);</pre></div>
+</div>
+<h3>규칙은 린트가 지킵니다 — zones 코드</h3>
+<pre>'import/no-restricted-paths': ['error', { zones: [
+  { target: './src/features/auth', from: './src/features', except: ['./auth'] },
+  // ...comments·discussions·teams·users 동일
+  { target: './src/features', from: './src/app' },  // 단방향 강제
+]}]</pre>
+<p>이게 BP의 핵심 철학입니다. <b>"구조는 문서가 아니라 빌드가 지킨다."</b> AI가 구조를 깨는 코드를 내면 커밋 전 Husky+ESLint가 차단합니다. PM님은 "이 규칙이 켜져 있나요?" 이것만 확인하시면 됩니다.</p>
 <span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md">Project Structure — 폴더도·ESLint 설정 코드</a></span></section>
 
 <section id="std"><h2>프로젝트 표준 — 품질은 의지가 아니라 자동화</h2>
@@ -99,11 +132,11 @@ summary{cursor:pointer;color:#c2410c}
 
 <section id="comp"><h2>컴포넌트 — 합성이 정답입니다</h2>
 <ul>
-<li><b>쓰는 곳 곁에 두기(colocation)</b> — 가까울수록 읽기 쉽고, 불필요한 리렌더도 줄어 성능까지 좋아집니다. 일석이조죠.</li>
+<li><b>쓰는 곳 곁에 두기(colocation·공용 폴더에 미리 빼두지 말고 쓰는 기능 안에 바짝 붙이기)</b> — 가까울수록 읽기 쉽고, 불필요한 리렌더도 줄어 성능까지 좋아집니다. 일석이조죠.</li>
 <li>컴포넌트 안에 렌더 함수 중첩 금지 — UI 덩어리는 별도 컴포넌트로 빼내세요.</li>
 <li><b>props 개수 제한</b> — props가 5개를 넘어가면 분할하거나 children/slots 합성을 고민하세요.</li>
 <li>공용 컴포넌트는 라이브러리화. 3rd-party도 래핑해 두면 나중에 갈아끼우기 쉽습니다. 단, 반복이 확인되기 전 추상화는 금지!</li>
-<li>선택지: 완성형(Chakra·Mantine·MUI·AntD) vs 헤드리스(Radix·Base UI·Headless·react-aria) vs 코드형(ShadCN·Park). 스타일링도 tailwind부터 emotion까지 선택. <b>Storybook</b>으로 격리 개발·카탈로그화하면 팀이 편해집니다.</li>
+<li>선택지: 완성형(디자인까지 다 된 가구: Chakra·MUI) vs 헤드리스(기능만 있고 디자인은 투명한 뼈대: Radix) vs 코드형(소스코드를 내 폴더로 복사해 고쳐 쓰는 밀키트: ShadCN). 스타일링도 tailwind부터 emotion까지 선택.</li>
 </ul>
 <div class="analog">🧱 <b>비유 — 레고:</b> 큰 성을 한 덩어리로 만들지 않죠? 창문·문·지붕 부품(합성용 컴포넌트)을 만들고 조립합니다. props 10개짜리 거대 블록보다 작은 블록 여러 개가 낫습니다.</div>
 <span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/components-and-styling.md">Components &amp; Styling — 예제 코드 링크 포함</a></span></section>
@@ -113,78 +146,68 @@ summary{cursor:pointer;color:#c2410c}
 <tr><td>컴포넌트</td><td><code>useState</code> / <code>useReducer</code></td><td>일단 여기! 필요하면 승격</td></tr>
 <tr><td>전역</td><td>zustand · jotai · redux 등</td><td>조기 전역화 금지 (모달·알림·테마 정도만)</td></tr>
 <tr><td>서버 캐시</td><td>react-query · swr</td><td>Redux에 서버데이터 넣지 마세요!</td></tr>
-<tr><td>폼</td><td>Hook Form + Zod</td><td>Form·Input 추상 컴포넌트로 감싸기</td></tr>
+<tr><td>폼</td><td>Hook Form + Zod(입력 검증 스키마)</td><td>Form·Input 추상 컴포넌트로 감싸기</td></tr>
 <tr><td>URL</td><td>router 파라미터·쿼리</td><td>공유 가능한 상태는 URL에 (새로고침·공유302 대응)</td></tr>
 </table>
 <p>왜 나누냐고요? 서버 데이터는 "캐시(유통기한 있는 복사본)"라서 상태관리가 아니라 <b>캐시 관리</b>가 필요합니다. 갱신·무효화·리페치가 본업인 react-query가 그 일을 하죠. 전역 상태는 3강 Zustand에서 깊게 다룹니다!</p>
+<div class="compass">🧭 <b>"이 데이터는 어디에 둘까?" 3초 스무고개</b> — 새 데이터를 만나면 위에서부터 물어보세요!<br>
+1. 서버에서 받아온 데이터인가요? → 무조건 <b>서버 캐시 (React Query)</b><br>
+2. 주소를 공유했을 때 똑같은 화면(검색어·페이지·탭)이 떠야 하나요? → <b>URL 상태</b><br>
+3. 타이핑 후 제출/저장 버튼을 누르는 입력 양식인가요? → <b>폼 상태</b><br>
+4. 이 컴포넌트(또는 바로 옆 자식)에서만 쓰나요? → <b>컴포넌트 상태</b><br>
+5. 로그인·다크모드·전역 알림처럼 앱 어디서든 쓰나요? → 그때만 <b>전역 상태</b>로 승격!</div>
 <span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/state-management.md">State Management</a> · 전역 상태 심화는 <a href="https://transoverdrive.github.io/Artifacts/Tech/2026-Zustand/">제3강 Zustand</a></span></section>
 
-<section id="api"><h2>API 레이어 3단 — 엔드포인트마다 똑같이</h2>
-<p>엔드포인트마다 ① 타입·검증 스키마 → ② fetcher (단일 api-client 인스턴스: fetch·axios·graphql 무관) → ③ react-query/swr/apollo 훅. 이렇게 하면 "우리 앱의 엔드포인트 목록"이 코드로 한눈에 보이고, 응답 타입이 아래로 추론돼 안전해집니다.</p>
-<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/api-layer.md">API Layer — Query/Mutation 예제 코드</a></span></section>
+<section id="api"><h2>API 레이어 3단 — 개념부터 실코드까지</h2>
+<p>엔드포인트마다 ① 타입·검증 스키마 → ② fetcher (단일 api-client 인스턴스: fetch·axios·graphql 무관) → ③ react-query 훅. "정의된 엔드포인트 목록"이 코드로 한눈에 보이고, 응답 타입이 아래로 추론돼 안전해집니다. 공식 discussions 실예 그대로입니다:</p>
+<pre>// 📁 src/features/discussions/api/get-discussions.ts
 
-<section id="api3"><h2>API 3단 뜯어보기 — discussions 실예</h2>
-<p>공식 권장 패턴 그대로입니다. 타입 → fetcher → react-query 훅:</p>
-<pre>// api/get-discussions.ts
-export const getDiscussions = (params): Promise&lt;Discussion[]&gt; =&gt; {
+// ① 1단: 타입 & 검증 스키마 (응답 데이터 모양 정의)
+export type Discussion = {
+  id: string;
+  title: string;
+  body: string;
+};
+
+// ② 2단: Fetcher 함수 (미리 세팅된 단일 api-client로 서버 호출만 담당)
+export const getDiscussions = (params: { page?: number }): Promise&lt;Discussion[]&gt; =&gt; {
   return api.get('/discussions', { params });
 };
 
-export const useDiscussions = (params) =&gt; {
+// ③ 3단: React Query 훅 (컴포넌트가 가져다 쓸 캐싱·로딩 자동화 훅)
+export const useDiscussions = (params: { page?: number }) =&gt; {
   return useQuery({
     queryKey: ['discussions', params],
     queryFn: () =&gt; getDiscussions(params),
   });
 };</pre>
-<p>포인트 3개입니다. ① 단일 api-client 인스턴스 공유 (fetch든 axios든 상관없음) ② 요청 선언을 그때그때 만들지 않고 파일로 고정 → 목록이 보인다 ③ 응답 타입이 아래로 추론. PM 리뷰는 쉽습니다. <b>"새 API인데 타입·fetcher·훅 3단이 있나요?"</b> 이것만 물어보세요.</p>
-<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/api-layer.md">API Layer</a></span></section>
+<p>데이터를 생성·수정할 때도 똑같이 3단으로 짜되, 3단 훅에서 <code>useMutation</code>을 쓰고 성공 시 <code>invalidateQueries(['discussions'])</code>로 캐시만 새로고침해주면 목록이 자동 갱신됩니다!</p>
+<p>PM 리뷰는 쉽습니다. <b>"새 API인데 타입·fetcher·훅 3단이 있나요?"</b> 이것만 물어보세요.</p>
+<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/api-layer.md">API Layer — Query/Mutation 예제 코드</a></span></section>
 
-<section id="eslint"><h2>ESLint 강제 — 규칙을 사람에게 맡기지 않는다</h2>
-<p>cross-feature 금지는 구호가 아니라 린트 규칙입니다 (<code>import/no-restricted-paths</code> zones):</p>
-<pre>'import/no-restricted-paths': ['error', { zones: [
-  { target: './src/features/auth', from: './src/features', except: ['./auth'] },
-  // ...comments·discussions·teams·users 동일
-  { target: './src/features', from: './src/app' },  // 단방향 강제
-]}]</pre>
-<p>이게 BP의 핵심 철학입니다. <b>"구조는 문서가 아니라 빌드가 지킨다."</b> AI가 구조를 깨는 코드를 내면 커밋 전 Husky+ESLint가 차단합니다. PM님은 "이 규칙이 켜져 있나요?" 이것만 확인하시면 됩니다.</p>
-<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md">Project Structure (규칙 코드 전문)</a></span></section>
 
-<section id="children"><h2>children 최적화 — 코드로 이해하기</h2>
-<pre>// 미최적: count가 바뀔 때마다 PureComponent도 같이 리렌더
-const Counter = () =&gt; {
-  const [count, setCount] = useState(0);
-  return (&lt;div&gt;&lt;button onClick={...}/&gt;&lt;PureComponent /&gt;&lt;/div&gt;);
-};
-// 최적: children은 부모 리렌더에 영향 안 받음!
-const App = () =&gt; (&lt;Counter&gt;&lt;PureComponent /&gt;&lt;/Counter&gt;);
-const Counter = ({ children }) =&gt; {
-  const [count, setCount] = useState(0);
-  return (&lt;div&gt;&lt;button onClick={...}/&gt;{children}&lt;/div&gt;);
-};</pre>
-<p>JSX를 children으로 넘기면 고립된 VDOM이 돼서, 부모가 다시 그려도 따라 그려지지 않습니다. memo·useMemo 꺼내기 전에 쓸 치트키죠. AI 리뷰 포인트도 쉽습니다. "상태 쓰는 컴포넌트 안에, 상태 안 쓰는 무거운 자식이 같이 있나요?"</p>
-<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/performance.md">Performance</a></span></section>
 
 <section id="test"><h2>테스트 — 통합 중심 피라미드</h2>
 <ul>
 <li><b>통합 테스트가 본진</b>입니다 (unit 통과 ≠ 연결 보장). unit은 공용·복잡로직만, e2e는 핵심 여정만.</li>
 <li>Vitest(빠른 Jest) + Testing Library(<b>행위 테스트, 구현상세 금지</b> — 상태관리를 갈아끼워도 테스트가 유지됩니다) + Playwright(브라우저/헤드리스).</li>
-<li><b>MSW</b> — 백엔드 없이 진짜 HTTP로 프론트를 개발·테스트합니다. API 설계용으로도 씁니다. "서버 아직 안 됐어요"가 더 이상 블로커가 아닙니다!</li>
+<li><b>MSW(Mock Service Worker·가짜 서버 대역 배우)</b> — 백엔드 없이 진짜 HTTP로 프론트를 개발·테스트합니다. API 설계용으로도 씁니다. "서버 아직 안 됐어요"가 더 이상 블로커가 아닙니다!</li>
 </ul>
 <span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/testing.md">Testing — 예제 코드·StackBlitz 데모</a></span></section>
 
 <section id="err"><h2>에러 — 3층 방어선</h2>
 <ul>
-<li><b>API 인터셉터</b> — 토스트 알림·401 토큰갱신·미인증 로그아웃을 한 곳에서.</li>
+<li><b>API 인터셉터(모든 요청·응답이 지나가는 검문소)</b> — 토스트 알림·401 토큰갱신·미인증 로그아웃을 한 곳에서.</li>
 <li><b>구역별 Error Boundary</b> — 앱 전체 1개는 금지! 구역 격리로 나머지는 생존시킵니다.</li>
-<li><b>Sentry + 소스맵</b> — 프로덕션 추적 (플랫폼·브라우저별로 어디서 터졌는지).</li>
+<li><b>Sentry + 소스맵(압축된 배포 코드를 짠 위치로 되돌려주는 번역 지도)</b> — 프로덕션 추적 (플랫폼·브라우저별로 어디서 터졌는지).</li>
 </ul>
 <div class="analog">🚢 <b>비유 — 방수 격벽:</b> 배는 구역마다 격벽이 있어서 한 곳에 물이 차도 가라앉지 않습니다. 에러 바운더리도 똑같아요. 앱 전체 try-catch 하나는 "배에 격벽 없이 다니기"입니다.</div>
 <span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/error-handling.md">Error Handling</a></span></section>
 
 <section id="sec"><h2>보안 — 웹 기준 + RN 주의보</h2>
 <ul>
-<li><b>인증:</b> SPA는 JWT가 대세. 저장은 HttpOnly 쿠키 권장 (localStorage는 XSS 탈취 위험!). 입력 sanitize는 필수입니다. 참고: OWASP 클라이언트 리스크 Top 10.</li>
-<li><b>인가:</b> RBAC(역할: USER/ADMIN) + PBAC(세밀 정책: "작성자만 삭제" 같은 것). 클라이언트 인가는 UX용 — 서버 검증이 진짜입니다. 이 순서 꼭 기억하세요!</li>
+<li><b>인증:</b> SPA는 JWT(로그인 증표 토큰)가 대세. 저장은 HttpOnly 쿠키 권장 (localStorage는 XSS(악성 스크립트 삽입 공격) 탈취 위험!). 입력 sanitize는 필수입니다.</li>
+<li><b>인가:</b> RBAC(직급별 권한: 관리자만 삭제 가능) + PBAC(조건별 권한: 일반 유저라도 '내가 쓴 글'이면 삭제 가능). 클라이언트 인가는 UX용 — 서버 검증이 진짜입니다. 이 순서 꼭 기억하세요!</li>
 <li><b>⚠️ React Native는 다릅니다:</b> RN은 브라우저 쿠키 환경이 아니라서 HttpOnly 자동관리가 웹처럼 동작하지 않습니다. 토큰은 <code>expo-secure-store</code>·keychain 같은 OS 암호화 저장소에 보관 후 헤더로 전송하는 게 표준입니다.</li>
 </ul>
 <span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/security.md">Security — RBAC/PBAC 예제 코드</a></span></section>
@@ -197,17 +220,32 @@ const Counter = ({ children }) =&gt; {
 <li>고빈도 상태는 context 말고 셀렉터 내장 상태관리(zustand·jotai). 잦은 업데이트 앱은 runtime 스타일→zero-runtime(tailwind 등).</li>
 <li>이미지 lazy+WebP+srcset, Web Vitals(Lighthouse) 주시, react-query prefetch로 선로딩.</li>
 </ul>
-<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/performance.md">Performance — children 최적화 코드 예시</a> · <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/deployment.md">Deployment — Vercel·Netlify·CloudFront·Cloudflare</a></span></section>
+<h3>children 치트키 코드</h3>
+<pre>// 미최적: count가 바뀔 때마다 PureComponent도 같이 리렌더
+const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+  return (&lt;div&gt;&lt;button onClick={...}/&gt;&lt;PureComponent /&gt;&lt;/div&gt;);
+};
+// 최적: children은 부모 리렌더에 영향 안 받음!
+const App = () =&gt; (&lt;Counter&gt;&lt;PureComponent /&gt;&lt;/Counter&gt;);
+const Counter = ({ children }) =&gt; {
+  const [count, setCount] = useState(0);
+  return (&lt;div&gt;&lt;button onClick={...}/&gt;{children}&lt;/div&gt;);
+};</pre>
+<p>JSX를 children으로 넘기면 고립된 VDOM(화면 설계도 복사본)이 돼서, 부모가 다시 그려도 따라 그려지지 않습니다. memo·useMemo 꺼내기 전에 쓸 치트키죠. AI 리뷰 포인트: "상태 쓰는 컴포넌트 안에, 상태 안 쓰는 무거운 자식이 같이 있나요?"</p>
+<h3>배포 한 줄</h3>
+<p>배포는 CDN 위 정적 호스팅이 정석(Vercel·Netlify·CloudFront·Cloudflare). SPA 주의점 하나: BrowserRouter는 새로고침 시 서버에 없는 경로를 요청해서 404가 납니다. 정적 호스팅의 리라이트(전부 index.html로) 설정을 켜세요. PR마다 임시 미리보기 URL이 뜨는 프리뷰 배포를 쓰면 QA가 편해집니다.</p>
+<span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/performance.md">Performance</a> · <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/deployment.md">Deployment</a></span></section>
 
 <section id="agents"><h2>AGENTS.md — AI에게 그대로 먹이세요</h2>
-<p>레포에 AI 코딩 에이전트용 지시서가 동봉돼 있습니다. 기능 개발 4단계(API 타입 → fetcher+훅 → UI → 통합테스트 → 라우팅), 컴포넌트는 Plop 제너레이터로 찍어내기, Husky pre-commit·pre-push로 검사. 표준 스택: React 18 + TS strict + Tailwind + Radix + TanStack Query + Zustand + Vitest/Playwright/MSW/Storybook. 바이브코딩 PM에게 이 파일은 <b>복붙형 헌법</b>입니다.</p>
+<p>레포에 AI 코딩 에이전트용 지시서가 동봉돼 있습니다. 기능 개발 5단계(API 타입 → fetcher → 훅 → UI → 통합테스트 → 라우팅), 컴포넌트는 Plop 제너레이터(파일 자동 생성기)로 찍어내기, Husky pre-commit·pre-push로 검사. 표준 스택: React 18 + TS strict + Tailwind + Radix + TanStack Query + Zustand + Vitest/Playwright/MSW/Storybook. 바이브코딩 PM에게 이 파일은 <b>복붙형 헌법</b>입니다.
 <span class="src">원문 바로가기: <a href="https://github.com/alan2207/bulletproof-react/blob/master/AGENTS.md">AGENTS.md 전문</a> · 추가 학습 <a href="https://github.com/alan2207/bulletproof-react/blob/master/docs/additional-resources.md">Additional Resources</a></span></section>
 
 <section id="rn"><h2>React Native 적용 — BP 용어로 매핑하기</h2>
 <p>공식은 "같은 구조를 React Native에 적용 가능"이라고 합니다. <code>app/</code>=네비게이션·프로바이더, features는 동일합니다. RN 추가분은 BP 용어로 이렇게 매핑하세요. 오프라인 캐시는 feature <code>stores</code>/서버캐시, 푸시·딥링크는 <code>config</code>, 네이티브 모듈은 <code>lib</code>에 넣습니다. (FSD의 entity/model 용어를 섞지 마세요 — BP에는 그 개념이 없습니다!) Expo Router 사용 시 BP의 <code>src/app</code>도 라우터 예약 폴더와 충돌하므로 라우트 등록 전용으로 분리합니다.</p></section>
 
 <section id="vsfsd"><h2>FSD와 차이 — barrel 논쟁 정리</h2>
-<p>※ FSD(캡슐화 우선, <code>index.ts</code> 필수)와 달리, BP는 번들 최적화(Vite 트리쉐이킹)·순환참조 회피를 위해 <b>barrel 없는 직접 import</b>를 지향합니다. 옛 권장(배럴 사용)은 개정된 겁니다. 프로젝트에서는 둘 중 하나로 통일하세요. <a href="https://transoverdrive.github.io/Artifacts/Tech/2026-Feature-Sliced-Design/">제1강 FSD</a>에서 뼈대를 복습하실 수 있습니다.</p></section>
+<p>※ FSD(캡슐화 우선, <code>index.ts</code> 필수)와 달리, BP는 번들 최적화(Vite 트리쉐이킹·안 쓰는 코드 자동 제거)·순환참조(A가 B를, B가 A를 부르는 고리) 회피를 위해 <b>barrel 없는 직접 import</b>를 지향합니다. 옛 권장(배럴 사용)은 개정된 겁니다. 프로젝트에서는 둘 중 하나로 통일하세요. <a href="https://transoverdrive.github.io/Artifacts/Tech/2026-Feature-Sliced-Design/">제1강 FSD</a>에서 뼈대를 복습하실 수 있습니다.</p></section>
 
 <section id="prompts"><h2>AI에게 시킬 말 (복붙용)</h2>
 <div class="prompt">"기능 X를 features/X로: 필요한 폴더만 + cross-feature import 없이."</div>
@@ -222,6 +260,8 @@ const Counter = ({ children }) =&gt; {
 <details><summary>정답 보기</summary>3단 구조(타입→fetcher→react-query 훅)가 없습니다. fetcher 파일로 분리하고 훅으로 감싸세요. 그래야 "엔드포인트 목록"이 보이고 캐싱·로딩 처리가 공짜가 됩니다.</details></div>
 <div class="quiz"><b>Q2.</b> 서버에서 받아온 목록을 Redux store에 넣자고 AI가 제안합니다. 어떻게 답하시겠어요?
 <details><summary>정답 보기</summary>"서버 데이터는 서버 캐시(react-query) 자리입니다. Redux 같은 클라이언트 상태 통에 넣으면 갱신·무효화 관리를 직접 다 해야 합니다."</details></div>
+<div class="quiz"><b>Q3.</b> AI가 <code>features/discussions</code> 파일에 <code>import { CommentList } from '@/features/comments'</code>를 추가했습니다. BP 기준으로 왜 문제이고, 어떻게 고치나요?
+<details><summary>정답 보기</summary>기능끼리 직접 import(cross-feature import)는 결합도를 높여 수정을 어렵게 합니다. 두 기능은 서로 모르게 두고, 상위 <code>src/app/routes/</code> 페이지에서 각각 불러와 배치하라고 지시하세요. (#tree 조립 예시 참조)</details></div>
 </section>
 
 <section id="path"><h2>딥다이브 경로 (읽는 순서)</h2>
